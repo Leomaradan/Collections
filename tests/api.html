@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Test API</title>
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.0.1.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+  <script>
+  	var baseurl = 'http://localhost:3000';
+
+  	function callApi(url,method,assert,callback) {
+		$.ajax({
+			url: baseurl+url,
+			processData: false,
+			dataType: 'json',
+			method: method,
+			async: false,
+			complete: function (result) {
+				if (result.status == 0) {
+					assert.ok(false, '0 status - browser could be on offline mode');
+				} else if (result.status == 404) {
+					assert.ok(false, '404 error');
+				} else {
+					callback($.parseJSON(result.responseText));
+				}
+			}			
+		});
+  	}
+  </script>
+  <script type="text/javascript" src="roman.js"></script>
+</body>
+</html>
