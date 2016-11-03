@@ -23,6 +23,7 @@ $container['notAllowedHandler'] = function ($c) {
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
+    		//->withHeader()
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -30,10 +31,6 @@ $app->add(function ($req, $res, $next) {
 
 
 $app->get('/', function($request, $response) {
-	$result = $this->ConnecteurDAO->queryFetch('SELECT * FROM collections_commons');
-
-	$response->write('<pre>');
-	$response->write(var_export($result));
 	return $response->write('Salut les gens');
 });
 
@@ -41,23 +38,26 @@ $app->get('/', function($request, $response) {
 $types = ['all' => 'APIController', 'bd' => 'BdController', 'film' => 'FilmController', 'manga' => 'MangaController', 'roman' => 'RomanController'];
 
 foreach ($types as $key => $value) {
-	$app->get("/$key", 'App\Controllers\\'.$value.':index');
-	$app->get("/$key/{id:[0-9]+}", 'App\Controllers\\'.$value.':show');
-	$app->get("/$key/genre/{genre:[0-9]+}", 'App\Controllers\\'.$value.':filterByGenre');
-	$app->get("/$key/auteur/{auteur}", 'App\Controllers\\'.$value.':filterByAuteur');
-	$app->get("/$key/serie[/{serie:[0-9]+}]", 'App\Controllers\\'.$value.':filterBySerie');
+	$app->group('/api', function () use ($app, $key, $value) {
+		$app->get("/$key", 'App\Controllers\\'.$value.':index');
+		$app->get("/$key/{id:[0-9]+}", 'App\Controllers\\'.$value.':show');
+		$app->get("/$key/genre/{genre:[0-9]+}", 'App\Controllers\\'.$value.':filterByGenre');
+		$app->get("/$key/auteur/{auteur}", 'App\Controllers\\'.$value.':filterByAuteur');
+		$app->get("/$key/serie[/{serie:[0-9]+}]", 'App\Controllers\\'.$value.':filterBySerie');
 
-	$app->get("/$key/info/genre", 'App\Controllers\\'.$value.':availlableGenre');
-	$app->get("/$key/info/serie", 'App\Controllers\\'.$value.':availlableSerie');
+		$app->get("/$key/info/genre", 'App\Controllers\\'.$value.':availlableGenre');
+		$app->get("/$key/info/serie", 'App\Controllers\\'.$value.':availlableSerie');
 
-	$app->get("/$key/recherche", 'App\Controllers\\'.$value.':search');
+		$app->get("/$key/recherche", 'App\Controllers\\'.$value.':search');
 
-	$app->post("/$key", 'App\Controllers\\'.$value.':create');
-	$app->put("/$key/{id:[0-9]+}", 'App\Controllers\\'.$value.':update');
-	$app->delete("/$key/{id:[0-9]+}", 'App\Controllers\\'.$value.':delete');	
+		$app->post("/$key", 'App\Controllers\\'.$value.':create');
+		$app->post("/$key/validate", 'App\Controllers\\'.$value.':validate');
+		$app->put("/$key/{id:[0-9]+}", 'App\Controllers\\'.$value.':update');
+		$app->delete("/$key/{id:[0-9]+}", 'App\Controllers\\'.$value.':delete');
+	});	
 }
 
-$app->get('/film/format/{format}', 'App\Controllers\FilmController:filterByFormat');
+$app->get('/api/film/format/{format}', 'App\Controllers\FilmController:filterByFormat');
 
 
 /*$app->get('/{type}', function($request, $response, $args) {});

@@ -47,19 +47,52 @@ class APIController
 	}	
 
 	public function create(RequestInterface $request, ResponseInterface $response) {
-		//$dao = $this->getCurrentDAO();
-		return $response->getBody()->write(json_encode(['error' => 'not yet implemented']));
+		$dao = $this->getCurrentDAO();
+
+		$validation = $this->container->$dao->validate($request->getParams());
+
+		if($validation === true) {
+			$result = $this->container->$dao->create($request->getParams());
+		} else {
+			return $response->getBody()->write(json_encode($validation));
+		}
+
+		return $response->getBody()->write(json_encode($result));
 	}	
 
 	public function update(RequestInterface $request, ResponseInterface $response, $args) {
-		//$dao = $this->getCurrentDAO();
-		return $response->getBody()->write(json_encode(['error' => 'not yet implemented']));
+		$dao = $this->getCurrentDAO();
+
+		$validation = $this->container->$dao->validate($request->getParams(), true);
+
+		if($validation === true) {
+			$result = $this->container->$dao->update($args['id'], $request->getParams());
+		} else {
+			return $response->getBody()->write(json_encode($validation));
+		}		
+
+		return $response->getBody()->write(json_encode($result));
 	}	
 
 	public function delete(RequestInterface $request, ResponseInterface $response, $args) {
-		//$dao = $this->getCurrentDAO();
-		return $response->getBody()->write(json_encode(['error' => 'not yet implemented']));
-	}			
+		$dao = $this->getCurrentDAO();
+
+		$this->container->$dao->delete($args['id']);
+		
+		return $response->getBody()->write(json_encode(['ok' => 'ok']));
+	}	
+
+	public function validate(RequestInterface $request, ResponseInterface $response) {
+		$dao = $this->getCurrentDAO();
+		
+		$data = $this->container->$dao->validate($request->getParams());
+
+		if($data === true) {
+			$data = ['ok'=>'ok'];
+		}
+
+		$response->getBody()->write(json_encode($data));
+	}		
 
 	public function filterByGenre(RequestInterface $request, ResponseInterface $response, $args) {
 		$dao = $this->getCurrentDAO();

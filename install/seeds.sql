@@ -31,6 +31,8 @@ INSERT INTO `collections_auteur` (`id`, `nom`) VALUES(6, 'Peter Jackson');
 INSERT INTO `collections_auteur` (`id`, `nom`) VALUES(7, 'Takeshi Obata');
 INSERT INTO `collections_auteur` (`id`, `nom`) VALUES(8, 'Tsugumi Ōba');
 INSERT INTO `collections_auteur` (`id`, `nom`) VALUES(9, 'Zoran Janjetov');
+INSERT INTO `collections_auteur` (`id`, `nom`) VALUES(10, 'Eiichirō Oda');
+INSERT INTO `collections_auteur` (`id`, `nom`) VALUES(11, 'Yūsuke Murata');
 
 -- --------------------------------------------------------
 
@@ -82,6 +84,8 @@ INSERT INTO `collections_auteur_commons` (`auteur_id`, `commons_id`) VALUES(6, 2
 INSERT INTO `collections_auteur_commons` (`auteur_id`, `commons_id`) VALUES(6, 24);
 INSERT INTO `collections_auteur_commons` (`auteur_id`, `commons_id`) VALUES(6, 25);
 INSERT INTO `collections_auteur_commons` (`auteur_id`, `commons_id`) VALUES(1, 26);
+INSERT INTO `collections_auteur_commons` (`auteur_id`, `commons_id`) VALUES(10, 27);
+INSERT INTO `collections_auteur_commons` (`auteur_id`, `commons_id`) VALUES(11, 28);
 
 -- --------------------------------------------------------
 
@@ -120,6 +124,8 @@ INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_
 INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(24, 'Le Seigneur des Anneaux - Les Deux Tours', 5, 2, 2, '', 'dvd,blu-ray', 2, NULL);
 INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(25, 'Le Seigneur des Anneaux - Le Retour du Roi', 5, 2, 2, '', 'dvd,blu-ray', 3, NULL);
 INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(26, 'Jodorowsky''s Dune', NULL, 4, 2, '', 'dvd', NULL, NULL);
+INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(27, 'One Piece', NULL, 3, 4, '', NULL, NULL, '1-71/81');
+INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(28, 'One Punch Man', NULL, 7, 4, '', NULL, NULL, '1-2/11');
 
 -- --------------------------------------------------------
 
@@ -138,6 +144,7 @@ INSERT INTO `collections_genre` (`id`, `nom`, `type_id`) VALUES(3, 'Shōnen', 4)
 INSERT INTO `collections_genre` (`id`, `nom`, `type_id`) VALUES(4, 'Documentaire', 2);
 INSERT INTO `collections_genre` (`id`, `nom`, `type_id`) VALUES(5, 'Roman Policier', 5);
 INSERT INTO `collections_genre` (`id`, `nom`, `type_id`) VALUES(6, 'Livre en anglais', 3);
+INSERT INTO `collections_genre` (`id`, `nom`, `type_id`) VALUES(7, 'Seinen', 4);
 
 -- --------------------------------------------------------
 

@@ -203,12 +203,12 @@ use \Exception as Exception;
 		 * @TODO documenter la fonction
 		 */		
 		public function executePreparedStatement($pdoStatement = null, $param = null) {
-			//var_dump($pdoStatement);
+
 			if(!is_object($pdoStatement) || get_class($pdoStatement) !== 'PDOStatement') {
 				$param = $pdoStatement;
 				$pdoStatement = null;
 			}
-//var_dump($this->_statement); die();
+
 			if($pdoStatement) {
 				return $pdoStatement->execute($param);
 			}

@@ -12,15 +12,26 @@
   <script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script>
   <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
   <script>
-  	var baseurl = 'http://localhost:3000';
+  	var href = location.href;
 
-  	function callApi(url,method,assert,callback) {
+  	var baseurl = href.substring(0, href.indexOf("/tests/api.html")) + '/public/api';
+    console.log(baseurl);
+
+  	QUnit.config.autostart = false;
+
+  	$.get(href.substring(0, href.length - "/tests/api.html".length)+'/tests/resetDb.php', function() {
+  		QUnit.start();
+  	});
+
+  	function callApi(url,method,assert,callback, data = null) {
+
 		$.ajax({
 			url: baseurl+url,
-			processData: false,
+			//processData: false,
+			data: data,
 			dataType: 'json',
 			method: method,
-			async: false,
+			//async: false,
 			complete: function (result) {
 				if (result.status == 0) {
 					assert.ok(false, '0 status - browser could be on offline mode');
@@ -34,5 +45,6 @@
   	}
   </script>
   <script type="text/javascript" src="roman.js"></script>
+  <script type="text/javascript" src="manga.js"></script>
 </body>
 </html>
