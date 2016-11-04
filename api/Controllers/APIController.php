@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use \App\Models\CollectionsDAO;
 
 /**
@@ -19,7 +19,7 @@ class APIController
 		$this->container = $container;
 	}
 
-	private function getCurrentDAO() {
+	protected function getCurrentDAO() {
 
 		if($this->dao == null) {
 			CollectionsDAO::register($this->container, 'all');
@@ -30,124 +30,69 @@ class APIController
 
 	}
 
-	public function index(RequestInterface $request, ResponseInterface $response) {
+	public function index(Request $request, Response $response) {
 		$dao = $this->getCurrentDAO();
 		
 		$data = $this->container->$dao->getAll();
 
-		$response->getBody()->write(json_encode($data));
+		return $response->withJson($data);
 	}
 
-	public function show(RequestInterface $request, ResponseInterface $response, $args) {
+	public function show(Request $request, Response $response, $args) {
 		$dao = $this->getCurrentDAO();
 		
 		$data = $this->container->$dao->getById($args['id']);
 
-		$response->getBody()->write(json_encode($data));
+		return $response->withJson($data);
 	}	
 
-	public function create(RequestInterface $request, ResponseInterface $response) {
+	public function create(Request $request, Response $response) {
 		$dao = $this->getCurrentDAO();
 
 		$validation = $this->container->$dao->validate($request->getParams());
 
 		if($validation === true) {
-			$result = $this->container->$dao->create($request->getParams());
+			$data = $this->container->$dao->create($request->getParams());
 		} else {
-			return $response->getBody()->write(json_encode($validation));
+			return $response->withJson($validation,400);
 		}
 
-		return $response->getBody()->write(json_encode($result));
+		return $response->withJson($data);
 	}	
 
-	public function update(RequestInterface $request, ResponseInterface $response, $args) {
+	public function update(Request $request, Response $response, $args) {
 		$dao = $this->getCurrentDAO();
 
 		$validation = $this->container->$dao->validate($request->getParams(), true);
 
 		if($validation === true) {
-			$result = $this->container->$dao->update($args['id'], $request->getParams());
+			$data = $this->container->$dao->update($args['id'], $request->getParams());
 		} else {
-			return $response->getBody()->write(json_encode($validation));
+			return $response->withJson($validation,400);
 		}		
 
-		return $response->getBody()->write(json_encode($result));
+		return $response->withJson($data);
 	}	
 
-	public function delete(RequestInterface $request, ResponseInterface $response, $args) {
+	public function delete(Request $request, Response $response, $args) {
 		$dao = $this->getCurrentDAO();
 
 		$this->container->$dao->delete($args['id']);
-		
-		return $response->getBody()->write(json_encode(['ok' => 'ok']));
+
+		return $response->withJson([],204);
 	}	
 
-	public function validate(RequestInterface $request, ResponseInterface $response) {
+	public function validate(Request $request, Response $response) {
 		$dao = $this->getCurrentDAO();
 		
 		$data = $this->container->$dao->validate($request->getParams());
 
 		if($data === true) {
 			$data = ['ok'=>'ok'];
-		}
-
-		$response->getBody()->write(json_encode($data));
-	}		
-
-	public function filterByGenre(RequestInterface $request, ResponseInterface $response, $args) {
-		$dao = $this->getCurrentDAO();
-		
-		$data = $this->container->$dao->getByGenre($args['genre']);
-
-		$response->getBody()->write(json_encode($data));
-	}	
-
-	public function filterByAuteur(RequestInterface $request, ResponseInterface $response, $args) {
-		$dao = $this->getCurrentDAO();
-		
-		$data = $this->container->$dao->getByAuteur($args['auteur']);
-
-		$response->getBody()->write(json_encode($data));
-	}	
-
-	public function filterBySerie(RequestInterface $request, ResponseInterface $response, $args) {
-		$dao = $this->getCurrentDAO();
-
-		if(isset($args['serie'])) {
-			$data = $this->container->$dao->getBySerie($args['serie']);
 		} else {
-			$data = $this->container->$dao->getByNullSerie(); 
+			return $response->withJson($data, 400);
 		}
 
-		$response->getBody()->write(json_encode($data));
+		return $response->withJson($data);
 	}		
-
-	public function availlableSerie(RequestInterface $request, ResponseInterface $response) {
-		$dao = $this->getCurrentDAO();
-		
-		$data = $this->container->$dao->getSerie();
-
-		$response->getBody()->write(json_encode($data));
-	}
-
-	public function availlableGenre(RequestInterface $request, ResponseInterface $response) {
-		$dao = $this->getCurrentDAO();
-
-		$data = $this->container->$dao->getGenre();
-
-		$response->getBody()->write(json_encode($data));
-	}	
-
-	public function search(RequestInterface $request, ResponseInterface $response) {
-		$query = $request->getQueryParams();
-		if(count($query) == 0) {
-			return $response->getBody()->write(json_encode(['error' => 'missing term in search']));
-		}
-
-		$dao = $this->getCurrentDAO();
-
-		$data = $this->container->$dao->search($query);
-
-		$response->getBody()->write(json_encode($data));
-	}
 }

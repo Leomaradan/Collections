@@ -38,7 +38,12 @@
 				} else if (result.status == 404) {
 					assert.ok(false, '404 error');
 				} else {
-					callback($.parseJSON(result.responseText));
+          if(result.responseText.length > 0) {
+            callback($.parseJSON(result.responseText));
+          } else {
+            callback();
+          }
+					
 				}
 			}			
 		});

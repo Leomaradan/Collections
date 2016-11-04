@@ -1,11 +1,25 @@
 (function() {		
-		var valideData = {titre:"Fondation Foudroyée",
+		var valideData1 = {titre:"Fondation Foudroyée",
 					serie_id:"1",
 					genre_id:"2",
 					couverture:"",
 					volume:"4",
 					auteurs_id:[2,1]
 		};
+
+		var valideData2 = {titre:"Moi, Asimov",
+					genre_new:{nom:'Autobiographie',type_id:5},
+					couverture:"",
+					volume:"1",
+					auteurs_id:[1]
+		};
+
+		var valideData3 = {titre:"De bons présages",
+					genre_id:1,
+					couverture:"",
+					volume:"1",
+					auteurs_new:[{nom: 'Terry Pratchett'},{nom: 'Neil Gaiman'}]
+		};		
 
 		var invalideData1 = {
 					serie_id:"test",
@@ -170,13 +184,23 @@
 
 	QUnit.test("validate", function(assert) {
 
-  		assert.expect( 1 );
-		var done = assert.async( 1 );
+  		assert.expect( 3 );
+		var done = assert.async( 3 );
 
 		callApi('/roman/validate', 'post', assert, function(data) { 
 			assert.equal( data.ok, "ok", "contenu valide" );
 			done();
-		}, valideData);	
+		}, valideData1);	
+
+		callApi('/roman/validate', 'post', assert, function(data) { 
+			assert.equal( data.ok, "ok", "contenu valide" );
+			done();
+		}, valideData2);		
+
+		callApi('/roman/validate', 'post', assert, function(data) { 
+			assert.equal( data.ok, "ok", "contenu valide" );
+			done();
+		}, valideData3);			
 	});	
 
 	QUnit.test("invalide", function(assert) {
@@ -233,30 +257,50 @@
 
 	QUnit.test("create", function(assert) {
 
-  		assert.expect( 1 );
-		var done = assert.async( 1 );
+  		assert.expect( 2 );
+		var done = assert.async( 2 );
 
 		callApi('/roman', 'get', assert, function(data) { 
 			var len = data.length;
 			callApi('/roman', 'post', assert, function(data) { 
 				callApi('/roman', 'get', assert, function(data) { 
-					assert.equal( data.length, len+1, (len+1) + " romans" );				
+					assert.notEqual( data.length, len, (len+1) + " romans" );				
 					done();
 				});
-			}, valideData);	
+			}, valideData1);	
 		});
+
+		callApi('/roman', 'get', assert, function(data) { 
+			var len = data.length;
+			callApi('/roman', 'post', assert, function(data) { 
+				callApi('/roman', 'get', assert, function(data) { 
+					assert.notEqual( data.length, len, (len+1) + " romans" );				
+					done();
+				});
+			}, valideData2);	
+		});	
+
+		callApi('/roman', 'get', assert, function(data) { 
+			var len = data.length;
+			callApi('/roman', 'post', assert, function(data) { 
+				callApi('/roman', 'get', assert, function(data) { 
+					assert.notEqual( data.length, len, (len+1) + " romans" );				
+					done();
+				});
+			}, valideData3);	
+		});				
 
 	});	
 
 	QUnit.test("update", function(assert) {
 
-  		assert.expect( 2 );
-		var done = assert.async( 1 );
+  		assert.expect( 3 );
+		var done = assert.async( 2 );
 
 			callApi('/roman', 'post', assert, function(data) { 
 				var id = data.id;
 				callApi('/roman/' + id, 'get', assert, function(data) { 
-					assert.equal( data[0].titre, valideData.titre, "Titre: " + valideData.titre );
+					assert.equal( data[0].titre, valideData1.titre, "Titre: " + valideData1.titre );
 					callApi('/roman/' + id, 'put', assert, function(data) { 
 						callApi('/roman/' + id, 'get', assert, function(data) { 
 							assert.equal( data[0].titre, "test", "Titre: test" );			
@@ -264,7 +308,19 @@
 						});
 					}, {'titre': 'test'});	
 				});				
-			}, valideData);	
+			}, valideData1);	
+
+			callApi('/roman', 'post', assert, function(data) { 
+				var id2 = data.id;
+				callApi('/roman/' + id2, 'get', assert, function(data) { 
+					callApi('/roman/' + id2, 'put', assert, function(data) { 
+						callApi('/roman/' + id2, 'get', assert, function(data) { 
+							assert.equal( data[0].auteurs, "Jack Vance", "Auteur: Jack Vance" );			
+							done();
+						});
+					}, {'auteurs_new': [{nom: 'Jack Vance'}]});	
+				});				
+			}, valideData2);				
 	});		
 
 	QUnit.test("delete", function(assert) {
@@ -283,7 +339,7 @@
 					});
 				});	
 			});
-		}, valideData);
+		}, valideData1);
 
 	});			
 

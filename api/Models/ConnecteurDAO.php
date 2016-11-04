@@ -67,38 +67,43 @@ use \Exception as Exception;
 		 * la classe, obligeant à passer par le pattern Singleton
 		 * Etant protegé, elle peut être redéfinie par des classes enfant
 		 */
-		public function __construct($base) {
+		public function __construct(ConnecteurDAO $connection = null) {
 		
 			// Construction de la connection
 		
-			$conf = $this->info_connect($base);
-			
-			$dsn = 'mysql:dbname='.$conf['bdd'].';host='.$conf['serveur'];
-			
-			try {
-				if($conf['pass'] && $conf['pass'] != "") {
-					$connect = new PDO($dsn, $conf['user'], $conf['pass']);
-				} else {
-					$connect = new PDO($dsn, $conf['user']);
+			if(is_null($connection)) {
+				$conf = $this->info_connect();
+				
+				$dsn = 'mysql:dbname='.$conf['bdd'].';host='.$conf['serveur'];
+				
+				try {
+					if($conf['pass'] && $conf['pass'] != "") {
+						$connect = new PDO($dsn, $conf['user'], $conf['pass']);
+					} else {
+						$connect = new PDO($dsn, $conf['user']);
+					}
+					$connect->exec('SET NAMES utf8');
+					$connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				} catch (Exception $e) {
+					trigger_error("La base de données n'est pas accessible", E_USER_ERROR);
+					// Inscription de l'erreur dans un fichier log ? $e->getMessage();				
 				}
-				$connect->exec('SET NAMES utf8');
-				$connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			} catch (Exception $e) {
-				trigger_error("La base de données n'est pas accessible", E_USER_ERROR);
-				// Inscription de l'erreur dans un fichier log ? $e->getMessage();				
+				
+				$this->_conn = $connect;
+			} else {
+				$this->_conn = $connection->_conn;
 			}
-			
-			$this->_conn = $connect;
+
 			
 		}
 
-		public static function register($container, $name = null, $base = null) {
+		public static function register($container, $name = null, $connection = null) {
 			$class = get_called_class();
 			
 			$name = ($name !== null) ? $name : $c = (new \ReflectionClass(get_called_class()))->getShortName();
 
-			$container[$name] = function() use ($class, $base) {
-				return new $class($base);
+			$container[$name] = function() use ($class, $connection) {
+				return new $class($connection);
 			};
 		}
 
@@ -116,17 +121,17 @@ use \Exception as Exception;
 			return $this->_conn;
 		}
 
-		private function info_connect($i){
+		private function info_connect(){
 			$conf = [];
-			switch ($i) {			
+			/*switch ($i) {			
 				case 'default':
-				default:
+				default:*/
 					$conf['serveur'] = "localhost";
 					$conf['user'] = "root";
 					$conf['pass'] = "";
 					$conf['bdd'] = "slim";
-					break;
-			}
+					/*break;
+			}*/
 
 			return $conf;
 		}
