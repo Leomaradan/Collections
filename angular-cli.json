@@ -6,10 +6,12 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "dist",
+      "outDir": "public",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "api.php",
+        ".htaccess"
       ],
       "index": "index.html",
       "main": "main.ts",
