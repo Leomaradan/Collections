@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `collections_view_total` (
 DROP TABLE IF EXISTS `collections_view_bd`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `collections_view_bd` AS select `c`.`id` AS `id`,`c`.`titre` AS `titre`,`c`.`serie_id` AS `serie_id`, `s`.`nom` AS `serie`,`c`.`genre_id` AS `genre_id`, `g`.`nom` AS `genre`,`c`.`couverture` AS `couverture`,`c`.`volume` AS `volume`,`s`.`volume_max` AS `volume_max`,
-group_concat(`a`.`id` order by `a`.`nom` ASC separator ', ') AS `auteurs_id` ,
+CONCAT('|',group_concat(`a`.`id` order by `a`.`nom` ASC separator '|'),'|') AS `auteurs_id`,
 group_concat(`a`.`nom` order by `a`.`nom` ASC separator ', ') AS `auteurs` 
 from (((((`collections_commons` `c` left join `collections_serie` `s` on((`c`.`serie_id` = `s`.`id`))) join `collections_genre` `g` on((`c`.`genre_id` = `g`.`id`))) join `collections_type` `t` on((`c`.`type_id` = `t`.`id`))) left join `collections_auteur_commons` `ac` on((`c`.`id` = `ac`.`commons_id`))) left join `collections_auteur` `a` on((`a`.`id` = `ac`.`auteur_id`))) where (`t`.`nom` like 'bd') group by `c`.`id`;
 
@@ -216,7 +216,7 @@ from (((((`collections_commons` `c` left join `collections_serie` `s` on((`c`.`s
 DROP TABLE IF EXISTS `collections_view_film`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `collections_view_film` AS select `c`.`id` AS `id`,`c`.`titre` AS `titre`,`c`.`serie_id` AS `serie_id`, `s`.`nom` AS `serie`,`c`.`genre_id` AS `genre_id`, `g`.`nom` AS `genre`,`c`.`couverture` AS `couverture`,`c`.`format` AS `format`,`c`.`volume` AS `volume`,`s`.`volume_max` AS `volume_max`,
-group_concat(`a`.`id` order by `a`.`nom` ASC separator ', ') AS `auteurs_id` ,
+CONCAT('|',group_concat(`a`.`id` order by `a`.`nom` ASC separator '|'),'|') AS `auteurs_id`,
 group_concat(`a`.`nom` order by `a`.`nom` ASC separator ', ') AS `auteurs` 
 from (((((`collections_commons` `c` left join `collections_serie` `s` on((`c`.`serie_id` = `s`.`id`))) join `collections_genre` `g` on((`c`.`genre_id` = `g`.`id`))) join `collections_type` `t` on((`c`.`type_id` = `t`.`id`))) left join `collections_auteur_commons` `ac` on((`c`.`id` = `ac`.`commons_id`))) left join `collections_auteur` `a` on((`a`.`id` = `ac`.`auteur_id`))) where (`t`.`nom` like 'film') group by `c`.`id`;
 
@@ -228,7 +228,7 @@ from (((((`collections_commons` `c` left join `collections_serie` `s` on((`c`.`s
 DROP TABLE IF EXISTS `collections_view_manga`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `collections_view_manga` AS select `c`.`id` AS `id`,`c`.`titre` AS `titre`,`c`.`genre_id` AS `genre_id`, `g`.`nom` AS `genre`,`c`.`couverture` AS `couverture`,`c`.`volume_possedes` AS `volume_possedes`,
-group_concat(`a`.`id` order by `a`.`nom` ASC separator ', ') AS `auteurs_id`,  
+CONCAT('|',group_concat(`a`.`id` order by `a`.`nom` ASC separator '|'),'|') AS `auteurs_id`,
 group_concat(`a`.`nom` order by `a`.`nom` ASC separator ', ') AS `auteurs` 
 from ((((`collections_commons` `c` join `collections_genre` `g` on((`c`.`genre_id` = `g`.`id`))) join `collections_type` `t` on((`c`.`type_id` = `t`.`id`))) left join `collections_auteur_commons` `ac` on((`c`.`id` = `ac`.`commons_id`))) left join `collections_auteur` `a` on((`a`.`id` = `ac`.`auteur_id`))) where (`t`.`nom` like 'manga') group by `c`.`id`;
 
@@ -240,7 +240,7 @@ from ((((`collections_commons` `c` join `collections_genre` `g` on((`c`.`genre_i
 DROP TABLE IF EXISTS `collections_view_roman`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `collections_view_roman` AS select `c`.`id` AS `id`,`c`.`titre` AS `titre`,`c`.`serie_id` AS `serie_id`, `s`.`nom` AS `serie`,`c`.`genre_id` AS `genre_id`, `g`.`nom` AS `genre`,`c`.`couverture` AS `couverture`,`c`.`volume` AS `volume`,`s`.`volume_max` AS `volume_max`,
-group_concat(`a`.`id` order by `a`.`nom` ASC separator ', ') AS `auteurs_id`, 
+CONCAT('|',group_concat(`a`.`id` order by `a`.`nom` ASC separator '|'),'|') AS `auteurs_id`,
 group_concat(`a`.`nom` order by `a`.`nom` ASC separator ', ') AS `auteurs` 
 from (((((`collections_commons` `c` left join `collections_serie` `s` on((`c`.`serie_id` = `s`.`id`))) join `collections_genre` `g` on((`c`.`genre_id` = `g`.`id`))) join `collections_type` `t` on((`c`.`type_id` = `t`.`id`))) left join `collections_auteur_commons` `ac` on((`c`.`id` = `ac`.`commons_id`))) left join `collections_auteur` `a` on((`a`.`id` = `ac`.`auteur_id`))) where (`t`.`nom` like 'roman') group by `c`.`id`;
 
@@ -252,7 +252,7 @@ from (((((`collections_commons` `c` left join `collections_serie` `s` on((`c`.`s
 DROP TABLE IF EXISTS `collections_view_total`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `collections_view_total` AS select `c`.`id` AS `id`,`c`.`titre` AS `titre`,`c`.`serie_id` AS `serie_id`, `s`.`nom` AS `serie`,`c`.`genre_id` AS `genre_id`, `g`.`nom` AS `genre`,`c`.`type_id` AS `type_id`, `t`.`nom` AS `type`,`c`.`couverture` AS `couverture`,`c`.`format` AS `format`,`c`.`volume` AS `volume`,`c`.`volume_possedes` AS `volume_possedes`,`s`.`volume_max` AS `volume_max`,
-group_concat(`a`.`id` order by `a`.`nom` ASC separator ', ') AS `auteurs_id`, 
+CONCAT('|',group_concat(`a`.`id` order by `a`.`nom` ASC separator '|'),'|') AS `auteurs_id`,
 group_concat(`a`.`nom` order by `a`.`nom` ASC separator ', ') AS `auteurs` 
 from (((((`collections_commons` `c` left join `collections_serie` `s` on((`c`.`serie_id` = `s`.`id`))) join `collections_genre` `g` on((`c`.`genre_id` = `g`.`id`))) join `collections_type` `t` on((`c`.`type_id` = `t`.`id`))) left join `collections_auteur_commons` `ac` on((`c`.`id` = `ac`.`commons_id`))) left join `collections_auteur` `a` on((`a`.`id` = `ac`.`auteur_id`))) group by `c`.`id`;
 

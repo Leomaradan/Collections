@@ -50,7 +50,7 @@
 
 			callApi('/manga/21', 'get', assert, function(data) { 
 				assert.equal( data.length, 1, "1 mangas avec l'id 21" );
-				assert.equal( data[0].auteurs, "Ken Akamatsu", "Auteur: Ken Akamatsu" );
+				assert.equal( data[0].auteurs[0].nom, "Ken Akamatsu", "Auteur: Ken Akamatsu" );
 				done();
 			});	
 		});
@@ -98,7 +98,7 @@
 
 			callApi('/manga/recherche?titre=One', 'get', assert, function(data) { 
 				assert.equal( data.length, 2, "2 mangas avec 'One' dans le titre" );
-				assert.equal( data[0].auteurs, "Eiichirō Oda", "Auteur: Eiichirō Oda" );
+				assert.equal( data[0].auteurs[0].nom, "Eiichirō Oda", "Auteur: Eiichirō Oda" );
 				done();
 			});	
 

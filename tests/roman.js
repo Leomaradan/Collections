@@ -55,7 +55,7 @@
 		var done = assert.async( 1 );
 
 		callApi('/roman', 'get', assert, function(data) { 
-			assert.equal( data[0].auteurs, "Isaac Asimov", "Auteur: Isaac Asimov" );
+			assert.equal( data[0].auteurs[0].nom, "Isaac Asimov", "Auteur: Isaac Asimov" );
 			done();
 		});
 	});
@@ -67,7 +67,7 @@
 
 		callApi('/roman/1', 'get', assert, function(data) { 
 			assert.equal( data.length, 1, "1 romans avec l'id 1" );
-			assert.equal( data[0].auteurs, "Isaac Asimov", "Auteur: Isaac Asimov" );
+			assert.equal( data[0].auteurs[0].nom, "Isaac Asimov", "Auteur: Isaac Asimov" );
 			done();
 		});	
 	});
@@ -90,7 +90,7 @@
 
 		callApi('/roman/serie/2', 'get', assert, function(data) { 
 			assert.equal( data.length, 3, "3 romans de la série 2" );
-			assert.equal( data[0].auteurs, "J.R.R. Tolkien", "Auteur: J.R.R. Tolkien" );
+			assert.equal( data[0].auteurs[0].nom, "J.R.R. Tolkien", "Auteur: J.R.R. Tolkien" );
 			done();
 		});	
 	});
@@ -152,7 +152,7 @@
 
 		callApi('/roman/recherche?titre=Seigneur', 'get', assert, function(data) { 
 			assert.equal( data.length, 3, "3 romans avec 'Seigneur' dans le titre" );
-			assert.equal( data[0].genre, "Fantasy", "Genre: Fantasy" );
+			assert.equal( data[0].genre.nom, "Fantasy", "Genre: Fantasy" );
 			done();
 		});			
 	});
@@ -315,7 +315,7 @@
 				callApi('/roman/' + id2, 'get', assert, function(data) { 
 					callApi('/roman/' + id2, 'put', assert, function(data) { 
 						callApi('/roman/' + id2, 'get', assert, function(data) { 
-							assert.equal( data[0].auteurs, "Jack Vance", "Auteur: Jack Vance" );			
+							assert.equal( data[0].auteurs[0].nom, "Jack Vance", "Auteur: Jack Vance" );			
 							done();
 						});
 					}, {'auteurs_new': [{nom: 'Jack Vance'}]});	

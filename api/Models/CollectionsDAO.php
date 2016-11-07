@@ -23,7 +23,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 
 		$this->executePreparedStatement($args);
 
-		return [$this->fetch(PDO::FETCH_ASSOC)];		
+		return $this->mutatorGetsValue([$this->fetch(PDO::FETCH_ASSOC)]);		
 	}
 
 	protected function requestMultiple($query, $args = []) {
@@ -31,7 +31,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 
 		$this->executePreparedStatement($args);
 
-		return $this->fetchAll(PDO::FETCH_ASSOC);	
+		return $this->mutatorGetsValue($this->fetchAll(PDO::FETCH_ASSOC));	
 	}	
 
 	public function getAll() {
@@ -40,6 +40,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 
 	public function getById($id) {
 		return $this->requestSingle("SELECT SQL_CACHE * FROM {$this->view} WHERE id = ? LIMIT 1", [$id]);
+	
 	}
 
 	public function search($query) {
@@ -138,7 +139,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 	}
 
 	public function mutatorGetValue($field, $value, $array) {
-		$name = 'get'.ucfirst($field).'Attribute';
+		$name = 'get'.$this->SnakeCase($field).'Attribute';
 		if(method_exists($this, $name)) {
 			return $this->$name($value, $array);
 		}
@@ -147,13 +148,37 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 		
 	}
 
+	public function mutatorGetsValue($array) {
+		foreach ($array as $row => $cols) {
+			foreach ($cols as $field => $value) {
+				if(isset($this->visible)) {
+					//var_dump($field);
+					if(in_array($field, $this->visible)) {
+						$array[$row][$field] = $this->mutatorGetValue($field, $array[$row][$field], $cols);
+					} elseif($field !== 'id') {
+						unset($array[$row][$field]);
+					}
+				} else {
+					$array[$row][$field] = $this->mutatorGetValue($field, $array[$row][$field], $cols);
+				}
+				
+			}
+		}	
+
+		return $array;
+	}	
+
 	public function mutatorSetValue($field, $value, $array) {
-		$name = 'set'.ucfirst($field).'Attribute';
+		$name = 'set'.$this->SnakeCase($field).'Attribute';
 		if(method_exists($this, $name)) {
 			return $this->$name($value, $array);
 		}
 
 		return $value;
+	}
+
+	protected function SnakeCase($string) {
+		return str_replace("_", "", ucwords($string, "_"));
 	}
 
 

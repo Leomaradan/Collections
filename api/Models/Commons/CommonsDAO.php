@@ -14,6 +14,7 @@ class CommonsDAO extends CollectionsDAO {
 	protected $view = "collections_view_total";
 	protected $table = "collections_commons";
 	protected $searchItems = ['titre','serie','genre','auteurs'];
+	protected $visible = ['titre','serie','genre','auteurs','volume','couverture'];
 	protected $type_id = 0;
 
 	public function __construct(ConnecteurDAO $connection = null) {
@@ -33,7 +34,7 @@ class CommonsDAO extends CollectionsDAO {
 	}
 
 	public function getByAuteur($auteur) {
-		return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE auteurs LIKE ?", ['%'.$auteur.'%']);
+		return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE auteurs_id LIKE ?", ['%|'.$auteur.'|%']);
 	}
 
 	public function getBySerie($serie) {
@@ -229,25 +230,55 @@ class CommonsDAO extends CollectionsDAO {
 	}	
 
 	public function getSerie() {
-		if(isset($this->types)) {
+		$serie = new SerieDAO($this);
+		return $serie->getByType($this->types);
+		/*if(isset($this->types)) {
 			$types = implode("','",$this->types);
 			$sql = "SELECT SQL_CACHE `s`.* FROM `collections_serie` AS s LEFT JOIN `collections_type` AS t ON (s.type_id = t.id) WHERE t.nom IN ('$types') OR s.type_id IS NULL;";
 		} else {
 			$sql = "SELECT SQL_CACHE `s`.* FROM `collections_serie` AS s LEFT JOIN `collections_type` AS t ON (s.type_id = t.id);";
 		}
 
-		return $this->requestMultiple($sql);
+		return $this->requestMultiple($sql);*/
 	
 	}
 
 	public function getGenre() {
-		if(isset($this->types)) {
+		$genre = new GenreDAO($this);
+		return $genre->getByType($this->types);
+		/*if(isset($this->types)) {
 			$types = implode("','",$this->types);
 			$sql = "SELECT SQL_CACHE `g`.* FROM `collections_genre` AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id) WHERE t.nom IN ('$types') OR g.type_id IS NULL;";
 		} else {
 			$sql = "SELECT SQL_CACHE `g`.* FROM `collections_genre` AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id);";
 		}
 
-		return $this->requestMultiple($sql);	
+		return $this->requestMultiple($sql);	*/
 	}	
+
+	public function getGenreAttribute($value, $array) {
+		return ['id' => $array['genre_id'], 'nom' => $array['genre']];
+	}
+
+	public function getSerieAttribute($value, $array) {
+		if(isset($array['serie_id'])) {
+			return ['id' => $array['serie_id'], 'nom' => $array['serie'], 'volume_max' => $array['volume_max']];
+		}
+		return null;
+	}	
+
+	public function getAuteursAttribute($value, $array) {
+		$auteurs_id = explode('|',$array['auteurs_id']);
+		array_shift($auteurs_id);
+		$auteurs_name = explode(', ',$array['auteurs']);
+		$auteurs = [];
+
+		$length = count($auteurs_name);
+
+		for($i = 0; $i < $length; $i++) {
+			$auteurs[] = ['id' => $auteurs_id[$i], 'nom' => $auteurs_name[$i]];
+		}
+
+		return $auteurs;
+	}
 }

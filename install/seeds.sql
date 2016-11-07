@@ -98,7 +98,7 @@ TRUNCATE TABLE `collections_commons`;
 -- Contenu de la table `collections_commons`
 --
 
-INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(1, 'Fondation', 1, 2, 5, '', NULL, 1, NULL);
+INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(1, 'Fondation', 1, 2, 5, 'http://a407.idata.over-blog.com/1/35/13/57/12-04/Asimov-fondation-folio-sf.jpg', NULL, 1, NULL);
 INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(2, 'Fondation et Empire', 1, 2, 5, '', NULL, 2, NULL);
 INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(3, 'Seconde Fondation', 1, 2, 5, '', NULL, 3, NULL);
 INSERT INTO `collections_commons` (`id`, `titre`, `serie_id`, `genre_id`, `type_id`, `couverture`, `format`, `volume`, `volume_possedes`) VALUES(4, 'Le Seigneur des Anneaux - La Communauté de l''Anneau', 2, 1, 5, '', NULL, 1, NULL);

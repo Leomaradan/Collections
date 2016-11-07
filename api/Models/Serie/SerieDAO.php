@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Genre;
+namespace App\Models\Serie;
 
 use \PDO as PDO;
 
@@ -18,4 +18,15 @@ class SerieDAO extends CollectionsDAO {
 		'type_id' => 'integer|reference:collections_type,id',
 		'volume_max' => 'required|integer|min:0|max:255'
 	];
+
+	public function getByType($types = null) {
+		if($types) {
+			$types = implode("','",$types);
+			$sql = "SELECT SQL_CACHE `g`.* FROM {$this->table} AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id) WHERE t.nom IN ('$types') OR g.type_id IS NULL;";
+		} else {
+			$sql = "SELECT SQL_CACHE `g`.* FROM {$this->table} AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id);";
+		}
+
+		return $this->requestMultiple($sql);
+	}	
 }

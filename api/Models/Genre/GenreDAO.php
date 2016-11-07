@@ -17,4 +17,15 @@ class GenreDAO extends CollectionsDAO {
 		'nom' => 'required|min:3|max:50',
 		'type_id' => 'integer|reference:collections_type,id'
 	];
+
+	public function getByType($types = null) {
+		if($types) {
+			$types = implode("','",$types);
+			$sql = "SELECT SQL_CACHE `g`.* FROM {$this->table} AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id) WHERE t.nom IN ('$types') OR g.type_id IS NULL;";
+		} else {
+			$sql = "SELECT SQL_CACHE `g`.* FROM {$this->table} AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id);";
+		}
+
+		return $this->requestMultiple($sql);
+	}
 }

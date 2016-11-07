@@ -8,6 +8,7 @@ class MangaDAO extends CommonsDAO {
 	protected $types = ['manga','livre'];
 	protected $type = "manga";
 	protected $searchItems = ['titre','genre','auteurs'];
+	protected $visible = ['titre','genre','auteurs','volume_possedes','couverture'];
 	protected $fillable = ['titre','genre_id','volume_possedes','couverture'];
 	protected $validation = [
 		'titre' => 'required|min:3|max:100',
@@ -19,7 +20,7 @@ class MangaDAO extends CommonsDAO {
 	];	
 
 
-	public function setVolume_possedesAttribute($value,$array) {
+	public function setVolumePossedesAttribute($value,$array) {
 		return $this->compactVolumes($value) . '/' . $array['volume_max'];
 	}
 

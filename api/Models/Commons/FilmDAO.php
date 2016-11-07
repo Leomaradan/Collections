@@ -8,6 +8,7 @@ class FilmDAO extends CommonsDAO {
 	protected $types = ['film'];
 	protected $type = "film";
 	protected $searchItems = ['titre','serie','genre','auteurs','format'];
+	protected $visible = ['titre','serie','genre','auteurs','format','couverture'];
 	protected $fillable = ['titre','serie_id','genre_id','couverture','format'];
 	protected $validation = [
 		'titre' => 'required|min:3|max:100',
