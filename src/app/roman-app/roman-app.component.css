@@ -1,0 +1,3 @@
+.roman-app_auteurs span+span:before {
+    content: ', ';
+}

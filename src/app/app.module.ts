@@ -2,8 +2,25 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+
+import { RomanModule } from './roman-app/roman.module';
+//import { RomanAppComponent } from './roman-app/roman-app.component';
+
+const routes: Routes = [
+    /*{
+        path: '',
+        redirectTo: '/roman',
+        pathMatch: 'full'
+    }*/
+    {
+      path: '',
+      redirectTo: 'roman',
+      pathMatch: 'full'
+    },    
+];
 
 @NgModule({
   declarations: [
@@ -12,7 +29,9 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    RomanModule,
+    RouterModule.forRoot(routes, { useHash: true })
   ],
   providers: [],
   bootstrap: [AppComponent]
