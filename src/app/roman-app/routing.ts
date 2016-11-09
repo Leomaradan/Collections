@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { RomanAppComponent }   from './roman-app.component';
 import { RomanDetailsComponent }   from './roman-details.component';
+import { RomanFormComponent } from './roman-form.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,10 @@ import { RomanDetailsComponent }   from './roman-details.component';
           path: 'roman/:id',
           component: RomanDetailsComponent,
         },  
+        {
+          path: 'roman/:id/edit',
+          component: RomanFormComponent,
+        },          
         {
           path: 'roman/genre/:genre',
           component: RomanAppComponent,

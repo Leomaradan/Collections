@@ -12,7 +12,7 @@
         <td><a [routerLink]="['/roman/' + roman.id]">{{ roman.titre }}</a></td>
         <td><a [routerLink]="['/roman/genre/' + roman.genre.id]">{{ roman.genre.nom }}</a></td>
         <td><a *ngIf="roman.serie" [routerLink]="['/roman/serie/' + roman.serie.id]">{{ roman.serie.nom }}</a></td>
-        <td class="roman-app_auteurs"><span *ngFor="let auteur of roman.auteurs"><a [routerLink]="['/roman/auteur/' + auteur.id]">{{ auteur.nom }}</a></span></td>
+        <td class="app_list"><span *ngFor="let auteur of roman.auteurs"><a [routerLink]="['/roman/auteur/' + auteur.id]">{{ auteur.nom }}</a></span></td>
         <td *ngIf="roman.serie">{{ roman.volume ? roman.volume : '0' }} / {{ roman.serie.volume_max }}</td>
         <td *ngIf="!roman.serie">{{ roman.volume ? roman.volume : '' }}</td>
     </tr>

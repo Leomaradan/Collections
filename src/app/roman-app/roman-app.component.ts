@@ -7,7 +7,7 @@ import { RomanService } from './roman.service';
 @Component({
   selector: 'roman-app',
   templateUrl: './roman-app.component.html',
-  styleUrls: ['./roman-app.component.css'],
+  styleUrls: ['../commons/app.component.css'],
   providers: [RomanService]
 })
 export class RomanAppComponent implements OnInit {
@@ -15,7 +15,7 @@ export class RomanAppComponent implements OnInit {
   romans: Roman[];
   filterBy: string;
 
-  constructor(private romanService: RomanService, private route: ActivatedRoute) { }
+  constructor(private commonsService: RomanService, private route: ActivatedRoute) { }
     
   ngOnInit() {
 
@@ -25,16 +25,16 @@ export class RomanAppComponent implements OnInit {
       let auteur = +params['auteur'];
       
       if(genre) {
-          this.romanService.getRomansByGenre(genre).then(romans => this.romans = romans);
+          this.commonsService.getItemsByGenre(genre).then(romans => this.romans = romans);
           this.filterBy = "genre";
       } else if (serie) {
-          this.romanService.getRomansBySerie(serie).then(romans => this.romans = romans);
+          this.commonsService.getItemsBySerie(serie).then(romans => this.romans = romans);
           this.filterBy = "série";
       } else if (auteur) {
-          this.romanService.getRomansByAuteur(auteur).then(romans => this.romans = romans);
+          this.commonsService.getItemsByAuteur(auteur).then(romans => this.romans = romans);
           this.filterBy = "auteur";
       } else {
-        this.romanService.getAllRomans().then(romans => this.romans = romans);
+        this.commonsService.getAllItems().then(romans => this.romans = romans);
         this.filterBy = null;
       }
     });

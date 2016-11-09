@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+
 
 import { Roman } from './roman';
 import { RomanService } from './roman.service';
@@ -8,31 +9,25 @@ import { RomanService } from './roman.service';
 @Component({
   selector: 'roman-details',
   templateUrl: './roman-details.component.html',
-  styleUrls: ['./roman-details.component.css'],
+  styleUrls: ['../commons/details.component.css'],
   providers: [RomanService]
 })
 export class RomanDetailsComponent implements OnInit {
 
-  newRoman: Roman = new Roman();
   roman: Roman;
 
-  constructor(private romanService: RomanService, private route: ActivatedRoute) { }
-
-  addRoman() {
-      this.romanService.addRoman(this.newRoman);
-      this.newRoman = new Roman();
-  }
-  
-  removeRoman(roman: Roman) {
-    this.romanService.deleteRoman(roman);
-  }
+  constructor(private commonsService: RomanService, private route: ActivatedRoute, private router: Router) { }
       
   ngOnInit() {
     this.route.params.forEach((params: Params) => {
       let id = +params['id'];
-      this.romanService.getRomanById(id)
+      this.commonsService.getItemById(id)
         .then(data => this.roman = data);
     });
   }
+  
+  gotoForm(): void {
+    this.router.navigate(['/roman/:id/edit', this.roman.id]);
+  }    
 
 }

@@ -13,4 +13,6 @@
         <img *ngIf="roman.couverture" [src]="roman.couverture" />
     </div>
     
+    <a class="btn" [routerLink]="['/roman/' + roman.id + '/edit']">Editer</a>
+    
 </div>

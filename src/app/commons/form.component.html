@@ -1,0 +1,165 @@
+<a [routerLink]="['..']">Retour</a>
+<form *ngIf="item" #f="ngForm" novalidate>
+
+    <!-- Titre -->
+    <div class="form-section">
+        <div class="form-group row">
+            <label for="formTitre" class="col-sm-2 col-form-label col-form-label-sm">Titre</label>
+            <div class="col-sm-10">
+                <input type="text" name="titre" [(ngModel)]="item.titre" class="form-control form-control-sm" id="formTitre" placeholder="Dune, etc...">
+            </div>
+        </div>
+    </div>
+
+    <!-- Genre -->
+    <div class="form-section">
+        <div class="form-group row">
+
+            <label class="col-sm-2 col-form-label">Genre</label>
+            <div class="col-sm-10">
+                <p class="form-control-static mb-0">{{genreDisplay}}</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="form-check-inline">
+                <input class="form-check-input" type="radio" name="formGenreRadios" id="formGenreRadios1" value="list" checked (change)="genreSwitcherNew = !$event.target.checked">
+                       Genre existant
+            </label>
+            <label class="form-check-inline">
+                <input class="form-check-input" type="radio" name="formGenreRadios" id="formGenreRadios2" value="new" (change)="genreSwitcherNew = $event.target.checked">
+                Nouveau genre
+            </label>
+        </div>
+        <div class="form-group row" *ngIf="!genreSwitcherNew">
+            <label for="formGenreSelect" class="col-sm-2 col-form-label col-form-label-sm">Genre</label>
+            <div class="col-sm-10">
+                <select name="genreDisplay" class="form-control" id="formGenreSelect" 
+                        [(ngModel)]="genreDisplay">
+                    <option *ngFor="let genre of listGenre" [ngValue]="genre.nom">{{genre.nom}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row"  *ngIf="genreSwitcherNew">
+            <label for="formGenreNew" class="col-sm-2 col-form-label col-form-label-sm">Nouveau genre</label>
+            <div class="col-sm-10">
+                <input type="text" #genreNew class="form-control form-control-sm" id="formGenreNew" placeholder="Fantasy, etc..." 
+                       (keyup)="genreDisplay = genreNew.value">
+            </div>
+        </div>   
+    </div>
+
+    <!-- Série -->
+    <div class="form-section" *ngIf="features.indexOf('serie') !== -1">
+        <div class="form-group row">
+            <label class="form-check-inline">
+                <input class="form-check-input" type="radio" name="formSerieRadios" id="formSerieRadios1" value="list" 
+                       [checked]="item.serie !== null"  
+                       (change)="switchSerie('list',$event.target.checked)">
+                       Série existante
+            </label>
+            <label class="form-check-inline">
+                <input class="form-check-input" type="radio" name="formSerieRadios" id="formSerieRadios2" value="new"
+                       (change)="switchSerie('new',$event.target.checked)">
+                Nouvelle série
+            </label>
+            <label class="form-check-inline">
+                <input class="form-check-input" type="radio" name="formSerieRadios" id="formSerieRadios3" value="null" 
+                       [checked]="item.serie === null"
+                       (change)="switchSerie('null',$event.target.checked)">
+                       Pas de série
+            </label>
+        </div>
+        <div class="form-group row" *ngIf="serieSwitcher=='list'">
+            <label for="formSerieSelect" class="col-sm-2 col-form-label col-form-label-sm">Série</label>
+            <div class="col-sm-10">
+                <select name="serieDisplay" class="form-control" id="formSerieSelect" 
+                        [(ngModel)]="serieDisplay">
+                    <option *ngFor="let serie of listSerie" [ngValue]="serie.nom">{{serie.nom}}</option>
+                </select>
+            </div>
+        </div>     
+
+        <div class="form-group row" *ngIf="serieSwitcher=='new'">
+            <label for="formSerieNew" class="col-sm-2 col-form-label col-form-label-sm">Nouvelle série</label>
+            <div class="col-sm-10">
+                <input type="text" #serieNew class="form-control form-control-sm" id="formSerieNew" placeholder="Star Wars, etc..." 
+                       (keyup)="serieDisplay = serieNew.value">
+            </div>
+        </div>
+        <div class="form-group row" *ngIf="serieSwitcher!='null'">  
+            <label for="formSerieNewVolumeMax" class="col-sm-2 col-form-label col-form-label-sm">Nombre de volume</label>
+            <div class="col-sm-10">
+                <input type="text" name="serieVolumeMax" class="form-control form-control-sm" id="formSerieNewVolumeMax" [(ngModel)]="serieVolumeMax">
+            </div>      
+        </div>  
+    </div>
+
+    <!-- Auteur -->  
+    <div class="form-section">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Auteur</label>
+            <div class="col-sm-10">
+                <p class="form-control-static mb-0" *ngFor="let auteur of item.auteurs">
+                   <input type="hidden" value="{{auteur.id}}">
+                    {{auteur.nom}}
+                    <button class="btn btn-danger btn-right" (click)="removeAuteur(auteur.id, auteur.nom)"><span class="glyphicons glyphicons-minus-sign"></span></button>
+                </p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="formSerieSelect" class="col-sm-2 col-form-label col-form-label-sm">Ajouter un auteur existant</label>
+            <div class="col-sm-8">
+                <select name="auteurSelect" class="form-control" id="formSerieSelect" [(ngModel)]="auteurSelect">
+                    <option *ngFor="let auteur of listAuteur" [ngValue]="auteur">{{auteur.nom}}</option>
+                </select>
+            </div> 
+            <div class="col-sm-2"><button class="btn btn-success btn-right" (click)="addAuteurList()"><span class="glyphicons glyphicons-plus-sign"></span></button></div>
+        </div>
+        <div class="form-group row">
+            <label for="formSerieNew" class="col-sm-2 col-form-label col-form-label-sm">Ajouter un nouvel auteur</label>
+            <div class="col-sm-8">
+                <input type="text" name="auteurNew" class="form-control form-control-sm" id="formSerieNew" placeholder="Star Wars, etc..." [(ngModel)]="auteurNew">
+            </div>
+            <div class="col-sm-2"><button class="btn btn-success btn-right" (click)="addAuteurNew()"><span class="glyphicons glyphicons-plus-sign"></span></button></div>
+        </div>    
+    </div>
+
+    <!-- Volume -->    
+    <div class="form-section" *ngIf="features.indexOf('volume') !== -1">
+        <div class="form-group row">
+            <label for="formVolume" class="col-sm-2 col-form-label col-form-label-sm">Volume</label>
+            <div class="col-sm-10">
+                <input type="number" name="volume" [(ngModel)]="item.volume" class="form-control form-control-sm" id="formVolume">
+            </div>
+        </div>
+    </div>    
+    
+    <!-- Format -->    
+    <div class="form-section" *ngIf="features.indexOf('format') !== -1">
+        <div class="form-group row">
+            <label for="formVolume" class="col-sm-2 col-form-label col-form-label-sm">Format</label>
+            <div class="col-sm-10 form-check">               
+                <label *ngFor="let format of listFormat" class="form-check-label">
+                    <input type="checkbox" class="form-check-input"
+                        [checked]="item.format.indexOf(format.value) !== -1" 
+                        (change)="$event.target.checked? (item.format.push(format.value)) : ( item.format.splice(item.format.indexOf(format.value) , 1))">    
+                        {{format.display}}
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Couverture -->    
+    <div class="form-section">
+        <div class="form-group row">
+            <label for="formCouverture" class="col-sm-2 col-form-label col-form-label-sm">Couverture</label>
+            <div class="col-sm-10">
+                <input type="url" name="couverture" [(ngModel)]="item.couverture" class="form-control form-control-sm" id="formCouverture">
+            </div>
+        </div>
+    </div>   
+
+    <button type="submit" class="btn btn-primary" (click)="saveItem()">Sauver</button>
+</form>

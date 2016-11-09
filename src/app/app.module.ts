@@ -6,7 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
-import { RomanModule } from './roman-app/roman.module';
+import { RomanModule } from './roman-app';
+import { FilmModule } from './film-app';
 //import { RomanAppComponent } from './roman-app/roman-app.component';
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
     FormsModule,
     HttpModule,
     RomanModule,
+    FilmModule,
     RouterModule.forRoot(routes, { useHash: true })
   ],
   providers: [],
