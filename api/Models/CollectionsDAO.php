@@ -149,7 +149,13 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 	}
 
 	public function mutatorGetsValue($array) {
+		if($array === false) {
+			return [];
+		}
 		foreach ($array as $row => $cols) {
+			if($cols == false) {
+				return [];
+			}
 			foreach ($cols as $field => $value) {
 				if(isset($this->visible)) {
 					//var_dump($field);

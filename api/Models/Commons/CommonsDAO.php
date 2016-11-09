@@ -142,6 +142,9 @@ class CommonsDAO extends CollectionsDAO {
 			//var_dump($data);
 			$auteurs = $this->addAuteurs($data['auteurs_new'], $extraData);
 			//var_dump($auteurs); die;
+			if(count($auteurs['message']) > 0) {
+				return $auteurs['message'];
+			}
 		}
 
 		// Action
@@ -180,6 +183,7 @@ class CommonsDAO extends CollectionsDAO {
 	protected function addGenre($genre_new, &$extraData) {
 
 		$genre = new GenreDAO($this);
+		$genre_new['type_id'] = $this->type_id;
 		$validation = $genre->validate($genre_new);
 		if($validation === true) {
 			$id = $genre->create($genre_new)['id'];
@@ -194,6 +198,7 @@ class CommonsDAO extends CollectionsDAO {
 	protected function addSerie($serie_new, &$extraData) {
 
 		$serie = new SerieDAO($this);
+		$serie_new['type_id'] = $this->type_id;
 		$validation = $serie->validate($serie_new);
 		if($validation === true) {
 			$id = $serie->create($serie_new)['id'];
@@ -210,13 +215,16 @@ class CommonsDAO extends CollectionsDAO {
 		$auteursDAO = new AuteurDAO($this);
 
 		if(!is_array($auteurs_new)) {
-			$auteurs_new = [$auteurs_new];
+			$auteurs_new = [$auteur_new];
 		}
 
 		$ids = [];
 		$message = [];
 
 		foreach ($auteurs_new as $auteur_new) {
+			if(!is_array($auteur_new)) {
+				$auteur_new = ['nom' => $auteur_new];
+			}
 			$validation = $auteursDAO->validate($auteur_new);
 
 			if($validation === true) {

@@ -19,8 +19,16 @@ class FilmDAO extends CommonsDAO {
 		'auteurs_id' => 'without:auteurs_new|array:integer|reference:collections_auteur,id'
 	];
 
-	protected function setFormatAttribute($value) {
+	protected function setFormatAttribute($value, $array) {
 		return implode(',',$value);
 	}
+
+	protected function getFormatAttribute($value, $array) {
+		return explode(',',$value);
+	}	
+
+	public function getByFormat($format) {
+		return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE FIND_IN_SET(?, format)", [$format]);
+	}	
 
 }

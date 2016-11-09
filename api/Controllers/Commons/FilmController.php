@@ -17,5 +17,13 @@ class FilmController extends CommonsController
 		FilmDAO::register($container, 'film');
 		$this->dao = 'film';
 	}
+
+	public function filterByFormat(Request $request, Response $response, $args) {
+		$dao = $this->getCurrentDAO();
+		
+		$data = $this->container->$dao->getByFormat($args['format']);
+
+		return $response->withJson($data);
+	}		
 	
 }
