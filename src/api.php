@@ -1,12 +1,16 @@
 <?php
 
 require '../vendor/autoload.php';
+$dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
+$dotenv->load();
 
 $app = new \Slim\App([
 	'settings' => [
-        'displayErrorDetails' => true,
+        'displayErrorDetails' => (getenv('DEBUG')) ?: true,
 	]
 ]);
+
+
 
 $container = $app->getContainer();
 $container['notAllowedHandler'] = function ($container) {
