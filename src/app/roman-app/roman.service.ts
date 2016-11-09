@@ -12,6 +12,6 @@ export class RomanService extends CommonsService<Roman> {
     constructor(http: Http) { 
         super();
         this.http = http;
-        this.setUrl(new Roman().constructor.name);
+        this.setUrl('Roman');
     }
 }

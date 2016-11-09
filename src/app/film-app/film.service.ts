@@ -12,7 +12,7 @@ export class FilmService extends CommonsService<Film> {
     constructor(http: Http) { 
         super();
         this.http = http;
-        this.setUrl(new Film().constructor.name);
+        this.setUrl('Film');
     }
     
     // GET /roman/format/:format
