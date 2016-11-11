@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mv config.php ../
+mv conf.php ~/collection.conf.php
 
 git fetch --all
 git reset --hard origin/master
@@ -10,6 +10,6 @@ yarn
 
 ng build --target=production --environment=prod
 
-mv ../config.php .
+mv ~/collection.conf.php conf.php
 
 chmod +x build.sh

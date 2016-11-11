@@ -156,6 +156,7 @@ trait ValidationTrait {
 								$foreign_key = (isset($params[0])) ? $params[0] : 'id';
 
 								$values = $this->$fonction();
+								$values = (isset($values['data'])) ? $values['data'] : $values;
 
 								$values_list = [];
 
