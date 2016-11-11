@@ -1,6 +1,6 @@
 import { Serie, Genre, Auteur, Commons } from '../commons';
 
-export class Roman extends Commons {
+export class Bd extends Commons {
 	id: number;
 	titre: string;
 	serie?: Serie;

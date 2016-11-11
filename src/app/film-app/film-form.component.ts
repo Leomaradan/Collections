@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { Film } from './film';
 import { FilmService } from './film.service';
@@ -8,38 +8,53 @@ import { CommonsFormComponent } from '../commons';
 
 @Component({
     selector: 'film-form',
-    templateUrl: '../commons/form.component.html',
-    styleUrls: ['../commons/form.component.css'],
+    templateUrl: '../commons/views/form.component.html',
+    styleUrls: ['../commons/views/form.component.css'],
     providers: [FilmService]
 })
 export class FilmFormComponent extends CommonsFormComponent<Film> implements OnInit {
 
     //roman: Roman;
     serieDisplay: string;
-    serieVolumeMax: number = 1;    
+    serieVolumeMax: number = 1;
+    features = Film.featuresDetails;
     
-    listFormat = [
-        { value: 'dvd', display: 'DVD' },
-        { value: 'blu-ray', display: 'Blu-Ray' },
-        { value: 'blu-ray 3d', display: 'Blu-Ray 3D' },
-        { value: 'blu-ray 4k', display: 'Blu-Ray 4K' }
-    ];    
-    
-    constructor(protected commonsService: FilmService, protected route: ActivatedRoute) {
+    appUrl: string = "film";
+    appTitre: string = "Films";
+
+    constructor(protected commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
         super();
-        this.features = ["serie", "volume", "format"];
     }
 
     ngOnInit() {
+        console.log(this.route.params);
         this.route.params.forEach((params: Params) => {
             let id = +params['id'];
-            if (id) {
-                this.initItem(id);
+            console.log(params);
+            if (!id) {
+                this.item = <any>new Film({
+                    titre: '',
+                    serie: null,
+                    genre: null,
+                    volume: null,
+                    auteurs: [],
+                    format: []
+                });
+                
+	/*id: number;
+	titre: string;
+	serie?: Serie;
+	genre: Genre;
+	volume?: number;
+	auteurs: Auteur[];
+        format: string[];*/                
+                
+                this.serieSwitcher = "null"; 
+                this.initLists();               
             } else {
-                this.item = <any>new Film();
-                this.serieSwitcher = "null";
+                this.initItem(id);
             }
-            
+
             //this.listFormat = FilmFormat.names();
 
         });

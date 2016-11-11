@@ -1,0 +1,16 @@
+{
+    "elements": {
+        "app-root": {},
+        "router-outlet": {}
+    },
+    "attributes": {
+        "integrity": {
+            "context": "link"
+        },
+        "*ngif": {},
+        "#f": {},
+        "[routerlink]": {
+            "context": "a"
+        }
+    }
+}

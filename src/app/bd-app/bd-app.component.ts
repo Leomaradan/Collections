@@ -1,27 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { Roman } from './roman';
-import { RomanService } from './roman.service';
+import { Bd } from './bd';
+import { BdService } from './bd.service';
 
 import { CommonsAppComponent } from '../commons/';
 
 @Component({
-  selector: 'roman-app',
+  selector: 'bd-app',
   templateUrl: '../commons/views/app.component.html',
   styleUrls: ['../commons/views/app.component.css'],
-  providers: [RomanService]
+  providers: [BdService]
 })
-export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnInit {
+export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
 
 
-    appTitre: string = "Romans";
+    appTitre: string = "Bd";
 
-    appUrl: string = "roman"
+    appUrl: string = "bd"
 
-    features = Roman.featuresList;  
+    features = Bd.featuresList;  
 
-  constructor(protected commonsService: RomanService, protected route: ActivatedRoute) {
+  constructor(protected commonsService: BdService, protected route: ActivatedRoute) {
     super();
   }
     
@@ -33,16 +33,16 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
       let auteur = +params['auteur'];
       
       if(genre) {
-          this.commonsService.getItemsByGenre(genre).then(romans => this.items = romans);
+          this.commonsService.getItemsByGenre(genre).then(bds => this.items = bds);
           this.filterBy = "genre";
       } else if (serie) {
-          this.commonsService.getItemsBySerie(serie).then(romans => this.items = romans);
+          this.commonsService.getItemsBySerie(serie).then(bds => this.items = bds);
           this.filterBy = "série";
       } else if (auteur) {
-          this.commonsService.getItemsByAuteur(auteur).then(romans => this.items = romans);
+          this.commonsService.getItemsByAuteur(auteur).then(bds => this.items = bds);
           this.filterBy = "auteur";
       } else {
-        this.commonsService.getAllItems().then(romans => this.items = romans);
+        this.commonsService.getAllItems().then(bds => this.items = bds);
         this.filterBy = null;
       }
     });

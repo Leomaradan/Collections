@@ -9,6 +9,9 @@ import { CommonsService } from '../commons';
 
 @Injectable()
 export class FilmService extends CommonsService<Film> {
+    
+    //pagination = 3;
+    
     constructor(http: Http) { 
         super();
         this.http = http;

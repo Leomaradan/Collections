@@ -1,6 +1,19 @@
-<a [routerLink]="['..']">Retour</a>
 <form *ngIf="item" #f="ngForm" novalidate>
 
+    <ol *ngIf="item.id" class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['../..']">{{ appTitre }}</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['..']">{{ item.titre }}</a></li>
+      <li class="breadcrumb-item active">Editer</li>
+    </ol>  
+    <ol *ngIf="!item.id" class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['..']">{{ appTitre }}</a></li>
+      <li class="breadcrumb-item active">Ajouter</li>
+    </ol>  
+    
+    <div *ngFor="let error of formErrors" class="alert alert-danger">
+        {{ error }}
+    </div>
+    
     <!-- Titre -->
     <div class="form-section">
         <div class="form-group row">
@@ -136,12 +149,35 @@
         </div>
     </div>    
     
+    <!-- Volume Possedes -->    
+    <div class="form-section" *ngIf="features.indexOf('volume_possedes') !== -1">
+        <div class="form-group row">
+            <label for="formVolume" class="col-sm-2 col-form-label col-form-label-sm">Volume max</label>
+            <div class="col-sm-10">
+                <input type="number" name="volume_max" [(ngModel)]="item.volume_max" class="form-control form-control-sm" id="formVolume"
+                       (change)="volumeMaxChanged()">
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label for="formVolume" class="col-sm-2 col-form-label col-form-label-sm">Volume(s) possedés</label>
+            <div class="col-sm-10 form-check">               
+                <label *ngFor="let volume of item.listVolumeMax" class="form-check-label-block">
+                    <input type="checkbox" class="form-check-input"
+                        [checked]="item.volumes.indexOf(volume) !== -1" 
+                        (change)="$event.target.checked? (item.volumes.push(volume)) : ( item.volumes.splice(item.volumes.indexOf(volume) , 1))">    
+                        {{volume}}
+                </label>
+            </div>
+        </div>     
+    </div>        
+    
     <!-- Format -->    
     <div class="form-section" *ngIf="features.indexOf('format') !== -1">
         <div class="form-group row">
             <label for="formVolume" class="col-sm-2 col-form-label col-form-label-sm">Format</label>
             <div class="col-sm-10 form-check">               
-                <label *ngFor="let format of listFormat" class="form-check-label">
+                <label *ngFor="let format of item.listFormat" class="form-check-label">
                     <input type="checkbox" class="form-check-input"
                         [checked]="item.format.indexOf(format.value) !== -1" 
                         (change)="$event.target.checked? (item.format.push(format.value)) : ( item.format.splice(item.format.indexOf(format.value) , 1))">    

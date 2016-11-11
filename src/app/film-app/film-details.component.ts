@@ -5,29 +5,33 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Film } from './film';
 import { FilmService } from './film.service';
 
+import { CommonsDetailsComponent } from '../commons/';
 
 @Component({
-  selector: 'film-details',
-  templateUrl: './film-details.component.html',
-  styleUrls: ['../commons/details.component.css'],
-  providers: [FilmService]
+    selector: 'film-details',
+    templateUrl: '../commons/views/details.component.html',
+    styleUrls: ['../commons/views/details.component.css'],
+    providers: [FilmService]
 })
-export class FilmDetailsComponent implements OnInit {
+export class FilmDetailsComponent extends CommonsDetailsComponent<Film> implements OnInit {
 
-  film: Film;
+    features = Film.featuresDetails;
+    
+    appUrl: string = "film"    
+    appTitre: string = "Films";
 
-  constructor(private commonsService: FilmService, private route: ActivatedRoute, private router: Router) { }
-      
-  ngOnInit() {
-    this.route.params.forEach((params: Params) => {
-      let id = +params['id'];
-      this.commonsService.getItemById(id)
-        .then(data => this.film = data);
-    });
-  }
-  
-  gotoForm(): void {
-    this.router.navigate(['/film/:id/edit', this.film.id]);
-  }    
+    constructor(protected commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
+        super();
+    }
+
+    ngOnInit() {
+        this.route.params.forEach((params: Params) => {
+            let id = +params['id'];
+            this.commonsService.getItemById(id)
+                .then(data => {
+                    this.item = data;
+                });
+        });
+    }
 
 }

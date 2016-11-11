@@ -13,13 +13,17 @@ import { FilmFormComponent } from './film-form.component';
             component: FilmAppComponent,
         },
         {
+          path: 'film/new/create',
+          component: FilmFormComponent,
+        },          
+        {
           path: 'film/:id',
           component: FilmDetailsComponent,
         },  
         {
           path: 'film/:id/edit',
           component: FilmFormComponent,
-        },          
+        },                   
         {
           path: 'film/genre/:genre',
           component: FilmAppComponent,

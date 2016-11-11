@@ -1,29 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
-import { Roman } from './roman';
-import { RomanService } from './roman.service';
+import { Bd } from './bd';
+import { BdService } from './bd.service';
 
 import { CommonsFormComponent } from '../commons';
 
 @Component({
-    selector: 'roman-form',
+    selector: 'bd-form',
     templateUrl: '../commons/views/form.component.html',
     styleUrls: ['../commons/views/form.component.css'],
-    providers: [RomanService]
+    providers: [BdService]
 })
-export class RomanFormComponent extends CommonsFormComponent<Roman> implements OnInit {
+export class BdFormComponent extends CommonsFormComponent<Bd> implements OnInit {
 
     //roman: Roman;
     serieDisplay: string;
     serieVolumeMax: number = 1;    
     
-    features = Roman.featuresDetails;
+    features = Bd.featuresDetails;
     
-    appUrl: string = "roman"    
-    appTitre: string = "Romans";
+    appUrl: string = "bd"    
+    appTitre: string = "Bd";
     
-    constructor(protected commonsService: RomanService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(protected commonsService: BdService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 
@@ -33,7 +33,7 @@ export class RomanFormComponent extends CommonsFormComponent<Roman> implements O
             if (id) {
                 this.initItem(id);
             } else {
-                this.item = <any>new Roman();
+                this.item = <any>new Bd();
                 this.serieSwitcher = "null";
             }
 

@@ -13,6 +13,10 @@ import { RomanFormComponent } from './roman-form.component';
             component: RomanAppComponent,
         },
         {
+          path: 'roman/new/create',
+          component: RomanFormComponent,
+        },         
+        {
           path: 'roman/:id',
           component: RomanDetailsComponent,
         },  

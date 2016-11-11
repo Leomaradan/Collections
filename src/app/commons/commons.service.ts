@@ -4,15 +4,14 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 //import { Roman } from './roman';
-import { Commons } from './commons';
-import { Serie } from './serie';
-import { Genre } from './genre';
-import { Auteur } from './auteur';
+import { Commons, Serie, Genre, Auteur } from '.';
 
-export abstract class CommonsService<T extends Commons> {
+export class CommonsService<T extends Commons> {
 
     private itemsUrl = 'api/roman';
     private headers = new Headers({ 'Content-Type': 'application/json' });
+    
+    protected pagination: number = null;
     
     private urls = {
         'Roman': 'roman',
@@ -33,50 +32,54 @@ export abstract class CommonsService<T extends Commons> {
     }
 
     // POST /roman
-    addItem(roman: T): CommonsService<T> {
-        this.http
+    addItem(roman: T): Promise<T> {
+        return this.http
             .post(this.itemsUrl, JSON.stringify(this.filter(roman)), { headers: this.headers })
             .toPromise()
-            .then(res => res.json().data)
-            .catch(this.handleError);
-        return this;
+            .then(response => this.factory(response.json().data[0]));
+            //.catch(this.handleError);
+        //return this;
     }
 
     // DELETE /roman/:id
-    deleteItem(roman: T): CommonsService<T> {
-        const url = `${this.itemsUrl}/${roman.id}`;
-        this.http.delete(url, { headers: this.headers })
+    deleteItem(roman: T): Promise<T> {
+        let url = `${this.itemsUrl}/${roman.id}`;
+        return this.http.delete(url, { headers: this.headers })
             .toPromise()
-            .then(() => null)
-            .catch(this.handleError);
+            .then(() => null);
+            //.catch(this.handleError);
 
-        return this;
+        //return this;
     }
 
     // PUT /roman/:id
     updateItem(roman: T): Promise<T> {
-        const url = `${this.itemsUrl}/${roman.id}`;
+        let url = `${this.itemsUrl}/${roman.id}`;
         return this.http
             .put(url, JSON.stringify(this.filter(roman)), { headers: this.headers })
             .toPromise()
-            .then(() => roman)
-            .catch(this.handleError);
+            .then(response => this.factory(response.json().data[0]));
+            //.catch(this.handleError);
     }
 
     // GET /roman
-    getAllItems(): Promise<T[]> {
-        return this.http.get(this.itemsUrl)
+    getAllItems(page: number = 0): Promise<T[]> {
+        let url = this.itemsUrl;
+        if (this.pagination !== null) {
+            url += '?page='+page+'&pagination='+this.pagination;
+        }
+        return this.http.get(url)
             .toPromise()
-            .then(response => this.factories(response.json()))
+            .then(response => this.factories(response.json().data))
             .catch(this.handleError);
     }
 
     // GET /roman/:id
     getItemById(id: number): Promise<T> {
-        const url = `${this.itemsUrl}/${id}`;
+        let url = `${this.itemsUrl}/${id}`;
         return this.http.get(url)
             .toPromise()
-            .then(response => this.factory(response.json()[0]))
+            .then(response => this.factory(response.json().data[0]))
             .catch(this.handleError);
     }
 
@@ -117,7 +120,7 @@ export abstract class CommonsService<T extends Commons> {
     }
 
     protected getItemsByFilter(id: any, filter: string): Promise<T[]> {
-        const url = `${this.itemsUrl}/${filter}/${id}`;
+        let url = `${this.itemsUrl}/${filter}/${id}`;
         return this.http.get(url)
             .toPromise()
             .then(response => this.factories(response.json()))
@@ -125,7 +128,7 @@ export abstract class CommonsService<T extends Commons> {
     }
 
     protected handleError(error: any): Promise<any> {
-        console.error('An error occurred', error);
+        //console.error('An error occurred', error);
         return Promise.reject(error.message || error);
     }
     
@@ -135,6 +138,11 @@ export abstract class CommonsService<T extends Commons> {
 
         delete json.genre;
         delete json.serie;
+        
+        delete json.volume_possedes;
+        delete json.listVolumeMax;
+        delete json.volumes;
+        
         json.serie_id = null;
         json.auteurs_id = [];
         json.auteurs_new = [];
@@ -148,7 +156,7 @@ export abstract class CommonsService<T extends Commons> {
             }
         }
         
-        if(item.serie !== null) {
+        if (item.serie !== null && item.serie !== undefined) {
             if(item.serie.id === undefined) {
                 json.serie_new = item.serie;
             } else {
@@ -163,7 +171,15 @@ export abstract class CommonsService<T extends Commons> {
             } else {
                 json.auteurs_id.push(item.auteurs[i].id);
             }
-        }     
+        }  
+        
+        if(item.volumes !== undefined) {
+            json.volume_possedes = item.volumes;
+        } 
+        
+        if(json.auteurs_new.length == 0) {
+            delete json.auteurs_new;
+        }
         
         return json;
     }

@@ -1,5 +1,4 @@
-import { Genre } from './genre';
-import { Auteur } from './auteur';
+import { Genre, Auteur } from '.';
 
 export class Commons {
     id: number;
@@ -7,6 +6,10 @@ export class Commons {
     genre: Genre;
     auteurs: Auteur[];
     //couverture: string;
+    
+    static featuresList: string[];
+    static featuresDetails: string[];
+    static featuresForm: string[];
     
     constructor(values: Object = {}) {
         Object.assign(this, values);

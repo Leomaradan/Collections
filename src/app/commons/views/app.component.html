@@ -1,0 +1,28 @@
+<ol *ngIf="filterBy" class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/'+appUrl+'/']">{{ appTitre }}</a></li>
+      <li class="breadcrumb-item active">Filtré par {{ filterBy }}</li>
+</ol>
+<ol *ngIf="!filterBy" class="breadcrumb">
+      <li class="breadcrumb-item active">{{ appTitre }}</li>
+</ol>
+
+<h1>{{appTitre}}</h1>
+<a class="btn btn-primary" [routerLink]="['/'+appUrl+'/new/create']">Ajouter</a>
+<table class="table">
+    <tr>
+        <th>Titre</th>
+        <th>Genre</th>
+        <th *ngIf="features.indexOf('serie') !== -1">Série</th>
+        <th>Auteur(s)</th>
+        <th *ngIf="features.indexOf('format') !== -1">Format</th>
+        <th *ngIf="features.indexOf('volume_possedes') !== -1">Format</th>
+    </tr>
+    <tr *ngFor="let item of items">
+        <td><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a></td>
+        <td><a [routerLink]="['/'+appUrl+'/genre/'+item.genre.id]">{{ item.genre.nom }}</a></td>
+        <td *ngIf="features.indexOf('serie') !== -1"><a *ngIf="item.serie" [routerLink]="['/'+appUrl+'/serie/'+item.serie.id]">{{ item.serie.nom }}</a></td>
+        <td class="app_list"><span *ngFor="let auteur of item.auteurs"><a [routerLink]="['/'+appUrl+'/auteur/'+auteur.id]">{{ auteur.nom }}</a></span></td>
+        <td *ngIf="features.indexOf('format') !== -1" class="app_list"><span *ngFor="let format of item.format"><a [routerLink]="['/'+appUrl+'/format/'+format]">{{ format }}</a></span></td>
+        <td *ngIf="features.indexOf('volume_possedes') !== -1">{{ item.volumes.length }} / {{ item.volume_max }}</td>
+    </tr>
+</table>

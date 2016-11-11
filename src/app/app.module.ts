@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 
 import { RomanModule } from './roman-app';
 import { FilmModule } from './film-app';
+import { BdModule } from './bd-app';
+import { MangaModule } from './manga-app';
 //import { RomanAppComponent } from './roman-app/roman-app.component';
 
 const routes: Routes = [
@@ -33,6 +35,8 @@ const routes: Routes = [
     HttpModule,
     RomanModule,
     FilmModule,
+    BdModule,
+    MangaModule,
     RouterModule.forRoot(routes, { useHash: true })
   ],
   providers: [],

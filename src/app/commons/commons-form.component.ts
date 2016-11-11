@@ -1,10 +1,7 @@
-import { Serie } from './serie';
-import { Genre } from './genre';
-import { Auteur } from './auteur';
+import { Serie, Genre, Auteur, Commons, CommonsService } from '.';
+import { Router } from '@angular/router';
 
-import { Commons, CommonsService } from '.';
-
-export class CommonsFormComponent<T extends Commons> {
+export abstract class CommonsFormComponent<T extends Commons> {
 
     item: T;
 
@@ -13,26 +10,47 @@ export class CommonsFormComponent<T extends Commons> {
 
     genreDisplay: string;
     
-    features: string[] = [];
+    abstract features: string[] = [];
+    
+    abstract appTitre: string;  
+    abstract appUrl: string;
 
     listAuteur: Auteur[];
     listGenre: Genre[];
     listSerie: Serie[];
+    
+    formErrors: string[];
 
     genreSwitcherNew: boolean = false;
     serieSwitcher: string;
 
     protected commonsService: CommonsService<T>;
-
+    protected router: Router;
+    
     saveItem() {
-
+        
         this.addGenre(this.genreDisplay);
         
         if (this.features.indexOf('serie') !== -1) {
             this.addSerie((<any>this).serieDisplay);
         }
-
-        this.commonsService.updateItem(this.item).then((item) => this.initItem(item.id));
+        
+        if (this.features.indexOf('volume_possedes') !== -1) {
+            //this.addSerie((<any>this).serieDisplay);
+            (<any>this.item).volumes.splice((<any>this.item).volume_max, (<any>this.item).volumes.length - (<any>this.item).volume_max);
+        }
+                
+        if(this.item.id) {
+            this.commonsService.updateItem(this.item)
+                .then((item) => this.initItem(item.id))
+                .catch(error => { this.formErrors = JSON.parse(error._body)});
+        } else {
+            this.commonsService.addItem(this.item)
+                .then((item) => {
+                    this.router.navigate(['/'+this.appUrl, item.id]);
+                })
+                .catch(error => { this.formErrors = [error._body]});
+        }
     }
 
 
@@ -107,6 +125,15 @@ export class CommonsFormComponent<T extends Commons> {
         }
     }
 
+    initLists() {
+        this.commonsService.getGenreList().then(data => this.listGenre = data);
+        this.commonsService.getSerieList().then(data => this.listSerie = data);
+        this.commonsService.getAuteurList().then(data => {
+            this.listAuteur = data
+            this.auteurSelect = data[0];
+        });  
+    }
+
     initItem(id: number) {
         console.log(`init item with id ${id}`);
         this.commonsService.getItemById(id).then(data => {
@@ -132,12 +159,9 @@ export class CommonsFormComponent<T extends Commons> {
 
             this.genreDisplay = this.item.genre.nom;
         });
-        this.commonsService.getGenreList().then(data => this.listGenre = data);
-        this.commonsService.getSerieList().then(data => this.listSerie = data);
-        this.commonsService.getAuteurList().then(data => {
-            this.listAuteur = data
-            this.auteurSelect = data[0];
-        });
+        
+        this.initLists();
+
     }
 
 
