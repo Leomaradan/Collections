@@ -12958,19 +12958,22 @@ var Manga = (function (_super) {
         return mangas;
     };
     Manga.addVolumesList = function (manga) {
-        var volumes = manga.volume_possedes.split(',');
         var volumes_list = [];
-        for (var _i = 0, volumes_1 = volumes; _i < volumes_1.length; _i++) {
-            var volumeGroup = volumes_1[_i];
-            var test = +volumeGroup;
-            if (Number.isInteger(test)) {
-                volumes_list.push(test);
-            }
-            else {
-                var start = +(volumeGroup.split('-')[0]);
-                var end = +(volumeGroup.split('-')[1]);
-                for (var i = start; i <= end; i++) {
-                    volumes_list.push(i);
+        if (manga.volume_possedes != '') {
+            //return manga;
+            var volumes = manga.volume_possedes.split(',');
+            for (var _i = 0, volumes_1 = volumes; _i < volumes_1.length; _i++) {
+                var volumeGroup = volumes_1[_i];
+                var test = +volumeGroup;
+                if (Number.isInteger(test)) {
+                    volumes_list.push(test);
+                }
+                else {
+                    var start = +(volumeGroup.split('-')[0]);
+                    var end = +(volumeGroup.split('-')[1]);
+                    for (var i = start; i <= end; i++) {
+                        volumes_list.push(i);
+                    }
                 }
             }
         }
@@ -43231,8 +43234,15 @@ var BdFormComponent = (function (_super) {
                 _this.initItem(id);
             }
             else {
-                _this.item = new __WEBPACK_IMPORTED_MODULE_2__bd__["a" /* Bd */]();
+                _this.item = new __WEBPACK_IMPORTED_MODULE_2__bd__["a" /* Bd */]({
+                    titre: '',
+                    serie: null,
+                    genre: null,
+                    volume: null,
+                    auteurs: []
+                });
                 _this.serieSwitcher = "null";
+                _this.initLists();
             }
         });
     };
@@ -43821,7 +43831,15 @@ var MangaFormComponent = (function (_super) {
                 _this.initItem(id);
             }
             else {
-                _this.item = new __WEBPACK_IMPORTED_MODULE_2__manga__["a" /* Manga */]();
+                _this.item = new __WEBPACK_IMPORTED_MODULE_2__manga__["a" /* Manga */]({
+                    titre: '',
+                    genre: null,
+                    volume_max: 1,
+                    volumes: [],
+                    listVolumeMax: [1],
+                    auteurs: []
+                });
+                _this.initLists();
             }
         });
     };
@@ -44108,8 +44126,15 @@ var RomanFormComponent = (function (_super) {
                 _this.initItem(id);
             }
             else {
-                _this.item = new __WEBPACK_IMPORTED_MODULE_2__roman__["a" /* Roman */]();
+                _this.item = new __WEBPACK_IMPORTED_MODULE_2__roman__["a" /* Roman */]({
+                    titre: '',
+                    serie: null,
+                    genre: null,
+                    volume: null,
+                    auteurs: []
+                });
                 _this.serieSwitcher = "null";
+                _this.initLists();
             }
         });
     };
@@ -58879,21 +58904,21 @@ var CommonsService = (function () {
         var _this = this;
         return this.http.get(this.itemsUrl + '/info/genre')
             .toPromise()
-            .then(function (response) { return _this.factories(response.json()); })
+            .then(function (response) { return _this.factories(response.json().data); })
             .catch(this.handleError);
     };
     CommonsService.prototype.getSerieList = function () {
         var _this = this;
         return this.http.get(this.itemsUrl + '/info/serie')
             .toPromise()
-            .then(function (response) { return _this.factories(response.json()); })
+            .then(function (response) { return _this.factories(response.json().data); })
             .catch(this.handleError);
     };
     CommonsService.prototype.getAuteurList = function () {
         var _this = this;
         return this.http.get('api/auteur')
             .toPromise()
-            .then(function (response) { return _this.factories(response.json()); })
+            .then(function (response) { return _this.factories(response.json().data); })
             .catch(this.handleError);
     };
     CommonsService.prototype.getItemsByFilter = function (id, filter) {

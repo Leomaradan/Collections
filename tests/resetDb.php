@@ -1,8 +1,8 @@
 <?php
 
 require '../vendor/autoload.php';
-$dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
-$dotenv->load();
+
+require '../conf.php';
 
 $dao = new App\Models\ConnecteurDAO();
 

@@ -101,21 +101,21 @@ export class CommonsService<T extends Commons> {
     getGenreList(): Promise<Genre[]> {
         return this.http.get(this.itemsUrl + '/info/genre')
             .toPromise()
-            .then(response => this.factories(response.json()))
+            .then(response => this.factories(response.json().data))
             .catch(this.handleError);
     }
 
     getSerieList(): Promise<Serie[]> {
         return this.http.get(this.itemsUrl + '/info/serie')
             .toPromise()
-            .then(response => this.factories(response.json()))
+            .then(response => this.factories(response.json().data))
             .catch(this.handleError);
     }
 
     getAuteurList(): Promise<Auteur[]> {
         return this.http.get('api/auteur')
             .toPromise()
-            .then(response => this.factories(response.json()))
+            .then(response => this.factories(response.json().data))
             .catch(this.handleError);
     }
 

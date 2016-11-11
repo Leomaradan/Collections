@@ -1,13 +1,13 @@
 #!/bin/bash
 
-mv .env ../
+mv config.php ../
 
 git fetch --all
 git reset --hard origin/master
 
 composer update
-yarn update
+yarn
 
 ng build --target=production --environment=prod
 
-mv ../.env .
+mv ../config.php .

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use \PDO as PDO;
 use \Exception as Exception;
-use Dotenv;
+
 /**
  * Configuration DAO
  *
@@ -71,11 +71,8 @@ class ConnecteurDAO {
         // Construction de la connection
 
         if (is_null($connection)) {
-            
 
-            //$this->_env .= json_encode($_ENV);
             $conf = $this->info_connect();
-            //var_dump($conf);
 
             $dsn = 'mysql:dbname=' . $conf['bdd'] . ';host=' . $conf['serveur'];
 
@@ -110,7 +107,6 @@ class ConnecteurDAO {
             $conn = new $class($connection);
             $conn->slimcontainer = $container;
             return $conn;
-            //var_dump($conn->slimcontainer->bdd_info);
         };
     }
 
@@ -129,15 +125,12 @@ class ConnecteurDAO {
     }
 
     private function info_connect() {
-        if($this->slimcontainer !== null) {
-            return $this->slimcontainer->bdd_info;
-        }
 
         return [
-            'serveur' => 'localhost',
-            'user' => 'root',
-            'pass' => '',
-            'bdd' => 'slim',
+            'serveur' => BDD_SERVER,
+            'user' => BDD_USER,
+            'pass' => BDD_PASSWORD,
+            'bdd' => BDD_NAME,
         ];
     }
 

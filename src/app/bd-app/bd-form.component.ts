@@ -33,8 +33,15 @@ export class BdFormComponent extends CommonsFormComponent<Bd> implements OnInit 
             if (id) {
                 this.initItem(id);
             } else {
-                this.item = <any>new Bd();
+                this.item = <any>new Bd({
+                    titre: '',
+                    serie: null,
+                    genre: null,
+                    volume: null,
+                    auteurs: []
+                });
                 this.serieSwitcher = "null";
+                this.initLists();  
             }
 
         });

@@ -1,12 +1,12 @@
 <?php
 
 require '../vendor/autoload.php';
-$dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
-$dotenv->load();
+
+require '../conf.php';
 
 $app = new \Slim\App([
 	'settings' => [
-        'displayErrorDetails' => (getenv('DEBUG')) ?: true,
+        'displayErrorDetails' => (DEBUG) ?: true,
 	]
 ]);
 
@@ -30,15 +30,6 @@ $container['notFoundHandler'] = function ($container) {
             ->write(json_encode(["error" => "invalid request URI"]));
     };
 }; 
-
-$container['bdd_info'] = function ($container) {
-    return [
-            'serveur' => getenv('BDD_SERVER'),
-            'user' => getenv('BDD_USER'),
-            'pass' => getenv('BDD_PASSWORD'),
-            'bdd' => getenv('BDD_NAME'),
-    ];
-};
 
 $json_middleware = function ($req, $res, $next) {
     $response = $next($req, $res);

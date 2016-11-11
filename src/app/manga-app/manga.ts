@@ -26,18 +26,22 @@ export class Manga extends Commons {
     }
     
     static addVolumesList(manga: Manga): Manga {
-        
-        let volumes = manga.volume_possedes.split(',');
         let volumes_list: number[] = [];
-        for(let volumeGroup of volumes) {
-            let test = +volumeGroup;
-            if(Number.isInteger(test)) {
-                volumes_list.push(test);
-            } else {
-                let start = +(volumeGroup.split('-')[0]);
-                let end = +(volumeGroup.split('-')[1]);
-                for(let i = start; i <= end; i++) {
-                    volumes_list.push(i);
+        if(manga.volume_possedes != '') {
+            //return manga;
+
+            let volumes = manga.volume_possedes.split(',');
+            
+            for(let volumeGroup of volumes) {
+                let test = +volumeGroup;
+                if(Number.isInteger(test)) {
+                    volumes_list.push(test);
+                } else {
+                    let start = +(volumeGroup.split('-')[0]);
+                    let end = +(volumeGroup.split('-')[1]);
+                    for(let i = start; i <= end; i++) {
+                        volumes_list.push(i);
+                    }
                 }
             }
         }

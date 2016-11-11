@@ -241,7 +241,7 @@ class CommonsDAO extends CollectionsDAO {
 
 	public function getSerie() {
 		$serie = new SerieDAO($this);
-		return $serie->getByType($this->types);
+		return ['data' => $serie->getByType($this->types)];
 		/*if(isset($this->types)) {
 			$types = implode("','",$this->types);
 			$sql = "SELECT SQL_CACHE `s`.* FROM `collections_serie` AS s LEFT JOIN `collections_type` AS t ON (s.type_id = t.id) WHERE t.nom IN ('$types') OR s.type_id IS NULL;";
@@ -255,7 +255,7 @@ class CommonsDAO extends CollectionsDAO {
 
 	public function getGenre() {
 		$genre = new GenreDAO($this);
-		return $genre->getByType($this->types);
+		return ['data' => $genre->getByType($this->types)];
 		/*if(isset($this->types)) {
 			$types = implode("','",$this->types);
 			$sql = "SELECT SQL_CACHE `g`.* FROM `collections_genre` AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id) WHERE t.nom IN ('$types') OR g.type_id IS NULL;";

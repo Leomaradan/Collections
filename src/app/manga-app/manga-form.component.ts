@@ -30,7 +30,15 @@ export class MangaFormComponent extends CommonsFormComponent<Manga> implements O
             if (id) {
                 this.initItem(id);
             } else {
-                this.item = <any>new Manga();
+                this.item = <any>new Manga({
+                    titre: '',
+                    genre: null,
+                    volume_max: 1,
+                    volumes:  [],
+                    listVolumeMax: [1],
+                    auteurs: []
+                });
+                this.initLists();
             }
 
         });

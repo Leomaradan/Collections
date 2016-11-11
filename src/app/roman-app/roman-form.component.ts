@@ -33,8 +33,15 @@ export class RomanFormComponent extends CommonsFormComponent<Roman> implements O
             if (id) {
                 this.initItem(id);
             } else {
-                this.item = <any>new Roman();
+                this.item = <any>new Roman({
+                    titre: '',
+                    serie: null,
+                    genre: null,
+                    volume: null,
+                    auteurs: []
+                });
                 this.serieSwitcher = "null";
+                this.initLists();
             }
 
         });

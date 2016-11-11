@@ -29,7 +29,10 @@ class MangaDAO extends CommonsDAO {
 
 	public function getVolumePossedesAttribute($value,$array) {
 		$arr = explode('/',$value);
-		return $arr[0];
+		if(count($arr) == 2) {
+			return $arr[0];
+		}
+		return '';
 	}
 
 	public function getVolumeMaxAttribute($value,$array) {
@@ -38,10 +41,18 @@ class MangaDAO extends CommonsDAO {
 	}
 
 	public function compactVolumes($volumes) {
+		if(count($volumes) == 0) {
+			return '';
+		}
 		sort($volumes);
 
 		$current = current($volumes);
 		$min = current($volumes);
+
+		if($min < 1) {
+			$min = 1;
+		}
+
 		$max = max($volumes);
 
 		$string = $current;
