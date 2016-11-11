@@ -11,3 +11,5 @@ yarn
 ng build --target=production --environment=prod
 
 mv ../config.php .
+
+chmod +x build.sh
