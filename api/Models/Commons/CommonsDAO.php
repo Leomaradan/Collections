@@ -75,7 +75,9 @@ class CommonsDAO extends CollectionsDAO {
 		if(isset($data['auteurs_new'])) {
 			//var_dump($data);
 			$auteurs = $this->addAuteurs($data['auteurs_new'], $extraData);
-			//var_dump($auteurs); die;
+			if(count($auteurs['message']) > 0) {
+				return $auteurs['message'];
+			}
 		}
 
 		// Action
@@ -278,14 +280,19 @@ class CommonsDAO extends CollectionsDAO {
 	public function getAuteursAttribute($value, $array) {
 		$auteurs_id = explode('|',$array['auteurs_id']);
 		array_shift($auteurs_id);
-		$auteurs_name = explode(', ',$array['auteurs']);
+		$auteurs_name = explode(', ',trim($array['auteurs']));
 		$auteurs = [];
 
 		$length = count($auteurs_name);
 
+
 		for($i = 0; $i < $length; $i++) {
-			$auteurs[] = ['id' => $auteurs_id[$i], 'nom' => $auteurs_name[$i]];
+			if(isset($auteurs_id[$i]) && isset($auteurs_id[$i])) {
+				$auteurs[] = ['id' => $auteurs_id[$i], 'nom' => $auteurs_name[$i]];
+			}
+			
 		}
+
 
 		return $auteurs;
 	}

@@ -10,6 +10,8 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 
 	use ValidationTrait;
 
+	protected $supfield = null;
+
 	public function __construct(ConnecteurDAO $connection = null) {
 		parent::__construct($connection);
 		if(!isset($this->view) && isset($this->table)) {
@@ -34,12 +36,70 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 		return $this->mutatorGetsValue($this->fetchAll(PDO::FETCH_ASSOC));	
 	}	
 
-	public function getAll() {
-		return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view}");
+	public function getAll($pagination) {
+		$paginateRequest = '';
+		$paginate = false;
+		$result = [];
+		
+		if(isset($pagination['perPage'])) {
+			$paginate = true;
+			$perPage = $pagination['perPage'];
+			//if($pagination['page'] > 0) {
+				$offset = $perPage * $pagination['page'];
+				$paginateRequest = "LIMIT $offset,$perPage";
+			/*} else {
+				$paginateRequest = "LIMIT $perPage";
+			}*/
+			
+			
+		}
+
+		$add_fields = '';
+
+		if($this->supfield !== null) {
+			if(!is_array($this->supfield)) {
+				$this->supfield = [$this->supfield];
+			}
+
+			foreach ($this->supfield as $supfield) {
+				$add_fields .= ",'' as $supfield";
+			}
+		}
+
+		$result['data'] = $this->requestMultiple("SELECT SQL_CACHE * $add_fields FROM {$this->view} $paginateRequest");
+
+		if($paginate) {
+			$result['pagination'] = [];
+			$nb_elem_page = count($result['data']);
+			if($nb_elem_page == $perPage) {
+				// Il reste des pages
+				$result['pagination']['nextpage'] = true;
+				$result['pagination']['page'] = $pagination['page'];
+			}
+			if($offset !== 0) {
+				$result['pagination']['previouspage'] = true;
+			}
+		}
+
+		return $result;
 	}
 
 	public function getById($id) {
-		return $this->requestSingle("SELECT SQL_CACHE * FROM {$this->view} WHERE id = ? LIMIT 1", [$id]);
+		$add_fields = '';
+
+		if($this->supfield !== null) {
+			if(!is_array($this->supfield)) {
+				$this->supfield = [$this->supfield];
+			}
+
+			foreach ($this->supfield as $supfield) {
+				$add_fields .= ",'' as $supfield";
+			}
+		}
+
+		$result = ['data' => $this->requestSingle("SELECT SQL_CACHE * $add_fields FROM {$this->view} WHERE id = ? LIMIT 1", [$id])];
+
+		return $result;
 	
 	}
 
@@ -62,7 +122,19 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 
 		$q = implode(' AND ', $keys); // join keys into a string
 
-		return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE $q;", $filter);
+		$add_fields = '';
+
+		if($this->supfield !== null) {
+			if(!is_array($this->supfield)) {
+				$this->supfield = [$this->supfield];
+			}
+
+			foreach ($this->supfield as $supfield) {
+				$add_fields .= ",'' as $supfield";
+			}
+		}
+
+		return $this->requestMultiple("SELECT SQL_CACHE * $add_fields  FROM {$this->view} WHERE $q;", $filter);
 	}	
 
 

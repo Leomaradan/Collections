@@ -18,6 +18,27 @@ class AuteurDAO extends CollectionsDAO {
 		'nom' => 'required|min:3|max:50'
 	];
 
+	public function create($data, $extraData = null) {
+
+		// Pre-Action
+		$sql = "SELECT SQL_CACHE * FROM {$this->table} WHERE nom LIKE ?";
+		$result = $this->requestSingle($sql, [$data['nom']]);
+		if(count($result) > 0) {
+			return ['id' => $result[0]['id']];
+		}
+	
+
+		// Action
+		$result = parent::create($data, $extraData);
+
+
+		// Post-Action
+
+	
+
+		return $result;
+	}		
+
 	public function bind($commons_id,$auteurs_ids,$preserve = false) {
 
 		if(!$preserve) {

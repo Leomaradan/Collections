@@ -29,8 +29,16 @@ $container['notFoundHandler'] = function ($container) {
             ->withHeader('Content-type', 'application/json')
             ->write(json_encode(["error" => "invalid request URI"]));
     };
-};
+}; 
 
+$container['bdd_info'] = function ($container) {
+    return [
+            'serveur' => getenv('BDD_SERVER'),
+            'user' => getenv('BDD_USER'),
+            'pass' => getenv('BDD_PASSWORD'),
+            'bdd' => getenv('BDD_NAME'),
+    ];
+};
 
 $json_middleware = function ($req, $res, $next) {
     $response = $next($req, $res);

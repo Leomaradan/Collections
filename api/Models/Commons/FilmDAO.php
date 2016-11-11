@@ -13,10 +13,10 @@ class FilmDAO extends CommonsDAO {
 	protected $validation = [
 		'titre' => 'required|min:3|max:100',
 		'serie_id' => 'without:serie_new|integer|reference:collections_serie,id|validator:getSerie',
-		'genre_id' => 'required_without:genre_new|integer|reference:collections_genre,id|validator:getGenre',
+		'genre_id' => 'require_only:genre_new|integer|reference:collections_genre,id|validator:getGenre',
 		'couverture' => 'max:255',
-		'format' => 'required|validator:getFormat,nom',
-		'auteurs_id' => 'without:auteurs_new|array:integer|reference:collections_auteur,id'
+		'format' => 'required|array|validator:getFormat,nom',
+		'auteurs_id' => 'require_without:auteurs_new|array:integer|reference:collections_auteur,id'
 	];
 
 	protected function setFormatAttribute($value, $array) {
@@ -30,5 +30,15 @@ class FilmDAO extends CommonsDAO {
 	public function getByFormat($format) {
 		return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE FIND_IN_SET(?, format)", [$format]);
 	}	
+
+	public function getFormat() {
+		return [
+			['nom' => 'dvd', 'valeur' => 'DVD'],
+			['nom' => 'blu-ray', 'valeur' => 'Blu-Ray'],
+			['nom' => 'blu-ray 3d', 'valeur' => 'Blu-Ray 3D'],
+			['nom' => 'blu-ray 4k', 'valeur' => 'Blu-Ray 4K']
+		];
+
+	}
 
 }

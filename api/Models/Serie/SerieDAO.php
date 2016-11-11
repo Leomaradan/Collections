@@ -19,6 +19,27 @@ class SerieDAO extends CollectionsDAO {
 		'volume_max' => 'required|integer|min:0|max:255'
 	];
 
+	public function create($data, $extraData = null) {
+
+		// Pre-Action
+		$sql = "SELECT SQL_CACHE * FROM {$this->table} WHERE type_id = :type AND nom LIKE :nom";
+		$result = $this->requestSingle($sql, [':type' => $data['type_id'], ':nom' => $data['nom']]);
+		if(count($result) > 0) {
+			return ['id' => $result[0]['id']];
+		}
+	
+
+		// Action
+		$result = parent::create($data, $extraData);
+
+
+		// Post-Action
+
+	
+
+		return $result;
+	}	
+
 	public function getByType($types = null) {
 		if($types) {
 			$types = implode("','",$types);

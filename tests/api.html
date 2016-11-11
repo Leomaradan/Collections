@@ -39,7 +39,13 @@
 					assert.ok(false, '404 error');
 				} else {
           if(result.responseText.length > 0) {
-            callback($.parseJSON(result.responseText));
+            var data = $.parseJSON(result.responseText);
+            if(data.data !== undefined) {
+              callback(data.data);
+            } else {
+              callback(data);
+            }
+            
           } else {
             callback();
           }

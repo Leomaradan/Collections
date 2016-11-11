@@ -182,20 +182,21 @@
 
 		QUnit.test("create", function(assert) {
 
-	  		assert.expect( 2 );
+	  		assert.expect( 3 );
 			var done = assert.async( 2 );
 
 			callApi('/manga', 'get', assert, function(data) { 
 				var len = data.length;
 				callApi('/manga', 'post', assert, function(data) { 
-					var id = data.id;
+					var id = data[0].id;
 					callApi('/manga', 'get', assert, function(data) { 
 						assert.equal( data.length, len+1, (len+1) + " mangas" );				
 						done();
 					});
 
 					callApi('/manga/' + id, 'get', assert, function(data) { 
-						assert.equal( data[0].volume_possedes, "1-4,6,9-12/12", "volumes possedés: 1-4,6,9-12/12 mangas" );				
+						assert.equal( data[0].volume_possedes, "1-4,6,9-12", "volumes possedés: 1-4,6,9-12 mangas" );				
+						assert.equal( data[0].volume_max, "12", "volumes max: 12 mangas" );				
 						done();
 					});					
 				}, valideData);	
@@ -209,7 +210,7 @@
 			var done = assert.async( 1 );
 
 				callApi('/manga', 'post', assert, function(data) { 
-					var id = data.id;
+					var id = data[0].id;
 					callApi('/manga/' + id, 'get', assert, function(data) { 
 						assert.equal( data[0].titre, valideData.titre, "Titre: " + valideData.titre );
 						callApi('/manga/' + id, 'put', assert, function(data) { 
@@ -228,7 +229,7 @@
 			var done = assert.async( 1 );
 
 			callApi('/manga', 'post', assert, function(data) { 
-				var id = data.id;
+				var id = data[0].id;
 				callApi('/manga', 'get', assert, function(data) { 
 					var len = data.length;
 					callApi('/manga/' + id, 'delete', assert, function(data) { 

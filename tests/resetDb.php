@@ -1,8 +1,12 @@
 <?php
 
 require '../vendor/autoload.php';
+$dotenv = new Dotenv\Dotenv(__DIR__ . '/..');
+$dotenv->load();
 
 $dao = new App\Models\ConnecteurDAO();
+
+
 
 $empty = "SET FOREIGN_KEY_CHECKS=0; 
 START TRANSACTION; 

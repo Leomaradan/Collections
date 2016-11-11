@@ -8,20 +8,33 @@ class MangaDAO extends CommonsDAO {
 	protected $types = ['manga','livre'];
 	protected $type = "manga";
 	protected $searchItems = ['titre','genre','auteurs'];
-	protected $visible = ['titre','genre','auteurs','volume_possedes','couverture'];
+	protected $visible = ['titre','genre','auteurs','volume_possedes','volume_max','couverture'];
+
+	protected $supfield = "volume_max";
+
 	protected $fillable = ['titre','genre_id','volume_possedes','couverture'];
 	protected $validation = [
 		'titre' => 'required|min:3|max:100',
-		'genre_id' => 'required_without:genre_new|integer|reference:collections_genre,id|validator:getGenre',
+		'genre_id' => 'require_only:genre_new|integer|reference:collections_genre,id|validator:getGenre',
 		'couverture' => 'max:255',
 		'volume_possedes' => 'required|array:integer',
 		'volume_max' => 'required|integer',
-		'auteurs_id' => 'without:auteurs_new|array:integer|reference:collections_auteur,id'
+		'auteurs_id' => 'require_without:auteurs_new|array:integer|reference:collections_auteur,id'
 	];	
 
 
 	public function setVolumePossedesAttribute($value,$array) {
 		return $this->compactVolumes($value) . '/' . $array['volume_max'];
+	}
+
+	public function getVolumePossedesAttribute($value,$array) {
+		$arr = explode('/',$value);
+		return $arr[0];
+	}
+
+	public function getVolumeMaxAttribute($value,$array) {
+		$arr = explode('/',$array['volume_possedes']);
+		return $arr[1];
 	}
 
 	public function compactVolumes($volumes) {

@@ -123,21 +123,28 @@ trait ValidationTrait {
 									if(!is_array($test)) {
 										$test = explode(',',substr($test, 1,strlen($test - 2)));
 									}
+
+									if(count($test) == 0) {
+										break;
+									}
 	
 									$ins = implode(',',array_fill(0,count($test),'?'));
-	
 									$this->prepare("SELECT count(*) FROM $table WHERE $foreign_key IN ($ins)");
+
 									$args = $test;
+									$count = count($test);
 								} else {
+
 									$this->prepare("SELECT count(*) FROM $table WHERE $foreign_key = ?");
 									$args = [$test];
+									$count = 1;
 								}
 								
 								$this->executePreparedStatement($args);
 	
 								$result = $this->fetch(PDO::FETCH_NUM);
 	
-								if($result[0] == '0') {
+								if($result[0] != $count) {
 									$message[$field][$instruction] = "$field must be a value from {$table}";
 									$valid = false;									
 								}
@@ -208,7 +215,7 @@ trait ValidationTrait {
 									
 								}
 	
-								$type = $params[0];
+								$type = (isset($params[0])) ? $params[0] : 'string';
 	
 								foreach ($test as $value) {
 									if($type == 'integer') {

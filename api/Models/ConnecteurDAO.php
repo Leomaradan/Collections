@@ -4,7 +4,7 @@ namespace App\Models;
 
 use \PDO as PDO;
 use \Exception as Exception;
-
+use Dotenv;
 /**
  * Configuration DAO
  *
@@ -33,6 +33,8 @@ class ConnecteurDAO {
      * @var PDOStatement Jeu de résultat
      */
     protected $_statement = null;
+
+    public $slimcontainer = null;
 
     /**
      * Méthode de récupération d'instance
@@ -69,7 +71,11 @@ class ConnecteurDAO {
         // Construction de la connection
 
         if (is_null($connection)) {
+            
+
+            //$this->_env .= json_encode($_ENV);
             $conf = $this->info_connect();
+            //var_dump($conf);
 
             $dsn = 'mysql:dbname=' . $conf['bdd'] . ';host=' . $conf['serveur'];
 
@@ -82,8 +88,11 @@ class ConnecteurDAO {
                 $connect->exec('SET NAMES utf8');
                 $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (Exception $e) {
+                //var_dump($conf);    
+                //var_dump($this->slimcontainer->bdd_info);
                 trigger_error("La base de données n'est pas accessible", E_USER_ERROR);
-                // Inscription de l'erreur dans un fichier log ? $e->getMessage();				
+                // Inscription de l'erreur dans un fichier log ? $e->getMessage();		
+
             }
 
             $this->_conn = $connect;
@@ -97,8 +106,11 @@ class ConnecteurDAO {
 
         $name = ($name !== null) ? $name : $c = (new \ReflectionClass(get_called_class()))->getShortName();
 
-        $container[$name] = function() use ($class, $connection) {
-            return new $class($connection);
+        $container[$name] = function() use ($container, $class, $connection) {
+            $conn = new $class($connection);
+            $conn->slimcontainer = $container;
+            return $conn;
+            //var_dump($conn->slimcontainer->bdd_info);
         };
     }
 
@@ -117,11 +129,15 @@ class ConnecteurDAO {
     }
 
     private function info_connect() {
+        if($this->slimcontainer !== null) {
+            return $this->slimcontainer->bdd_info;
+        }
+
         return [
-            'serveur' => getenv('BDD_SERVER'),
-            'user' => getenv('BDD_USER'),
-            'pass' => getenv('BDD_PASSWORD'),
-            'bdd' => getenv('BDD_NAME'),
+            'serveur' => 'localhost',
+            'user' => 'root',
+            'pass' => '',
+            'bdd' => 'slim',
         ];
     }
 

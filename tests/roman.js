@@ -2,28 +2,42 @@
 		var valideData1 = {titre:"Fondation Foudroyée",
 					serie_id:"1",
 					genre_id:"2",
-					couverture:"",
+					couverture:"couverture",
 					volume:"4",
-					auteurs_id:[2,1]
+					auteurs_id:[1]
 		};
 
-		var valideData2 = {titre:"Moi, Asimov",
-					genre_new:{nom:'Autobiographie',type_id:5},
+		var valideData2 = {titre:"It's Been a Good Life",
+					genre_new:{nom:'Biographie'},
 					couverture:"",
 					volume:"1",
-					auteurs_id:[1]
+					auteurs_id:[1],
+					auteurs_new: [{nom:'Janet Asimov'}]
 		};
 
 		var valideData3 = {titre:"De bons présages",
 					genre_id:1,
+					serie_new: {nom: 'Pratchett & Gaiman', volume_max: 1},
 					couverture:"",
 					volume:"1",
 					auteurs_new:[{nom: 'Terry Pratchett'},{nom: 'Neil Gaiman'}]
-		};		
+		};	
+
+		var valideData4 = {titre:"Test 4",
+					genre_new: {nom: 'Test genre new'},
+					volume:"1",
+					auteurs_id:[1,2,3]
+		};	
+
+		var s60 = (function() { var r = '1'; for(var i = 0; i < 60; i++) { r += 'a'; } return r;})();
+		var s256 = (function() { var r = '1'; for(var i = 0; i < 256; i++) { r += 'a'; } return r;})();
 
 		var invalideData1 = {
 					serie_id:"test",
-					genre_id:"test"
+					serie_new: "test",
+					genre_id:"test",
+					genre_new: "test",
+					couverture: s256
 		};
 
 		var invalideData2 = {titre:"F",
@@ -44,7 +58,36 @@
 					genre_id:"3",
 					volume:"1",
 					auteurs_id:[99]
-		};		  	
+		};		
+
+		var invalideData5 = {titre:"Fondation 2",
+					serie_new:{test:"test"},
+					genre_new:{test:"test"},
+					volume:"1",
+					auteurs_id:[1,99,'test']
+		};		
+
+		var invalideData6 = {titre:"Fondation 2",
+					serie_new:{nom:"t", volume_max: -1},
+					genre_new:{nom:"t"},
+					volume:"1",
+					auteurs_id:[1,99],
+					auteurs_new:[{nom:'t'}, {nom:s60}]
+		};		
+
+		var invalideData7 = {titre:"Fondation 2",
+					serie_new:{nom:s256, volume_max: 256},
+					genre_new:{nom:s256},
+					volume:"1",
+					auteurs_new:[{nom:'t'}, {nom:s60}]
+		};	
+
+		var invalideData8 = {titre:"Fondation 2",
+					serie_new:{nom:"test8", volume_max: 'test'},
+					genre_id:1,
+					volume:"1",
+					auteurs_id:[1]
+		};							  	
 
 
 
@@ -184,8 +227,8 @@
 
 	QUnit.test("validate", function(assert) {
 
-  		assert.expect( 3 );
-		var done = assert.async( 3 );
+  		assert.expect(4 );
+		var done = assert.async( 4 );
 
 		callApi('/roman/validate', 'post', assert, function(data) { 
 			assert.equal( data.ok, "ok", "contenu valide" );
@@ -200,22 +243,31 @@
 		callApi('/roman/validate', 'post', assert, function(data) { 
 			assert.equal( data.ok, "ok", "contenu valide" );
 			done();
-		}, valideData3);			
+		}, valideData3);	
+
+		callApi('/roman/validate', 'post', assert, function(data) { 
+			assert.equal( data.ok, "ok", "contenu valide" );
+			done();
+		}, valideData4);				
 	});	
 
 	QUnit.test("invalide", function(assert) {
 
-  		assert.expect( 22 );
-		var done = assert.async( 4 );
+  		assert.expect( 43 );
+		var done = assert.async( 8 );
 
 		callApi('/roman/validate', 'post', assert, function(data) { 
 			assert.notEqual( data.titre.required, undefined, "pas de titre" ); 
 			assert.notEqual( data.serie_id.integer, undefined, "serie en string" ); 
+			assert.notEqual( data.serie_id.without, undefined, "serie + serie_new" ); 			
 			assert.notEqual( data.genre_id.integer, undefined, "genre en string" ); 
+			assert.notEqual( data.genre_id.without, undefined, "genre + genre_new" ); 
+
 			assert.notEqual( data.volume.required, undefined, "pas de volume" ); 
 			assert.notEqual( data.auteurs_id.required, undefined, "pas d'auteur" );
+			assert.notEqual( data.couverture.max, undefined, "couverture trop long" );
 
-			assert.equal(Object.keys(data).length, 5, "5 fields en erreurs");
+			assert.equal(Object.keys(data).length, 8, "8 fields en erreurs");
 			done();
 		}, invalideData1);	
 
@@ -250,15 +302,53 @@
 
 			assert.equal(Object.keys(data).length, 2, "2 fields en erreurs");
 			done();
-		}, invalideData4);							
+		}, invalideData4);		
+
+		callApi('/roman/validate', 'post', assert, function(data) { 
+			assert.notEqual( data.auteurs_id.array_integer, undefined, "auteur en array de string" );
+			assert.notEqual( data.genre_new.nom.required, undefined, "genre_new pas de nom" );
+			assert.notEqual( data.serie_new.nom.required, undefined, "serie_new pas de nom" );
+			assert.notEqual( data.serie_new.volume_max.required, undefined, "serie_new pas de volume_max" );
+
+			assert.equal(Object.keys(data).length, 3, "3 fields en erreurs");
+			done();
+		}, invalideData5);	
+
+		callApi('/roman/validate', 'post', assert, function(data) { 
+			assert.notEqual( data.auteurs_new[1].nom.max, undefined, "auteurs_new nom trop long" );
+			assert.notEqual( data.auteurs_new[0].nom.min, undefined, "auteurs_new nom trop court" );
+			assert.notEqual( data.auteurs_id.reference, undefined, "auteur pas dans la table" );
+			assert.notEqual( data.genre_new.nom.min, undefined, "genre_new nom trop court" );
+			assert.notEqual( data.serie_new.nom.min, undefined, "serie_new nom trop court" );
+			assert.notEqual( data.serie_new.volume_max.min, undefined, "serie_new volume_max trop court" );
+
+			assert.equal(Object.keys(data).length, 4, "4 fields en erreurs");
+			done();
+		}, invalideData6);	
+
+		callApi('/roman/validate', 'post', assert, function(data) { 
+			assert.notEqual( data.genre_new.nom.max, undefined, "genre_new nom trop long" );
+			assert.notEqual( data.serie_new.nom.max, undefined, "serie_new nom trop long" );
+			assert.notEqual( data.serie_new.volume_max.max, undefined, "serie_new volume_max trop long" );
+
+			assert.equal(Object.keys(data).length, 3, "3 fields en erreurs");
+			done();
+		}, invalideData7);	
+
+		callApi('/roman/validate', 'post', assert, function(data) { 
+			assert.notEqual( data.serie_new.volume_max.integer, undefined, "serie_new volume_max en string" );
+
+			assert.equal(Object.keys(data).length, 1, "1 fields en erreurs");
+			done();
+		}, invalideData8);														
 	});		
 
 	QUnit.module( "CUD roman" );
 
 	QUnit.test("create", function(assert) {
 
-  		assert.expect( 2 );
-		var done = assert.async( 2 );
+  		assert.expect( 4 );
+		var done = assert.async( 4 );
 
 		callApi('/roman', 'get', assert, function(data) { 
 			var len = data.length;
@@ -288,7 +378,17 @@
 					done();
 				});
 			}, valideData3);	
-		});				
+		});		
+
+		callApi('/roman', 'get', assert, function(data) { 
+			var len = data.length;
+			callApi('/roman', 'post', assert, function(data) { 
+				callApi('/roman', 'get', assert, function(data) { 
+					assert.notEqual( data.length, len, (len+1) + " romans" );				
+					done();
+				});
+			}, valideData4);	
+		});					
 
 	});	
 
@@ -298,7 +398,7 @@
 		var done = assert.async( 2 );
 
 			callApi('/roman', 'post', assert, function(data) { 
-				var id = data.id;
+				var id = data[0].id;
 				callApi('/roman/' + id, 'get', assert, function(data) { 
 					assert.equal( data[0].titre, valideData1.titre, "Titre: " + valideData1.titre );
 					callApi('/roman/' + id, 'put', assert, function(data) { 
@@ -311,7 +411,7 @@
 			}, valideData1);	
 
 			callApi('/roman', 'post', assert, function(data) { 
-				var id2 = data.id;
+				var id2 = data[0].id;
 				callApi('/roman/' + id2, 'get', assert, function(data) { 
 					callApi('/roman/' + id2, 'put', assert, function(data) { 
 						callApi('/roman/' + id2, 'get', assert, function(data) { 
@@ -329,7 +429,7 @@
 		var done = assert.async( 1 );
 
 		callApi('/roman', 'post', assert, function(data) { 
-			var id = data.id;
+			var id = data[0].id;
 			callApi('/roman', 'get', assert, function(data) { 
 				var len = data.length;
 				callApi('/roman/' + id, 'delete', assert, function(data) { 
@@ -345,7 +445,7 @@
 
 	QUnit.test("invalide", function(assert) {
 
-  		assert.expect( 22 );
+  		assert.expect( 23 );
 		var done = assert.async( 4 );
 
 		callApi('/roman', 'post', assert, function(data) { 
@@ -354,8 +454,9 @@
 			assert.notEqual( data.genre_id.integer, undefined, "genre en string" ); 
 			assert.notEqual( data.volume.required, undefined, "pas de volume" ); 
 			assert.notEqual( data.auteurs_id.required, undefined, "pas d'auteur" );
+			assert.notEqual( data.couverture.max, undefined, "couverture trop long" );
 
-			assert.equal(Object.keys(data).length, 5, "5 fields en erreurs");
+			assert.equal(Object.keys(data).length, 6, "6 fields en erreurs");
 			done();
 		}, invalideData1);	
 
