@@ -3,261 +3,267 @@
 namespace App\Models;
 
 use \PDO as PDO;
-
 use App\ValidationTrait;
 
 abstract class CollectionsDAO extends ConnecteurDAO {
 
-	use ValidationTrait;
-
-	protected $supfield = null;
-
-	public function __construct(ConnecteurDAO $connection = null) {
-		parent::__construct($connection);
-		if(!isset($this->view) && isset($this->table)) {
-			$this->view = $this->table;		
-		}
-	
-	}	
-
-	protected function requestSingle($query, $args = []) {
-		$this->prepare($query);
-
-		$this->executePreparedStatement($args);
+    use ValidationTrait;
 
-		return $this->mutatorGetsValue([$this->fetch(PDO::FETCH_ASSOC)]);		
-	}
-
-	protected function requestMultiple($query, $args = []) {
-		$this->prepare($query);
-
-		$this->executePreparedStatement($args);
-
-		return $this->mutatorGetsValue($this->fetchAll(PDO::FETCH_ASSOC));	
-	}	
-
-	public function getAll($pagination) {
-		$paginateRequest = '';
-		$paginate = false;
-		$result = [];
-		
-		if(isset($pagination['perPage'])) {
-			$paginate = true;
-			$perPage = $pagination['perPage'];
-			//if($pagination['page'] > 0) {
-				$offset = $perPage * $pagination['page'];
-				$paginateRequest = "LIMIT $offset,$perPage";
-			/*} else {
-				$paginateRequest = "LIMIT $perPage";
-			}*/
-			
-			
-		}
+    protected $supfield = null;
 
-		$add_fields = '';
+    public function __construct(ConnecteurDAO $connection = null) {
+        parent::__construct($connection);
+        if (!isset($this->view) && isset($this->table)) {
+            $this->view = $this->table;
+        }
+    }
+
+    protected function requestSingle($query, $args = []) {
+        $this->prepare($query);
+
+        $this->executePreparedStatement($args);
 
-		if($this->supfield !== null) {
-			if(!is_array($this->supfield)) {
-				$this->supfield = [$this->supfield];
-			}
+        return current($this->mutatorGetsValue([$this->fetch(PDO::FETCH_ASSOC)]));
+    }
 
-			foreach ($this->supfield as $supfield) {
-				$add_fields .= ",'' as $supfield";
-			}
-		}
+    protected function requestMultiple($query, $args = []) {
+        $this->prepare($query);
+
+        $this->executePreparedStatement($args);
 
-		$result['data'] = $this->requestMultiple("SELECT SQL_CACHE * $add_fields FROM {$this->view} $paginateRequest");
+        return $this->mutatorGetsValue($this->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    public function getAll($pagination) {
+        $paginateRequest = '';
+        $paginate = false;
+        $result = [];
 
-		if($paginate) {
-			$result['pagination'] = [];
-			$nb_elem_page = count($result['data']);
-			if($nb_elem_page == $perPage) {
-				// Il reste des pages
-				$result['pagination']['nextpage'] = true;
-				$result['pagination']['page'] = $pagination['page'];
-			}
-			if($offset !== 0) {
-				$result['pagination']['previouspage'] = true;
-			}
-		}
+        if (isset($pagination['perPage'])) {
+            $paginate = true;
+            $perPage = $pagination['perPage'];
+            //if($pagination['page'] > 0) {
+            $offset = $perPage * $pagination['page'];
+            $paginateRequest = "LIMIT $offset,$perPage";
+            /* } else {
+              $paginateRequest = "LIMIT $perPage";
+              } */
+        }
 
-		return $result;
-	}
+        $add_fields = '';
 
-	public function getById($id) {
-		$add_fields = '';
+        if ($this->supfield !== null) {
+            if (!is_array($this->supfield)) {
+                $this->supfield = [$this->supfield];
+            }
 
-		if($this->supfield !== null) {
-			if(!is_array($this->supfield)) {
-				$this->supfield = [$this->supfield];
-			}
+            foreach ($this->supfield as $supfield) {
+                $add_fields .= ",'' as $supfield";
+            }
+        }
 
-			foreach ($this->supfield as $supfield) {
-				$add_fields .= ",'' as $supfield";
-			}
-		}
+        $result['data'] = $this->requestMultiple("SELECT SQL_CACHE * $add_fields FROM {$this->view} ORDER BY titre $paginateRequest");
 
-		$result = ['data' => $this->requestSingle("SELECT SQL_CACHE * $add_fields FROM {$this->view} WHERE id = ? LIMIT 1", [$id])];
+        if ($paginate) {
+            $result['pagination'] = [];
+            $nb_elem_page = count($result['data']);
+            if ($nb_elem_page == $perPage) {
+                // Il reste des pages
+                $result['pagination']['nextpage'] = true;
+                $result['pagination']['page'] = $pagination['page'];
+            }
+            if ($offset !== 0) {
+                $result['pagination']['previouspage'] = true;
+            }
+        }
 
-		return $result;
-	
-	}
+        return $result;
+    }
 
-	public function search($query) {
+    public function getById($id) {
+        $add_fields = '';
 
-		$filter = array_intersect_key($query,array_flip($this->searchItems));
+        if ($this->supfield !== null) {
+            if (!is_array($this->supfield)) {
+                $this->supfield = [$this->supfield];
+            }
 
-		if(count($filter) == 0) {
-			return [];
-		}
+            foreach ($this->supfield as $supfield) {
+                $add_fields .= ",'' as $supfield";
+            }
+        }
 
-		$keys = array_keys($filter); // get the keys from the array
+        $result = ['data' => $this->requestSingle("SELECT SQL_CACHE * $add_fields FROM {$this->view} WHERE id = ? LIMIT 1", [$id])];
 
-		array_walk($keys, function(&$item) { $item = "$item LIKE :$item"; }); // each key is transformed into 'key LIKE :key' 
+        return $result;
+    }
 
-		$filter = array_combine(
-			array_map(function($k){ return ':'.$k; }, array_keys($filter)),
-			array_map(function(&$v) { return "%$v%"; }, $filter)
-		); // merge the array -> [':key' => %value%]
+    public function search($query) {
 
-		$q = implode(' AND ', $keys); // join keys into a string
+        $filter = array_intersect_key($query, array_flip($this->searchItems));
 
-		$add_fields = '';
+        if (count($filter) == 0) {
+            return [];
+        }
 
-		if($this->supfield !== null) {
-			if(!is_array($this->supfield)) {
-				$this->supfield = [$this->supfield];
-			}
+        $keys = array_keys($filter); // get the keys from the array
 
-			foreach ($this->supfield as $supfield) {
-				$add_fields .= ",'' as $supfield";
-			}
-		}
+        array_walk($keys, function(&$item) {
+            $item = "$item LIKE :$item";
+        }); // each key is transformed into 'key LIKE :key' 
 
-		return $this->requestMultiple("SELECT SQL_CACHE * $add_fields  FROM {$this->view} WHERE $q;", $filter);
-	}	
+        $args = array_combine(
+                array_map(function($k) {
+                    return ':' . $k;
+                }, array_keys($filter)), array_map(function(&$v) {
+                    return "%$v%";
+                }, $filter)
+        ); // merge the array -> [':key' => %value%]
 
+        $q = implode(' AND ', $keys); // join keys into a string
 
-	public function create($data, $extraData = null) {
+        $add_fields = '';
 
+        if ($this->supfield !== null) {
+            if (!is_array($this->supfield)) {
+                $this->supfield = [$this->supfield];
+            }
 
-		$filter = array_intersect_key($data,array_flip($this->fillable));
+            foreach ($this->supfield as $supfield) {
+                $add_fields .= ",'' as $supfield";
+            }
+        }
 
-		if(count($filter) == 0) {
-			return [];
-		}
+        return $this->requestMultiple("SELECT SQL_CACHE * $add_fields  FROM {$this->view} WHERE $q; ORDER BY titre", $args);
+    }
 
-		if(is_array($extraData)) {
-			$filter = array_merge($filter, $extraData);
-		}
+    public function create($data, $extraData = null) {
 
-		$values_k = $keys = array_keys($filter);
 
-		array_walk($values_k, function(&$item) { $item = ":$item"; });
-		array_walk($filter, function(&$item, $key) use ($data) { $item = $this->mutatorSetValue($key, $item, $data); });
+        $filter = array_intersect_key($data, array_flip($this->fillable));
 
-		$filter = array_combine(
-			array_map(function($k){ return ':'.$k; }, array_keys($filter)),
-			$filter
-		);	
+        if (count($filter) == 0) {
+            return [];
+        }
 
-		$keys = implode(', ', $keys);
-		$fieldBind = implode(', ', $values_k);
-	
-		$this->prepare("INSERT INTO {$this->table} ($keys) VALUES ($fieldBind);");
+        if (is_array($extraData)) {
+            $filter = array_merge($filter, $extraData);
+        }
 
-		$this->executePreparedStatement($filter);	
+        $values_k = $keys = array_keys($filter);
 
-		return ['id' => $this->lastId()];
-	}
+        array_walk($values_k, function(&$item) {
+            $item = ":$item";
+        });
+        array_walk($filter, function(&$item, $key) use ($data) {
+            $item = $this->mutatorSetValue($key, $item, $data);
+        });
 
-	public function update($id, $data, $extraData = null) {
-		$filter = array_intersect_key($data,array_flip($this->fillable));
+        $args = array_combine(
+                array_map(function($k) {
+                    return ':' . $k;
+                }, array_keys($filter)), $filter
+        );
 
-		if(count($filter) == 0) {
-			return [];
-		}
+        $keys = implode(', ', $keys);
+        $fieldBind = implode(', ', $values_k);
 
-		if(is_array($extraData)) {
-			$filter = array_merge($filter, $extraData);
-		}		
+        $this->prepare("INSERT INTO {$this->table} ($keys) VALUES ($fieldBind);");
 
-		$keys = array_keys($filter);
+        $this->executePreparedStatement($args);
 
-		array_walk($keys, function(&$item) { $item = "$item = :$item"; });		
-		array_walk($filter, function(&$item, $key) use ($data) { $item = $this->mutatorSetValue($key, $item, $data); });
+        return ['id' => $this->lastId()];
+    }
 
-		$filter['id'] = $id;
+    public function update($id, $data, $extraData = null) {
+        $filter = array_intersect_key($data, array_flip($this->fillable));
 
-		$filter = array_combine(
-			array_map(function($k){ return ':'.$k; }, array_keys($filter)),
-			$filter
-		);
+        if (count($filter) == 0) {
+            return [];
+        }
 
-		$field = implode(', ', $keys);
+        if (is_array($extraData)) {
+            $filter = array_merge($filter, $extraData);
+        }
 
-	
-		$this->prepare("UPDATE {$this->table} SET $field WHERE id = :id LIMIT 1;");
+        $keys = array_keys($filter);
 
-		$this->executePreparedStatement($filter);
+        array_walk($keys, function(&$item) {
+            $item = "$item = :$item";
+        });
+        array_walk($filter, function(&$item, $key) use ($data) {
+            $item = $this->mutatorSetValue($key, $item, $data);
+        });
 
-		return ['id' => $id];
-	}	
+        $filter['id'] = $id;
 
-	public function delete($id) {
-		$this->prepare("DELETE FROM {$this->table} WHERE id = ? LIMIT 1;");
+        $args = array_combine(
+                array_map(function($k) {
+                    return ':' . $k;
+                }, array_keys($filter)), $filter
+        );
 
-		$this->executePreparedStatement([$id]);
-	}
+        $field = implode(', ', $keys);
 
-	public function mutatorGetValue($field, $value, $array) {
-		$name = 'get'.$this->SnakeCase($field).'Attribute';
-		if(method_exists($this, $name)) {
-			return $this->$name($value, $array);
-		}
 
-		return $value;
-		
-	}
+        $this->prepare("UPDATE {$this->table} SET $field WHERE id = :id LIMIT 1;");
 
-	public function mutatorGetsValue($array) {
-		if($array === false) {
-			return [];
-		}
-		foreach ($array as $row => $cols) {
-			if($cols == false) {
-				return [];
-			}
-			foreach ($cols as $field => $value) {
-				if(isset($this->visible)) {
-					//var_dump($field);
-					if(in_array($field, $this->visible)) {
-						$array[$row][$field] = $this->mutatorGetValue($field, $array[$row][$field], $cols);
-					} elseif($field !== 'id') {
-						unset($array[$row][$field]);
-					}
-				} else {
-					$array[$row][$field] = $this->mutatorGetValue($field, $array[$row][$field], $cols);
-				}
-				
-			}
-		}	
+        $this->executePreparedStatement($args);
 
-		return $array;
-	}	
+        return ['id' => $id];
+    }
 
-	public function mutatorSetValue($field, $value, $array) {
-		$name = 'set'.$this->SnakeCase($field).'Attribute';
-		if(method_exists($this, $name)) {
-			return $this->$name($value, $array);
-		}
+    public function delete($id) {
+        $this->prepare("DELETE FROM {$this->table} WHERE id = ? LIMIT 1;");
 
-		return $value;
-	}
+        $this->executePreparedStatement([$id]);
+    }
 
-	protected function SnakeCase($string) {
-		return str_replace("_", "", ucwords($string, "_"));
-	}
+    public function mutatorGetValue($field, $value, $array) {
+        $name = 'get' . $this->SnakeCase($field) . 'Attribute';
+        if (method_exists($this, $name)) {
+            return $this->$name($value, $array);
+        }
 
+        return $value;
+    }
+
+    public function mutatorGetsValue($array) {
+        if ($array === false) {
+            return [];
+        }
+        foreach ($array as $row => $cols) {
+            if ($cols == false) {
+                return [];
+            }
+            foreach ($cols as $field => $value) {
+                if (isset($this->visible)) {
+
+                    if (in_array($field, $this->visible)) {
+                        $array[$row][$field] = $this->mutatorGetValue($field, $array[$row][$field], $cols);
+                    } elseif ($field !== 'id') {
+                        unset($array[$row][$field]);
+                    }
+                } else {
+                    $array[$row][$field] = $this->mutatorGetValue($field, $array[$row][$field], $cols);
+                }
+            }
+        }
+
+        return $array;
+    }
+
+    public function mutatorSetValue($field, $value, $array) {
+        $name = 'set' . $this->SnakeCase($field) . 'Attribute';
+        if (method_exists($this, $name)) {
+            return $this->$name($value, $array);
+        }
+
+        return $value;
+    }
+
+    protected function SnakeCase($string) {
+        return str_replace("_", "", ucwords($string, "_"));
+    }
 
 }
