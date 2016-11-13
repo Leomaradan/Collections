@@ -8,6 +8,8 @@ use App\ValidationTrait;
 abstract class CollectionsDAO extends ConnecteurDAO {
 
     use ValidationTrait;
+    
+    protected $titleField = "titre";
 
     protected $supfield = null;
 
@@ -62,7 +64,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
             }
         }
 
-        $result['data'] = $this->requestMultiple("SELECT SQL_CACHE * $add_fields FROM {$this->view} ORDER BY titre $paginateRequest");
+        $result['data'] = $this->requestMultiple("SELECT SQL_CACHE * $add_fields FROM {$this->view} ORDER BY {$this->titleField} $paginateRequest");
 
         if ($paginate) {
             $result['pagination'] = [];
@@ -134,7 +136,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
             }
         }
 
-        return $this->requestMultiple("SELECT SQL_CACHE * $add_fields  FROM {$this->view} WHERE $q; ORDER BY titre", $args);
+        return $this->requestMultiple("SELECT SQL_CACHE * $add_fields  FROM {$this->view} WHERE $q; ORDER BY {$this->titleField}", $args);
     }
 
     public function create($data, $extraData = null) {
