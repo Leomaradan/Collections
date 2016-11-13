@@ -105,6 +105,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
     }
     addAuteurNew() {
         this.addAuteur(this.auteurNew);
+        this.auteurNew = "";
     }
 
     removeAuteur(id?: number, nom?: string) {

@@ -182,8 +182,8 @@ class CommonsDAO extends CollectionsDAO {
         $genre_new['type_id'] = $this->type_id;
         $validation = $genre->validate($genre_new);
         if ($validation === true) {
-            $id = $genre->create($genre_new)['id'];
-            $extraData['genre_id'] = $id;
+            $result = $genre->create($genre_new);
+            $extraData['genre_id'] = $result['id'];
         } else {
             return $validation;
         }

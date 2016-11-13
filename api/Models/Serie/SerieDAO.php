@@ -22,7 +22,7 @@ class SerieDAO extends CollectionsDAO {
         // Pre-Action
         $sql = "SELECT SQL_CACHE * FROM {$this->table} WHERE type_id = :type AND nom LIKE :nom ORDER BY nom";
         $result = $this->requestSingle($sql, [':type' => $data['type_id'], ':nom' => $data['nom']]);
-        if (count($result) > 0) {
+        if ($result !== false && count($result) > 0) {
             return ['id' => $result['id']];
         }
 
