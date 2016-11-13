@@ -36,7 +36,7 @@ export class CommonsService<T extends Commons> {
         return this.http
             .post(this.itemsUrl, JSON.stringify(this.filter(roman)), { headers: this.headers })
             .toPromise()
-            .then(response => this.factory(response.json().data[0]));
+            .then(response => this.factory(response.json().data));
             //.catch(this.handleError);
         //return this;
     }
@@ -58,7 +58,7 @@ export class CommonsService<T extends Commons> {
         return this.http
             .put(url, JSON.stringify(this.filter(roman)), { headers: this.headers })
             .toPromise()
-            .then(response => this.factory(response.json().data[0]));
+            .then(response => this.factory(response.json().data));
             //.catch(this.handleError);
     }
 
@@ -79,7 +79,7 @@ export class CommonsService<T extends Commons> {
         let url = `${this.itemsUrl}/${id}`;
         return this.http.get(url)
             .toPromise()
-            .then(response => this.factory(response.json().data[0]))
+            .then(response => this.factory(response.json().data))
             .catch(this.handleError);
     }
 
