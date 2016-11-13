@@ -14,6 +14,8 @@ class AuteurDAO extends CollectionsDAO {
         'nom' => 'required|min:3|max:50'
     ];
 
+    protected $titleField = "nom";
+    
     public function create($data, $extraData = null) {
         // Pre-Action
         $sql = "SELECT SQL_CACHE * FROM {$this->table} WHERE nom LIKE ? LIMIT 1";

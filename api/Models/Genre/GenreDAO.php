@@ -13,6 +13,8 @@ class GenreDAO extends CollectionsDAO {
         'nom' => 'required|min:3|max:50',
         'type_id' => 'integer|reference:collections_type,id'
     ];
+    
+    protected $titleField = "nom";
 
     public function create($data, $extraData = null) {
 

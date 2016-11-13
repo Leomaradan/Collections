@@ -14,6 +14,8 @@ class SerieDAO extends CollectionsDAO {
         'type_id' => 'integer|reference:collections_type,id',
         'volume_max' => 'required|integer|min:0|max:255'
     ];
+    
+    protected $titleField = "nom";
 
     public function create($data, $extraData = null) {
 
