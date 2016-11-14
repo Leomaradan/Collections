@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-//import { RouterModule } from '@angular/router';
+import { Ng2CompleterModule } from "ng2-completer";
 
 import { MangaAppComponent } from './manga-app.component';
 import { MangaDetailsComponent } from './manga-details.component';
@@ -13,6 +13,7 @@ import { MangaAppRouting } from './routing';
   imports: [
     CommonModule,
     MangaAppRouting,
+    Ng2CompleterModule,
     FormsModule
   ],
   exports: [

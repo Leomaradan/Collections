@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { CompleterService } from 'ng2-completer';
 
 import { Bd } from './bd';
 import { BdService } from './bd.service';
@@ -23,7 +24,10 @@ export class BdFormComponent extends CommonsFormComponent<Bd> implements OnInit 
     appUrl: string = "bd"    
     appTitre: string = "Bd";
     
-    constructor(protected commonsService: BdService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(protected commonsService: BdService, 
+                protected route: ActivatedRoute, 
+                protected router: Router,
+                protected completerService: CompleterService) {
         super();
     }
 

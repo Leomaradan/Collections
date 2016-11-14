@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { CompleterService, CompleterData } from 'ng2-completer';
 
 import { Roman } from './roman';
 import { RomanService } from './roman.service';
@@ -23,7 +24,10 @@ export class RomanFormComponent extends CommonsFormComponent<Roman> implements O
     appUrl: string = "roman"    
     appTitre: string = "Romans";
     
-    constructor(protected commonsService: RomanService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(protected commonsService: RomanService, 
+                protected route: ActivatedRoute, 
+                protected router: Router,
+                protected completerService: CompleterService) {
         super();
     }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { CompleterService, CompleterData } from 'ng2-completer';
 
 import { Manga } from './manga';
 import { MangaService } from './manga.service';
@@ -20,7 +21,10 @@ export class MangaFormComponent extends CommonsFormComponent<Manga> implements O
     appUrl: string = "manga"    
     appTitre: string = "Manga";
     
-    constructor(protected commonsService: MangaService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(protected commonsService: MangaService, 
+                protected route: ActivatedRoute, 
+                protected router: Router,
+                protected completerService: CompleterService) {
         super();
     }
 

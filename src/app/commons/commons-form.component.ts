@@ -1,12 +1,15 @@
 import { Serie, Genre, Auteur, Commons, CommonsService } from '.';
 import { Router } from '@angular/router';
 
+import { CompleterService, CompleterData } from 'ng2-completer';
+
 export abstract class CommonsFormComponent<T extends Commons> {
 
     item: T;
 
-    auteurNew: string = "";
-    auteurSelect: Auteur;
+    //auteurNew: string = "";
+    //auteurSelect: Auteur;
+    //auteurSelect: string;
 
     genreDisplay: string;
     
@@ -27,6 +30,9 @@ export abstract class CommonsFormComponent<T extends Commons> {
     protected commonsService: CommonsService<T>;
     protected router: Router;
     
+    protected completerService: CompleterService;
+    protected dataService: CompleterData;
+    
     saveItem() {
         
         this.addGenre(this.genreDisplay);
@@ -42,7 +48,9 @@ export abstract class CommonsFormComponent<T extends Commons> {
                 
         if(this.item.id) {
             this.commonsService.updateItem(this.item)
-                .then((item) => this.initItem(item.id))
+                .then((item) => {
+                    this.router.navigate(['/'+this.appUrl, item.id]);
+                })
                 .catch(error => { this.formErrors = JSON.parse(error._body)});
         } else {
             this.commonsService.addItem(this.item)
@@ -99,13 +107,17 @@ export abstract class CommonsFormComponent<T extends Commons> {
 
     }
 
-    addAuteurList() {
+    /*addAuteurList() {
         console.log(this.auteurSelect);
         this.addAuteur(this.auteurSelect.nom);
     }
     addAuteurNew() {
         this.addAuteur(this.auteurNew);
         this.auteurNew = null;
+    }*/
+    
+    addAuteurAutocomplete(value: string) {
+        this.addAuteur(value)
     }
 
     removeAuteur(id?: number, nom?: string) {
@@ -131,7 +143,8 @@ export abstract class CommonsFormComponent<T extends Commons> {
         this.commonsService.getSerieList().then(data => this.listSerie = data);
         this.commonsService.getAuteurList().then(data => {
             this.listAuteur = data
-            this.auteurSelect = data[0];
+            //this.auteurSelect = data[0];
+            this.dataService = this.completerService.local(this.listAuteur, 'nom', 'nom');  
         });  
     }
 

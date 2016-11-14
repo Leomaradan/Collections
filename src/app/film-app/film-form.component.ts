@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { CompleterService, CompleterData } from 'ng2-completer';
 
 import { Film } from './film';
 import { FilmService } from './film.service';
@@ -22,7 +23,10 @@ export class FilmFormComponent extends CommonsFormComponent<Film> implements OnI
     appUrl: string = "film";
     appTitre: string = "Films";
 
-    constructor(protected commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(protected commonsService: FilmService, 
+                protected route: ActivatedRoute, 
+                protected router: Router,
+                protected completerService: CompleterService) {
         super();
     }
 

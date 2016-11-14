@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-//import { RouterModule } from '@angular/router';
+import { Ng2CompleterModule } from "ng2-completer";
 
 import { BdAppComponent } from './bd-app.component';
 import { BdDetailsComponent } from './bd-details.component';
@@ -13,6 +13,7 @@ import { BdAppRouting } from './routing';
   imports: [
     CommonModule,
     BdAppRouting,
+    Ng2CompleterModule,    
     FormsModule
   ],
   exports: [
