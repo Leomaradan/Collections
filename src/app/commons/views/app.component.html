@@ -1,3 +1,6 @@
+<div *ngIf="loading > 0" class="loader">
+    <img src="assets/ajax-loader-small.gif">
+</div>
 <ol *ngIf="filterBy" class="breadcrumb">
       <li class="breadcrumb-item"><a [routerLink]="['/'+appUrl+'/']">{{ appTitre }}</a></li>
       <li class="breadcrumb-item active">Filtré par {{ filterBy }}</li>

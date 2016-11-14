@@ -31,21 +31,23 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
             let serie = +params['serie'];
             let auteur = +params['auteur'];
             let format = params['format'];
+            
+            this.loading++;
 
             if(genre) {
-                this.commonsService.getItemsByGenre(genre).then(films => this.items = films);
+                this.commonsService.getItemsByGenre(genre).then(films => {this.items = films; this.loading--});
                 this.filterBy = "genre";
             } else if (serie) {
-                this.commonsService.getItemsBySerie(serie).then(films => this.items = films);
+                this.commonsService.getItemsBySerie(serie).then(films => {this.items = films; this.loading--});
                 this.filterBy = "série";
             } else if (auteur) {
-                this.commonsService.getItemsByAuteur(auteur).then(films => this.items = films);
+                this.commonsService.getItemsByAuteur(auteur).then(films => {this.items = films; this.loading--});
                 this.filterBy = "auteur";
             } else if (format) {
-                this.commonsService.getItemsByFormat(format).then(films => this.items = films);
+                this.commonsService.getItemsByFormat(format).then(films => {this.items = films; this.loading--});
                 this.filterBy = "auteur";
             } else {
-              this.commonsService.getAllItems().then(films => this.items = films);
+              this.commonsService.getAllItems().then(films => {this.items = films; this.loading--});
               this.filterBy = null;
             }
 

@@ -31,7 +31,6 @@ export class MangaDetailsComponent extends CommonsDetailsComponent<Manga> implem
       let id = +params['id'];
       this.commonsService.getItemById(id)
         .then(data => {
-            console.log(data);
             this.item = data
         });
     });

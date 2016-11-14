@@ -31,14 +31,16 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
       let genre = +params['genre'];
       let auteur = +params['auteur'];
       
+      this.loading++;
+      
       if(genre) {
-          this.commonsService.getItemsByGenre(genre).then(mangas => this.items = mangas);
+          this.commonsService.getItemsByGenre(genre).then(mangas => {this.items = mangas; this.loading--});
           this.filterBy = "genre";
       } else if (auteur) {
-          this.commonsService.getItemsByAuteur(auteur).then(mangas => this.items = mangas);
+          this.commonsService.getItemsByAuteur(auteur).then(mangas => {this.items = mangas; this.loading--});
           this.filterBy = "auteur";
       } else {
-        this.commonsService.getAllItems().then(mangas => this.items = mangas);
+        this.commonsService.getAllItems().then(mangas => {this.items = mangas; this.loading--});
         this.filterBy = null;
       }
     });

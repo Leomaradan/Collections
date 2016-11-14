@@ -5,6 +5,8 @@ export abstract class CommonsAppComponent<T extends Commons> {
   items: T[];
   filterBy: string;
   
+  loading: number = 0;
+  
   abstract features: string[];
   
   abstract appTitre: string;

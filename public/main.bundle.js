@@ -21687,37 +21687,37 @@ __webpack_require__(228)(String, 'String', function(iterated){
 /* 157 */
 /***/ function(module, exports) {
 
-module.exports = ".app_list span+span:before {\r\n    content: ', ';\r\n}"
+module.exports = ".app_list span+span:before {\r\n    content: ', ';\r\n}\r\n\r\n.loader {\r\n    top: 60px;\r\n    left: 50%;\r\n    position: fixed;\r\n    transform: translate(-50%, 0%); \r\n}"
 
 /***/ },
 /* 158 */
 /***/ function(module, exports) {
 
-module.exports = ""
+module.exports = ".loader {\r\n    text-align: center;\r\n}"
 
 /***/ },
 /* 159 */
 /***/ function(module, exports) {
 
-module.exports = ".btn-right {\r\n    float: right;\r\n}    \r\n\r\n.glyphicons {\r\n    display: block;\r\n    height: 14px;\r\n    width: 14px;\r\n    filter: invert(100%);\r\n    background-size: 14px 14px;\r\n    background-repeat: no-repeat;\r\n}\r\n\r\n.glyphicons-minus-sign {\r\n    background-image: url(assets/glyphicons-192-minus-sign.png);\r\n}\r\n\r\n.glyphicons-plus-sign {\r\n    background-image: url(assets/glyphicons-191-plus-sign.png);\r\n}\r\n\r\n.btn-secondary .glyphicons {\r\n   filter: invert(0%); \r\n}\r\n\r\n.btn-link .glyphicons {\r\n    filter: invert(100%) sepia(100%) saturate(100) hue-rotate(165deg);\r\n}\r\n\r\n.form-section {\r\n    padding: 30px;\r\n    border: 1px solid rgba(0,0,0,.1);    \r\n}\r\n\r\n.form-check-label {\r\n    display: block;\r\n}\r\n\r\n.form-check-label-block {\r\n    display: inline-block;\r\n    border: 1px solid rgba(0,0,0,.1);\r\n    padding-left: 1.5rem;\r\n    padding-right: 1.5rem;\r\n    margin: .3rem;\r\n} "
+module.exports = ".btn-right {\r\n    float: right;\r\n}    \r\n\r\n.glyphicons {\r\n    display: block;\r\n    height: 14px;\r\n    width: 14px;\r\n    filter: invert(100%);\r\n    background-size: 14px 14px;\r\n    background-repeat: no-repeat;\r\n}\r\n\r\n.glyphicons-minus-sign {\r\n    background-image: url(assets/glyphicons-192-minus-sign.png);\r\n}\r\n\r\n.glyphicons-plus-sign {\r\n    background-image: url(assets/glyphicons-191-plus-sign.png);\r\n}\r\n\r\n.btn-secondary .glyphicons {\r\n   filter: invert(0%); \r\n}\r\n\r\n.btn-link .glyphicons {\r\n    filter: invert(100%) sepia(100%) saturate(100) hue-rotate(165deg);\r\n}\r\n\r\n.form-section {\r\n    padding: 30px;\r\n    border: 1px solid rgba(0,0,0,.1);    \r\n}\r\n\r\n.form-check-label {\r\n    display: block;\r\n}\r\n\r\n.form-check-label-block {\r\n    display: inline-block;\r\n    border: 1px solid rgba(0,0,0,.1);\r\n    padding-left: 1.5rem;\r\n    padding-right: 1.5rem;\r\n    margin: .3rem;\r\n}\r\n\r\n.loader {\r\n    text-align: center;\r\n}\r\n\r\n.loader-modal {\r\n    position: fixed;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);    \r\n    z-index: 100;\r\n}\r\n"
 
 /***/ },
 /* 160 */
 /***/ function(module, exports) {
 
-module.exports = "<ol *ngIf=\"filterBy\" class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['/'+appUrl+'/']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item active\">Filtré par {{ filterBy }}</li>\n</ol>\n<ol *ngIf=\"!filterBy\" class=\"breadcrumb\">\n      <li class=\"breadcrumb-item active\">{{ appTitre }}</li>\n</ol>\n\n<h1>{{appTitre}}</h1>\n<a class=\"btn btn-primary\" [routerLink]=\"['/'+appUrl+'/new/create']\">Ajouter</a>\n<table class=\"table\">\n    <tr>\n        <th>Titre</th>\n        <th>Genre</th>\n        <th *ngIf=\"features.indexOf('serie') !== -1\">Série</th>\n        <th>Auteur(s)</th>\n        <th *ngIf=\"features.indexOf('format') !== -1\">Format</th>\n        <th *ngIf=\"features.indexOf('volume_possedes') !== -1\">Format</th>\n    </tr>\n    <tr *ngFor=\"let item of items\">\n        <td><a [routerLink]=\"['/'+appUrl+'/'+item.id]\">{{ item.titre }}</a></td>\n        <td><a [routerLink]=\"['/'+appUrl+'/genre/'+item.genre.id]\">{{ item.genre.nom }}</a></td>\n        <td *ngIf=\"features.indexOf('serie') !== -1\"><a *ngIf=\"item.serie\" [routerLink]=\"['/'+appUrl+'/serie/'+item.serie.id]\">{{ item.serie.nom }}</a></td>\n        <td class=\"app_list\"><span *ngFor=\"let auteur of item.auteurs\"><a [routerLink]=\"['/'+appUrl+'/auteur/'+auteur.id]\">{{ auteur.nom }}</a></span></td>\n        <td *ngIf=\"features.indexOf('format') !== -1\" class=\"app_list\"><span *ngFor=\"let format of item.format\"><a [routerLink]=\"['/'+appUrl+'/format/'+format]\">{{ format }}</a></span></td>\n        <td *ngIf=\"features.indexOf('volume_possedes') !== -1\">{{ item.volumes.length }} / {{ item.volume_max }}</td>\n    </tr>\n</table>\n"
+module.exports = "<div *ngIf=\"loading > 0\" class=\"loader\">\n    <img src=\"assets/ajax-loader-small.gif\">\n</div>\n<ol *ngIf=\"filterBy\" class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['/'+appUrl+'/']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item active\">Filtré par {{ filterBy }}</li>\n</ol>\n<ol *ngIf=\"!filterBy\" class=\"breadcrumb\">\n      <li class=\"breadcrumb-item active\">{{ appTitre }}</li>\n</ol>\n\n<h1>{{appTitre}}</h1>\n<a class=\"btn btn-primary\" [routerLink]=\"['/'+appUrl+'/new/create']\">Ajouter</a>\n<table class=\"table\">\n    <tr>\n        <th>Titre</th>\n        <th>Genre</th>\n        <th *ngIf=\"features.indexOf('serie') !== -1\">Série</th>\n        <th>Auteur(s)</th>\n        <th *ngIf=\"features.indexOf('format') !== -1\">Format</th>\n        <th *ngIf=\"features.indexOf('volume_possedes') !== -1\">Format</th>\n    </tr>\n    <tr *ngFor=\"let item of items\">\n        <td><a [routerLink]=\"['/'+appUrl+'/'+item.id]\">{{ item.titre }}</a></td>\n        <td><a [routerLink]=\"['/'+appUrl+'/genre/'+item.genre.id]\">{{ item.genre.nom }}</a></td>\n        <td *ngIf=\"features.indexOf('serie') !== -1\"><a *ngIf=\"item.serie\" [routerLink]=\"['/'+appUrl+'/serie/'+item.serie.id]\">{{ item.serie.nom }}</a></td>\n        <td class=\"app_list\"><span *ngFor=\"let auteur of item.auteurs\"><a [routerLink]=\"['/'+appUrl+'/auteur/'+auteur.id]\">{{ auteur.nom }}</a></span></td>\n        <td *ngIf=\"features.indexOf('format') !== -1\" class=\"app_list\"><span *ngFor=\"let format of item.format\"><a [routerLink]=\"['/'+appUrl+'/format/'+format]\">{{ format }}</a></span></td>\n        <td *ngIf=\"features.indexOf('volume_possedes') !== -1\">{{ item.volumes.length }} / {{ item.volume_max }}</td>\n    </tr>\n</table>\n"
 
 /***/ },
 /* 161 */
 /***/ function(module, exports) {
 
-module.exports = "<div *ngIf=\"item\">\n    <ol class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item active\">{{ item.titre }}</li>\n    </ol>\n\n    <h1>{{ item.titre }}</h1>\n    <div class=\"col-xs-6\">\n        <p>Genre : <i>{{ item.genre.nom }}</i></p>\n        <p *ngIf=\"features.indexOf('serie') !== -1 && item.serie\">Série : <i>{{ item.serie.nom }}</i></p>\n        <p>Auteur(s) : </p>\n        <ul>\n            <li *ngFor=\"let auteur of item.auteurs\">{{ auteur.nom }}</li>\n        </ul>\n        <p *ngIf=\"features.indexOf('volume') !== -1\">Volume : <i>{{ item.volume }}</i></p>\n        <p *ngIf=\"features.indexOf('volume_possedes') !== -1\">Volume(s) possedés : <i>{{ item.volumes.length }}</i></p>\n        <p *ngIf=\"features.indexOf('volume_max') !== -1\">Volume(s) max : <i>{{ item.volume_max }}</i></p>\n        <p *ngIf=\"features.indexOf('format') !== -1\">Format : </p>\n        <ul *ngIf=\"features.indexOf('format') !== -1\">\n            <li *ngFor=\"let format of item.format\">{{ format }}</li>\n        </ul>\n    </div>\n    <div class=\"col-xs\">\n        <img *ngIf=\"item.couverture\" [src]=\"item.couverture\" />\n    </div>\n    \n    <a class=\"btn btn-primary\" [routerLink]=\"['/'+appUrl+'/' + item.id + '/edit']\">Editer</a>\n    <button class=\"btn btn-danger\" (click)=\"deleteItem()\">Supprimer</button>\n    \n</div>"
+module.exports = "<div *ngIf=\"!item\" class=\"loader\">\n    <img src=\"assets/ajax-loader-big.gif\">\n</div>\n<div *ngIf=\"item\">\n    <ol class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item active\">{{ item.titre }}</li>\n    </ol>\n\n    <h1>{{ item.titre }}</h1>\n    <div class=\"col-xs-6\">\n        <p>Genre : <i>{{ item.genre.nom }}</i></p>\n        <p *ngIf=\"features.indexOf('serie') !== -1 && item.serie\">Série : <i>{{ item.serie.nom }}</i></p>\n        <p>Auteur(s) : </p>\n        <ul>\n            <li *ngFor=\"let auteur of item.auteurs\">{{ auteur.nom }}</li>\n        </ul>\n        <p *ngIf=\"features.indexOf('volume') !== -1\">Volume : <i>{{ item.volume }}</i></p>\n        <p *ngIf=\"features.indexOf('volume_possedes') !== -1\">Volume(s) possedés : <i>{{ item.volumes.length }}</i></p>\n        <p *ngIf=\"features.indexOf('volume_max') !== -1\">Volume(s) max : <i>{{ item.volume_max }}</i></p>\n        <p *ngIf=\"features.indexOf('format') !== -1\">Format : </p>\n        <ul *ngIf=\"features.indexOf('format') !== -1\">\n            <li *ngFor=\"let format of item.format\">{{ format }}</li>\n        </ul>\n    </div>\n    <div class=\"col-xs\">\n        <img *ngIf=\"item.couverture\" [src]=\"item.couverture\" />\n    </div>\n    \n    <a class=\"btn btn-primary\" [routerLink]=\"['/'+appUrl+'/' + item.id + '/edit']\">Editer</a>\n    <button class=\"btn btn-danger\" (click)=\"deleteItem()\">Supprimer</button>\n    \n</div>"
 
 /***/ },
 /* 162 */
 /***/ function(module, exports) {
 
-module.exports = "<form *ngIf=\"item\" #f=\"ngForm\" novalidate>\n\n    <ol *ngIf=\"item.id\" class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['../..']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ item.titre }}</a></li>\n      <li class=\"breadcrumb-item active\">Editer</li>\n    </ol>  \n    <ol *ngIf=\"!item.id\" class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item active\">Ajouter</li>\n    </ol>  \n    \n    <div *ngFor=\"let error of formErrors\" class=\"alert alert-danger\">\n        {{ error }}\n    </div>\n    \n    <!-- Titre -->\n    <div class=\"form-section\">\n        <div class=\"form-group row\">\n            <label for=\"formTitre\" class=\"col-sm-2 col-form-label col-form-label-sm\">Titre</label>\n            <div class=\"col-sm-10\">\n                <input type=\"text\" name=\"titre\" [(ngModel)]=\"item.titre\" class=\"form-control form-control-sm\" id=\"formTitre\" placeholder=\"Dune, etc...\">\n            </div>\n        </div>\n    </div>\n\n    <!-- Genre -->\n    <div class=\"form-section\">\n        <div class=\"form-group row\">\n\n            <label class=\"col-sm-2 col-form-label\">Genre</label>\n            <div class=\"col-sm-10\">\n                <p class=\"form-control-static mb-0\">{{genreDisplay}}</p>\n            </div>\n        </div>\n\n        <div class=\"form-group row\">\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formGenreRadios\" id=\"formGenreRadios1\" value=\"list\" checked (change)=\"genreSwitcherNew = !$event.target.checked\">\n                       Genre existant\n            </label>\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formGenreRadios\" id=\"formGenreRadios2\" value=\"new\" (change)=\"genreSwitcherNew = $event.target.checked\">\n                Nouveau genre\n            </label>\n        </div>\n        <div class=\"form-group row\" *ngIf=\"!genreSwitcherNew\">\n            <label for=\"formGenreSelect\" class=\"col-sm-2 col-form-label col-form-label-sm\">Genre</label>\n            <div class=\"col-sm-10\">\n                <select name=\"genreDisplay\" class=\"form-control\" id=\"formGenreSelect\" \n                        [(ngModel)]=\"genreDisplay\">\n                    <option *ngFor=\"let genre of listGenre\" [ngValue]=\"genre.nom\">{{genre.nom}}</option>\n                </select>\n            </div>\n        </div>\n\n        <div class=\"form-group row\"  *ngIf=\"genreSwitcherNew\">\n            <label for=\"formGenreNew\" class=\"col-sm-2 col-form-label col-form-label-sm\">Nouveau genre</label>\n            <div class=\"col-sm-10\">\n                <input type=\"text\" #genreNew class=\"form-control form-control-sm\" id=\"formGenreNew\" placeholder=\"Fantasy, etc...\" \n                       (keyup)=\"genreDisplay = genreNew.value\">\n            </div>\n        </div>   \n    </div>\n\n    <!-- Série -->\n    <div class=\"form-section\" *ngIf=\"features.indexOf('serie') !== -1\">\n        <div class=\"form-group row\">\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formSerieRadios\" id=\"formSerieRadios1\" value=\"list\" \n                       [checked]=\"item.serie !== null\"  \n                       (change)=\"switchSerie('list',$event.target.checked)\">\n                       Série existante\n            </label>\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formSerieRadios\" id=\"formSerieRadios2\" value=\"new\"\n                       (change)=\"switchSerie('new',$event.target.checked)\">\n                Nouvelle série\n            </label>\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formSerieRadios\" id=\"formSerieRadios3\" value=\"null\" \n                       [checked]=\"item.serie === null\"\n                       (change)=\"switchSerie('null',$event.target.checked)\">\n                       Pas de série\n            </label>\n        </div>\n        <div class=\"form-group row\" *ngIf=\"serieSwitcher=='list'\">\n            <label for=\"formSerieSelect\" class=\"col-sm-2 col-form-label col-form-label-sm\">Série</label>\n            <div class=\"col-sm-10\">\n                <select name=\"serieDisplay\" class=\"form-control\" id=\"formSerieSelect\" \n                        [(ngModel)]=\"serieDisplay\">\n                    <option *ngFor=\"let serie of listSerie\" [ngValue]=\"serie.nom\">{{serie.nom}}</option>\n                </select>\n            </div>\n        </div>     \n\n        <div class=\"form-group row\" *ngIf=\"serieSwitcher=='new'\">\n            <label for=\"formSerieNew\" class=\"col-sm-2 col-form-label col-form-label-sm\">Nouvelle série</label>\n            <div class=\"col-sm-10\">\n                <input type=\"text\" #serieNew class=\"form-control form-control-sm\" id=\"formSerieNew\" placeholder=\"Star Wars, etc...\" \n                       (keyup)=\"serieDisplay = serieNew.value\">\n            </div>\n        </div>\n        <div class=\"form-group row\" *ngIf=\"serieSwitcher!='null'\">  \n            <label for=\"formSerieNewVolumeMax\" class=\"col-sm-2 col-form-label col-form-label-sm\">Nombre de volume</label>\n            <div class=\"col-sm-10\">\n                <input type=\"text\" name=\"serieVolumeMax\" class=\"form-control form-control-sm\" id=\"formSerieNewVolumeMax\" [(ngModel)]=\"serieVolumeMax\">\n            </div>      \n        </div>  \n    </div>\n\n    <!-- Auteur -->  \n    <div class=\"form-section\">\n        <div class=\"form-group row\">\n            <label class=\"col-sm-2 col-form-label\">Auteur</label>\n            <div class=\"col-sm-10\">\n                <p class=\"form-control-static mb-0\" *ngFor=\"let auteur of item.auteurs\">\n                   <input type=\"hidden\" value=\"{{auteur.id}}\">\n                    {{auteur.nom}}\n                    <button class=\"btn btn-danger btn-right\" (click)=\"removeAuteur(auteur.id, auteur.nom)\"><span class=\"glyphicons glyphicons-minus-sign\"></span></button>\n                </p>\n            </div>\n        </div>\n        <div class=\"form-group row\">\n            <label for=\"formSerieSelect\" class=\"col-sm-2 col-form-label col-form-label-sm\">Ajouter un auteur</label>\n            <div class=\"col-sm-8\">\n                <ng2-completer #auteurNew class=\"form-control\" [dataService]=\"dataService\" [minSearchLength]=\"0\"></ng2-completer>\n            </div> \n            <div class=\"col-sm-2\"><button class=\"btn btn-success btn-right\" (click)=\"addAuteurAutocomplete(auteurNew.value)\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></div>\n        </div>\n    </div>\n\n    <!-- Volume -->    \n    <div class=\"form-section\" *ngIf=\"features.indexOf('volume') !== -1\">\n        <div class=\"form-group row\">\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume</label>\n            <div class=\"col-sm-10\">\n                <input type=\"number\" name=\"volume\" [(ngModel)]=\"item.volume\" class=\"form-control form-control-sm\" id=\"formVolume\">\n            </div>\n        </div>\n    </div>    \n    \n    <!-- Volume Possedes -->    \n    <div class=\"form-section\" *ngIf=\"features.indexOf('volume_possedes') !== -1\">\n        <div class=\"form-group row\">\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume max</label>\n            <div class=\"col-sm-10\">\n                <input type=\"number\" name=\"volume_max\" [(ngModel)]=\"item.volume_max\" class=\"form-control form-control-sm\" id=\"formVolume\"\n                       (change)=\"volumeMaxChanged()\">\n            </div>\n        </div>\n        \n        <div class=\"form-group row\">\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume(s) possedés</label>\n            <div class=\"col-sm-10 form-check\">               \n                <label *ngFor=\"let volume of item.listVolumeMax\" class=\"form-check-label-block\">\n                    <input type=\"checkbox\" class=\"form-check-input\"\n                        [checked]=\"item.volumes.indexOf(volume) !== -1\" \n                        (change)=\"$event.target.checked? (item.volumes.push(volume)) : ( item.volumes.splice(item.volumes.indexOf(volume) , 1))\">    \n                        {{volume}}\n                </label>\n            </div>\n        </div>     \n    </div>        \n    \n    <!-- Format -->    \n    <div class=\"form-section\" *ngIf=\"features.indexOf('format') !== -1\">\n        <div class=\"form-group row\">\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Format</label>\n            <div class=\"col-sm-10 form-check\">               \n                <label *ngFor=\"let format of item.listFormat\" class=\"form-check-label\">\n                    <input type=\"checkbox\" class=\"form-check-input\"\n                        [checked]=\"item.format.indexOf(format.value) !== -1\" \n                        (change)=\"$event.target.checked? (item.format.push(format.value)) : ( item.format.splice(item.format.indexOf(format.value) , 1))\">    \n                        {{format.display}}\n                </label>\n            </div>\n        </div>\n    </div>\n\n    <!-- Couverture -->    \n    <div class=\"form-section\">\n        <div class=\"form-group row\">\n            <label for=\"formCouverture\" class=\"col-sm-2 col-form-label col-form-label-sm\">Couverture</label>\n            <div class=\"col-sm-10\">\n                <input type=\"url\" name=\"couverture\" [(ngModel)]=\"item.couverture\" class=\"form-control form-control-sm\" id=\"formCouverture\">\n            </div>\n        </div>\n    </div>   \n\n    <button type=\"submit\" class=\"btn btn-primary\" (click)=\"saveItem()\">Sauver</button>\n</form>"
+module.exports = "<div *ngIf=\"!item\" class=\"loader\">\n    <img src=\"assets/ajax-loader-big.gif\">\n</div>\n<div *ngIf=\"loading\" class=\"loader-modal\">\n    <img src=\"assets/ajax-loader-big.gif\">\n</div>\n<form *ngIf=\"item\" #f=\"ngForm\" novalidate>\n\n    <ol *ngIf=\"item.id\" class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['../..']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ item.titre }}</a></li>\n      <li class=\"breadcrumb-item active\">Editer</li>\n    </ol>  \n    <ol *ngIf=\"!item.id\" class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item active\">Ajouter</li>\n    </ol>  \n    \n    <div *ngFor=\"let error of formErrors\" class=\"alert alert-danger\">\n        {{ error }}\n    </div>\n    \n    <!-- Titre -->\n    <div class=\"form-section\">\n        <div class=\"form-group row\">\n            <label for=\"formTitre\" class=\"col-sm-2 col-form-label col-form-label-sm\">Titre</label>\n            <div class=\"col-sm-10\">\n                <input type=\"text\" name=\"titre\" [(ngModel)]=\"item.titre\" class=\"form-control form-control-sm\" id=\"formTitre\" placeholder=\"Dune, etc...\">\n            </div>\n        </div>\n    </div>\n\n    <!-- Genre -->\n    <div class=\"form-section\">\n        <div class=\"form-group row\">\n\n            <label class=\"col-sm-2 col-form-label\">Genre</label>\n            <div class=\"col-sm-10\">\n                <p class=\"form-control-static mb-0\">{{genreDisplay}}</p>\n            </div>\n        </div>\n\n        <div class=\"form-group row\">\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formGenreRadios\" id=\"formGenreRadios1\" value=\"list\" checked (change)=\"genreSwitcherNew = !$event.target.checked\">\n                       Genre existant\n            </label>\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formGenreRadios\" id=\"formGenreRadios2\" value=\"new\" (change)=\"genreSwitcherNew = $event.target.checked\">\n                Nouveau genre\n            </label>\n        </div>\n        <div class=\"form-group row\" *ngIf=\"!genreSwitcherNew\">\n            <label for=\"formGenreSelect\" class=\"col-sm-2 col-form-label col-form-label-sm\">Genre</label>\n            <div class=\"col-sm-10\">\n                <select name=\"genreDisplay\" class=\"form-control\" id=\"formGenreSelect\" \n                        [(ngModel)]=\"genreDisplay\">\n                    <option *ngFor=\"let genre of listGenre\" [ngValue]=\"genre.nom\">{{genre.nom}}</option>\n                </select>\n            </div>\n        </div>\n\n        <div class=\"form-group row\"  *ngIf=\"genreSwitcherNew\">\n            <label for=\"formGenreNew\" class=\"col-sm-2 col-form-label col-form-label-sm\">Nouveau genre</label>\n            <div class=\"col-sm-10\">\n                <input type=\"text\" #genreNew class=\"form-control form-control-sm\" id=\"formGenreNew\" placeholder=\"Fantasy, etc...\" \n                       (keyup)=\"genreDisplay = genreNew.value\">\n            </div>\n        </div>   \n    </div>\n\n    <!-- Série -->\n    <div class=\"form-section\" *ngIf=\"features.indexOf('serie') !== -1\">\n        <div class=\"form-group row\">\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formSerieRadios\" id=\"formSerieRadios1\" value=\"list\" \n                       [checked]=\"item.serie !== null\"  \n                       (change)=\"switchSerie('list',$event.target.checked)\">\n                       Série existante\n            </label>\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formSerieRadios\" id=\"formSerieRadios2\" value=\"new\"\n                       (change)=\"switchSerie('new',$event.target.checked)\">\n                Nouvelle série\n            </label>\n            <label class=\"form-check-inline\">\n                <input class=\"form-check-input\" type=\"radio\" name=\"formSerieRadios\" id=\"formSerieRadios3\" value=\"null\" \n                       [checked]=\"item.serie === null\"\n                       (change)=\"switchSerie('null',$event.target.checked)\">\n                       Pas de série\n            </label>\n        </div>\n        <div class=\"form-group row\" *ngIf=\"serieSwitcher=='list'\">\n            <label for=\"formSerieSelect\" class=\"col-sm-2 col-form-label col-form-label-sm\">Série</label>\n            <div class=\"col-sm-10\">\n                <select name=\"serieDisplay\" class=\"form-control\" id=\"formSerieSelect\" \n                        [(ngModel)]=\"serieDisplay\">\n                    <option *ngFor=\"let serie of listSerie\" [ngValue]=\"serie.nom\">{{serie.nom}}</option>\n                </select>\n            </div>\n        </div>     \n\n        <div class=\"form-group row\" *ngIf=\"serieSwitcher=='new'\">\n            <label for=\"formSerieNew\" class=\"col-sm-2 col-form-label col-form-label-sm\">Nouvelle série</label>\n            <div class=\"col-sm-10\">\n                <input type=\"text\" #serieNew class=\"form-control form-control-sm\" id=\"formSerieNew\" placeholder=\"Star Wars, etc...\" \n                       (keyup)=\"serieDisplay = serieNew.value\">\n            </div>\n        </div>\n        <div class=\"form-group row\" *ngIf=\"serieSwitcher!='null'\">  \n            <label for=\"formSerieNewVolumeMax\" class=\"col-sm-2 col-form-label col-form-label-sm\">Nombre de volume</label>\n            <div class=\"col-sm-10\">\n                <input type=\"text\" name=\"serieVolumeMax\" class=\"form-control form-control-sm\" id=\"formSerieNewVolumeMax\" [(ngModel)]=\"serieVolumeMax\">\n            </div>      \n        </div>  \n    </div>\n\n    <!-- Auteur -->  \n    <div class=\"form-section\">\n        <div class=\"form-group row\">\n            <label class=\"col-sm-2 col-form-label\">Auteur</label>\n            <div class=\"col-sm-10\">\n                <p class=\"form-control-static mb-0\" *ngFor=\"let auteur of item.auteurs\">\n                   <input type=\"hidden\" value=\"{{auteur.id}}\">\n                    {{auteur.nom}}\n                    <button class=\"btn btn-danger btn-right\" (click)=\"removeAuteur(auteur.id, auteur.nom)\"><span class=\"glyphicons glyphicons-minus-sign\"></span></button>\n                </p>\n            </div>\n        </div>\n        <div class=\"form-group row\">\n            <label for=\"formSerieSelect\" class=\"col-sm-2 col-form-label col-form-label-sm\">Ajouter un auteur</label>\n            <div class=\"col-sm-8\">\n                <ng2-completer #auteurNew class=\"form-control\" [dataService]=\"dataService\" [minSearchLength]=\"0\"></ng2-completer>\n            </div> \n            <div class=\"col-sm-2\"><button class=\"btn btn-success btn-right\" (click)=\"addAuteurAutocomplete(auteurNew.value)\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></div>\n        </div>\n    </div>\n\n    <!-- Volume -->    \n    <div class=\"form-section\" *ngIf=\"features.indexOf('volume') !== -1\">\n        <div class=\"form-group row\">\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume</label>\n            <div class=\"col-sm-10\">\n                <input type=\"number\" name=\"volume\" [(ngModel)]=\"item.volume\" class=\"form-control form-control-sm\" id=\"formVolume\">\n            </div>\n        </div>\n    </div>    \n    \n    <!-- Volume Possedes -->    \n    <div class=\"form-section\" *ngIf=\"features.indexOf('volume_possedes') !== -1\">\n        <div class=\"form-group row\">\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume max</label>\n            <div class=\"col-sm-10\">\n                <input type=\"number\" name=\"volume_max\" [(ngModel)]=\"item.volume_max\" class=\"form-control form-control-sm\" id=\"formVolume\"\n                       (change)=\"volumeMaxChanged()\">\n            </div>\n        </div>\n        \n        <div class=\"form-group row\">\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume(s) possedés</label>\n            <div class=\"col-sm-10 form-check\">               \n                <label *ngFor=\"let volume of item.listVolumeMax\" class=\"form-check-label-block\">\n                    <input type=\"checkbox\" class=\"form-check-input\"\n                        [checked]=\"item.volumes.indexOf(volume) !== -1\" \n                        (change)=\"$event.target.checked? (item.volumes.push(volume)) : ( item.volumes.splice(item.volumes.indexOf(volume) , 1))\">    \n                        {{volume}}\n                </label>\n            </div>\n        </div>     \n    </div>        \n    \n    <!-- Format -->    \n    <div class=\"form-section\" *ngIf=\"features.indexOf('format') !== -1\">\n        <div class=\"form-group row\">\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Format</label>\n            <div class=\"col-sm-10 form-check\">               \n                <label *ngFor=\"let format of item.listFormat\" class=\"form-check-label\">\n                    <input type=\"checkbox\" class=\"form-check-input\"\n                        [checked]=\"item.format.indexOf(format.value) !== -1\" \n                        (change)=\"$event.target.checked? (item.format.push(format.value)) : ( item.format.splice(item.format.indexOf(format.value) , 1))\">    \n                        {{format.display}}\n                </label>\n            </div>\n        </div>\n    </div>\n\n    <!-- Couverture -->    \n    <div class=\"form-section\">\n        <div class=\"form-group row\">\n            <label for=\"formCouverture\" class=\"col-sm-2 col-form-label col-form-label-sm\">Couverture</label>\n            <div class=\"col-sm-10\">\n                <input type=\"url\" name=\"couverture\" [(ngModel)]=\"item.couverture\" class=\"form-control form-control-sm\" id=\"formCouverture\">\n            </div>\n        </div>\n    </div>   \n\n    <button type=\"submit\" class=\"btn btn-primary\" (click)=\"saveItem()\">Sauver</button>\n</form>"
 
 /***/ },
 /* 163 */
@@ -44743,20 +44743,21 @@ var BdAppComponent = (function (_super) {
             var genre = +params['genre'];
             var serie = +params['serie'];
             var auteur = +params['auteur'];
+            _this.loading++;
             if (genre) {
-                _this.commonsService.getItemsByGenre(genre).then(function (bds) { return _this.items = bds; });
+                _this.commonsService.getItemsByGenre(genre).then(function (bds) { _this.items = bds; _this.loading--; });
                 _this.filterBy = "genre";
             }
             else if (serie) {
-                _this.commonsService.getItemsBySerie(serie).then(function (bds) { return _this.items = bds; });
+                _this.commonsService.getItemsBySerie(serie).then(function (bds) { _this.items = bds; _this.loading--; });
                 _this.filterBy = "série";
             }
             else if (auteur) {
-                _this.commonsService.getItemsByAuteur(auteur).then(function (bds) { return _this.items = bds; });
+                _this.commonsService.getItemsByAuteur(auteur).then(function (bds) { _this.items = bds; _this.loading--; });
                 _this.filterBy = "auteur";
             }
             else {
-                _this.commonsService.getAllItems().then(function (bds) { return _this.items = bds; });
+                _this.commonsService.getAllItems().then(function (bds) { _this.items = bds; _this.loading--; });
                 _this.filterBy = null;
             }
         });
@@ -45037,24 +45038,25 @@ var FilmAppComponent = (function (_super) {
             var serie = +params['serie'];
             var auteur = +params['auteur'];
             var format = params['format'];
+            _this.loading++;
             if (genre) {
-                _this.commonsService.getItemsByGenre(genre).then(function (films) { return _this.items = films; });
+                _this.commonsService.getItemsByGenre(genre).then(function (films) { _this.items = films; _this.loading--; });
                 _this.filterBy = "genre";
             }
             else if (serie) {
-                _this.commonsService.getItemsBySerie(serie).then(function (films) { return _this.items = films; });
+                _this.commonsService.getItemsBySerie(serie).then(function (films) { _this.items = films; _this.loading--; });
                 _this.filterBy = "série";
             }
             else if (auteur) {
-                _this.commonsService.getItemsByAuteur(auteur).then(function (films) { return _this.items = films; });
+                _this.commonsService.getItemsByAuteur(auteur).then(function (films) { _this.items = films; _this.loading--; });
                 _this.filterBy = "auteur";
             }
             else if (format) {
-                _this.commonsService.getItemsByFormat(format).then(function (films) { return _this.items = films; });
+                _this.commonsService.getItemsByFormat(format).then(function (films) { _this.items = films; _this.loading--; });
                 _this.filterBy = "auteur";
             }
             else {
-                _this.commonsService.getAllItems().then(function (films) { return _this.items = films; });
+                _this.commonsService.getAllItems().then(function (films) { _this.items = films; _this.loading--; });
                 _this.filterBy = null;
             }
         });
@@ -45350,16 +45352,17 @@ var MangaAppComponent = (function (_super) {
         this.route.params.forEach(function (params) {
             var genre = +params['genre'];
             var auteur = +params['auteur'];
+            _this.loading++;
             if (genre) {
-                _this.commonsService.getItemsByGenre(genre).then(function (mangas) { return _this.items = mangas; });
+                _this.commonsService.getItemsByGenre(genre).then(function (mangas) { _this.items = mangas; _this.loading--; });
                 _this.filterBy = "genre";
             }
             else if (auteur) {
-                _this.commonsService.getItemsByAuteur(auteur).then(function (mangas) { return _this.items = mangas; });
+                _this.commonsService.getItemsByAuteur(auteur).then(function (mangas) { _this.items = mangas; _this.loading--; });
                 _this.filterBy = "auteur";
             }
             else {
-                _this.commonsService.getAllItems().then(function (mangas) { return _this.items = mangas; });
+                _this.commonsService.getAllItems().then(function (mangas) { _this.items = mangas; _this.loading--; });
                 _this.filterBy = null;
             }
         });
@@ -45425,7 +45428,6 @@ var MangaDetailsComponent = (function (_super) {
             var id = +params['id'];
             _this.commonsService.getItemById(id)
                 .then(function (data) {
-                console.log(data);
                 _this.item = data;
             });
         });
@@ -45647,20 +45649,21 @@ var RomanAppComponent = (function (_super) {
             var genre = +params['genre'];
             var serie = +params['serie'];
             var auteur = +params['auteur'];
+            _this.loading++;
             if (genre) {
-                _this.commonsService.getItemsByGenre(genre).then(function (romans) { return _this.items = romans; });
+                _this.commonsService.getItemsByGenre(genre).then(function (romans) { _this.items = romans; _this.loading--; });
                 _this.filterBy = "genre";
             }
             else if (serie) {
-                _this.commonsService.getItemsBySerie(serie).then(function (romans) { return _this.items = romans; });
+                _this.commonsService.getItemsBySerie(serie).then(function (romans) { _this.items = romans; _this.loading--; });
                 _this.filterBy = "série";
             }
             else if (auteur) {
-                _this.commonsService.getItemsByAuteur(auteur).then(function (romans) { return _this.items = romans; });
+                _this.commonsService.getItemsByAuteur(auteur).then(function (romans) { _this.items = romans; _this.loading--; });
                 _this.filterBy = "auteur";
             }
             else {
-                _this.commonsService.getAllItems().then(function (romans) { return _this.items = romans; });
+                _this.commonsService.getAllItems().then(function (romans) { _this.items = romans; _this.loading--; });
                 _this.filterBy = null;
             }
         });
@@ -60291,6 +60294,7 @@ var BdModule = (function () {
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return CommonsAppComponent; });
 var CommonsAppComponent = (function () {
     function CommonsAppComponent() {
+        this.loading = 0;
     }
     return CommonsAppComponent;
 }());
@@ -60325,6 +60329,7 @@ var CommonsFormComponent = (function () {
     function CommonsFormComponent() {
         this.features = [];
         this.genreSwitcherNew = false;
+        this.loading = false;
     }
     CommonsFormComponent.prototype.saveItem = function () {
         var _this = this;
@@ -60336,19 +60341,22 @@ var CommonsFormComponent = (function () {
             //this.addSerie((<any>this).serieDisplay);
             this.item.volumes.splice(this.item.volume_max, this.item.volumes.length - this.item.volume_max);
         }
+        this.loading = true;
         if (this.item.id) {
             this.commonsService.updateItem(this.item)
                 .then(function (item) {
+                _this.loading = false;
                 _this.router.navigate(['/' + _this.appUrl, item.id]);
             })
-                .catch(function (error) { _this.formErrors = JSON.parse(error._body); });
+                .catch(function (error) { _this.formErrors = JSON.parse(error._body); _this.loading = false; });
         }
         else {
             this.commonsService.addItem(this.item)
                 .then(function (item) {
+                _this.loading = false;
                 _this.router.navigate(['/' + _this.appUrl, item.id]);
             })
-                .catch(function (error) { _this.formErrors = [error._body]; });
+                .catch(function (error) { _this.formErrors = [error._body]; _this.loading = false; });
         }
     };
     CommonsFormComponent.prototype.addGenre = function (genreNom) {
@@ -60423,7 +60431,6 @@ var CommonsFormComponent = (function () {
     };
     CommonsFormComponent.prototype.initItem = function (id) {
         var _this = this;
-        console.log("init item with id " + id);
         this.commonsService.getItemById(id).then(function (data) {
             if (data.id == undefined) {
                 _this.item = new __WEBPACK_IMPORTED_MODULE_0____["a" /* Commons */]();

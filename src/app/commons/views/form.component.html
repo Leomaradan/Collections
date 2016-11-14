@@ -1,3 +1,9 @@
+<div *ngIf="!item" class="loader">
+    <img src="assets/ajax-loader-big.gif">
+</div>
+<div *ngIf="loading" class="loader-modal">
+    <img src="assets/ajax-loader-big.gif">
+</div>
 <form *ngIf="item" #f="ngForm" novalidate>
 
     <ol *ngIf="item.id" class="breadcrumb">

@@ -1,3 +1,6 @@
+<div *ngIf="!item" class="loader">
+    <img src="assets/ajax-loader-big.gif">
+</div>
 <div *ngIf="item">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a [routerLink]="['..']">{{ appTitre }}</a></li>

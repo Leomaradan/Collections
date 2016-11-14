@@ -42,4 +42,16 @@
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     margin: .3rem;
-} 
+}
+
+.loader {
+    text-align: center;
+}
+
+.loader-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    
+    z-index: 100;
+}

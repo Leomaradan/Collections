@@ -1,3 +1,10 @@
 .app_list span+span:before {
     content: ', ';
 }
+
+.loader {
+    top: 60px;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 0%); 
+}

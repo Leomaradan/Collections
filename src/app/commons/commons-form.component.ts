@@ -33,6 +33,8 @@ export abstract class CommonsFormComponent<T extends Commons> {
     protected completerService: CompleterService;
     protected dataService: CompleterData;
     
+    loading: boolean = false;
+    
     saveItem() {
         
         this.addGenre(this.genreDisplay);
@@ -46,18 +48,22 @@ export abstract class CommonsFormComponent<T extends Commons> {
             (<any>this.item).volumes.splice((<any>this.item).volume_max, (<any>this.item).volumes.length - (<any>this.item).volume_max);
         }
                 
+        this.loading = true;
+        
         if(this.item.id) {
             this.commonsService.updateItem(this.item)
                 .then((item) => {
+                    this.loading = false;
                     this.router.navigate(['/'+this.appUrl, item.id]);
                 })
-                .catch(error => { this.formErrors = JSON.parse(error._body)});
+                .catch(error => { this.formErrors = JSON.parse(error._body); this.loading = false;});
         } else {
             this.commonsService.addItem(this.item)
                 .then((item) => {
+                    this.loading = false;
                     this.router.navigate(['/'+this.appUrl, item.id]);
                 })
-                .catch(error => { this.formErrors = [error._body]});
+                .catch(error => { this.formErrors = [error._body]; this.loading = false;});
         }
     }
 
@@ -149,7 +155,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
     }
 
     initItem(id: number) {
-        console.log(`init item with id ${id}`);
+
         this.commonsService.getItemById(id).then(data => {
             if(data.id == undefined) {
                 this.item = <T>new Commons();

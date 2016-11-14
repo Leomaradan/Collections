@@ -32,17 +32,19 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
       let serie = +params['serie'];
       let auteur = +params['auteur'];
       
+      this.loading++;
+      
       if(genre) {
-          this.commonsService.getItemsByGenre(genre).then(romans => this.items = romans);
+          this.commonsService.getItemsByGenre(genre).then(romans => {this.items = romans; this.loading--});
           this.filterBy = "genre";
       } else if (serie) {
-          this.commonsService.getItemsBySerie(serie).then(romans => this.items = romans);
+          this.commonsService.getItemsBySerie(serie).then(romans => {this.items = romans; this.loading--});
           this.filterBy = "série";
       } else if (auteur) {
-          this.commonsService.getItemsByAuteur(auteur).then(romans => this.items = romans);
+          this.commonsService.getItemsByAuteur(auteur).then(romans => {this.items = romans; this.loading--});
           this.filterBy = "auteur";
       } else {
-        this.commonsService.getAllItems().then(romans => this.items = romans);
+        this.commonsService.getAllItems().then(romans => {this.items = romans; this.loading--});
         this.filterBy = null;
       }
     });

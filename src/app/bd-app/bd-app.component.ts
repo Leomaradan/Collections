@@ -32,17 +32,19 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
       let serie = +params['serie'];
       let auteur = +params['auteur'];
       
+      this.loading++;
+      
       if(genre) {
-          this.commonsService.getItemsByGenre(genre).then(bds => this.items = bds);
+          this.commonsService.getItemsByGenre(genre).then(bds => {this.items = bds; this.loading--});
           this.filterBy = "genre";
       } else if (serie) {
-          this.commonsService.getItemsBySerie(serie).then(bds => this.items = bds);
+          this.commonsService.getItemsBySerie(serie).then(bds => {this.items = bds; this.loading--});
           this.filterBy = "série";
       } else if (auteur) {
-          this.commonsService.getItemsByAuteur(auteur).then(bds => this.items = bds);
+          this.commonsService.getItemsByAuteur(auteur).then(bds => {this.items = bds; this.loading--});
           this.filterBy = "auteur";
       } else {
-        this.commonsService.getAllItems().then(bds => this.items = bds);
+        this.commonsService.getAllItems().then(bds => {this.items = bds; this.loading--});
         this.filterBy = null;
       }
     });
