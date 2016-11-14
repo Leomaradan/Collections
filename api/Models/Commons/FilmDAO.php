@@ -28,7 +28,7 @@ class FilmDAO extends CommonsDAO {
 	}	
 
 	public function getByFormat($format) {
-		return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE FIND_IN_SET(?, format)", [$format]);
+		return $this->requestMultiple($this->getQuery("FIND_IN_SET(?, format)"), [$format]);
 	}	
 
 	public function getFormat() {

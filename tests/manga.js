@@ -49,8 +49,8 @@
 			var done = assert.async( 1 );
 
 			callApi('/manga/21', 'get', assert, function(data) { 
-				assert.equal( data.length, 1, "1 mangas avec l'id 21" );
-				assert.equal( data[0].auteurs[0].nom, "Ken Akamatsu", "Auteur: Ken Akamatsu" );
+				assert.equal( data.id, 21, "1 mangas avec l'id 21" );
+				assert.equal( data.auteurs[0].nom, "Ken Akamatsu", "Auteur: Ken Akamatsu" );
 				done();
 			});	
 		});
@@ -73,9 +73,10 @@
 
 			callApi('/manga/info/genre', 'get', assert, function(data) { 
 				assert.equal( data.length, 5, "5 genres possibles" );
-				assert.equal( data[1].nom, "Science-Fiction", "2ème genre: Science-Fiction" );
-				assert.equal( data[2].nom, "Shōnen", "3ème genre: Shōnen" );
-				assert.equal( data[3].nom, "Livre en anglais", "4ème genre: Livre en anglais" );
+				assert.equal( data[1].nom, "Livre en anglais", "2ème genre: Livre en anglais" );
+				assert.equal( data[2].nom, "Science-Fiction", "3ème genre: Science-Fiction" );
+				assert.equal( data[3].nom, "Seinen", "4ème genre: Seinen" );
+				
 				done();
 			});			
 		});
@@ -188,15 +189,15 @@
 			callApi('/manga', 'get', assert, function(data) { 
 				var len = data.length;
 				callApi('/manga', 'post', assert, function(data) { 
-					var id = data[0].id;
+					var id = data.id;
 					callApi('/manga', 'get', assert, function(data) { 
 						assert.equal( data.length, len+1, (len+1) + " mangas" );				
 						done();
 					});
 
 					callApi('/manga/' + id, 'get', assert, function(data) { 
-						assert.equal( data[0].volume_possedes, "1-4,6,9-12", "volumes possedés: 1-4,6,9-12 mangas" );				
-						assert.equal( data[0].volume_max, "12", "volumes max: 12 mangas" );				
+						assert.equal( data.volume_possedes, "1-4,6,9-12", "volumes possedés: 1-4,6,9-12 mangas" );				
+						assert.equal( data.volume_max, "12", "volumes max: 12 mangas" );				
 						done();
 					});					
 				}, valideData);	
@@ -210,12 +211,12 @@
 			var done = assert.async( 1 );
 
 				callApi('/manga', 'post', assert, function(data) { 
-					var id = data[0].id;
+					var id = data.id;
 					callApi('/manga/' + id, 'get', assert, function(data) { 
-						assert.equal( data[0].titre, valideData.titre, "Titre: " + valideData.titre );
+						assert.equal( data.titre, valideData.titre, "Titre: " + valideData.titre );
 						callApi('/manga/' + id, 'put', assert, function(data) { 
 							callApi('/manga/' + id, 'get', assert, function(data) { 
-								assert.equal( data[0].titre, "test", "Titre: test" );			
+								assert.equal( data.titre, "test", "Titre: test" );			
 								done();
 							});
 						}, {'titre': 'test'});	
@@ -229,7 +230,7 @@
 			var done = assert.async( 1 );
 
 			callApi('/manga', 'post', assert, function(data) { 
-				var id = data[0].id;
+				var id = data.id;
 				callApi('/manga', 'get', assert, function(data) { 
 					var len = data.length;
 					callApi('/manga/' + id, 'delete', assert, function(data) { 

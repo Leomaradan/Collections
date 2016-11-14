@@ -27,20 +27,20 @@ class CommonsDAO extends CollectionsDAO {
         }
     }
 
-    public function getByGenre($genre) {
-        return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE genre_id = ?", [$genre]);
+    public function getByGenre($genre) {    	
+        return $this->requestMultiple($this->getQuery("genre_id = ?"), [$genre]);
     }
 
     public function getByAuteur($auteur) {
-        return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE auteurs_id LIKE ?", ['%|' . $auteur . '|%']);
+    	return $this->requestMultiple($this->getQuery("auteurs_id LIKE ?"), ['%|' . $auteur . '|%']);
     }
 
     public function getBySerie($serie) {
-        return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE serie_id = ?", [$serie]);
+    	return $this->requestMultiple($this->getQuery("serie_id = ?"), [$serie]);
     }
 
     public function getByNullSerie() {
-        return $this->requestMultiple("SELECT SQL_CACHE * FROM {$this->view} WHERE serie_id IS NULL");
+    	return $this->requestMultiple($this->getQuery("serie_id IS NULL"));
     }
 
     public function create($data, $extraData = null) {
@@ -237,27 +237,11 @@ class CommonsDAO extends CollectionsDAO {
     public function getSerie() {
         $serie = new SerieDAO($this);
         return ['data' => $serie->getByType($this->types)];
-        /* if(isset($this->types)) {
-          $types = implode("','",$this->types);
-          $sql = "SELECT SQL_CACHE `s`.* FROM `collections_serie` AS s LEFT JOIN `collections_type` AS t ON (s.type_id = t.id) WHERE t.nom IN ('$types') OR s.type_id IS NULL;";
-          } else {
-          $sql = "SELECT SQL_CACHE `s`.* FROM `collections_serie` AS s LEFT JOIN `collections_type` AS t ON (s.type_id = t.id);";
-          }
-
-          return $this->requestMultiple($sql); */
     }
 
     public function getGenre() {
         $genre = new GenreDAO($this);
         return ['data' => $genre->getByType($this->types)];
-        /* if(isset($this->types)) {
-          $types = implode("','",$this->types);
-          $sql = "SELECT SQL_CACHE `g`.* FROM `collections_genre` AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id) WHERE t.nom IN ('$types') OR g.type_id IS NULL;";
-          } else {
-          $sql = "SELECT SQL_CACHE `g`.* FROM `collections_genre` AS g LEFT JOIN `collections_type` AS t ON (g.type_id = t.id);";
-          }
-
-          return $this->requestMultiple($sql); */
     }
 
     public function getGenreAttribute($value, $array) {

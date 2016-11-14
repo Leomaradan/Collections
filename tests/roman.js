@@ -98,7 +98,7 @@
 		var done = assert.async( 1 );
 
 		callApi('/roman', 'get', assert, function(data) { 
-			assert.equal( data[0].auteurs[0].nom, "Isaac Asimov", "Auteur: Isaac Asimov" );
+			assert.equal( data[1].auteurs[0].nom, "Isaac Asimov", "Auteur: Isaac Asimov" );
 			done();
 		});
 	});
@@ -109,8 +109,8 @@
 		var done = assert.async( 1 );
 
 		callApi('/roman/1', 'get', assert, function(data) { 
-			assert.equal( data.length, 1, "1 romans avec l'id 1" );
-			assert.equal( data[0].auteurs[0].nom, "Isaac Asimov", "Auteur: Isaac Asimov" );
+			assert.equal( data.id, 1, "1 romans avec l'id 1" );
+			assert.equal( data.auteurs[0].nom, "Isaac Asimov", "Auteur: Isaac Asimov" );
 			done();
 		});	
 	});
@@ -158,9 +158,10 @@
 
 		callApi('/roman/info/genre', 'get', assert, function(data) { 
 			assert.equal( data.length, 4, "4 genres possibles" );
-			assert.equal( data[1].nom, "Science-Fiction", "2ème genre: Science-Fiction" );
+			assert.equal( data[1].nom, "Livre en anglais", "2ème genre: Livre en anglais" );				
 			assert.equal( data[2].nom, "Roman Policier", "3ème genre: Roman Policier" );
-			assert.equal( data[3].nom, "Livre en anglais", "4ème genre: Livre en anglais" );
+			assert.equal( data[3].nom, "Science-Fiction", "4ème genre: Science-Fiction" );
+
 			done();
 		});			
 	});
@@ -398,12 +399,12 @@
 		var done = assert.async( 2 );
 
 			callApi('/roman', 'post', assert, function(data) { 
-				var id = data[0].id;
+				var id = data.id;
 				callApi('/roman/' + id, 'get', assert, function(data) { 
-					assert.equal( data[0].titre, valideData1.titre, "Titre: " + valideData1.titre );
+					assert.equal( data.titre, valideData1.titre, "Titre: " + valideData1.titre );
 					callApi('/roman/' + id, 'put', assert, function(data) { 
 						callApi('/roman/' + id, 'get', assert, function(data) { 
-							assert.equal( data[0].titre, "test", "Titre: test" );			
+							assert.equal( data.titre, "test", "Titre: test" );			
 							done();
 						});
 					}, {'titre': 'test'});	
@@ -411,11 +412,11 @@
 			}, valideData1);	
 
 			callApi('/roman', 'post', assert, function(data) { 
-				var id2 = data[0].id;
+				var id2 = data.id;
 				callApi('/roman/' + id2, 'get', assert, function(data) { 
 					callApi('/roman/' + id2, 'put', assert, function(data) { 
 						callApi('/roman/' + id2, 'get', assert, function(data) { 
-							assert.equal( data[0].auteurs[0].nom, "Jack Vance", "Auteur: Jack Vance" );			
+							assert.equal( data.auteurs[0].nom, "Jack Vance", "Auteur: Jack Vance" );			
 							done();
 						});
 					}, {'auteurs_new': [{nom: 'Jack Vance'}]});	
@@ -429,7 +430,7 @@
 		var done = assert.async( 1 );
 
 		callApi('/roman', 'post', assert, function(data) { 
-			var id = data[0].id;
+			var id = data.id;
 			callApi('/roman', 'get', assert, function(data) { 
 				var len = data.length;
 				callApi('/roman/' + id, 'delete', assert, function(data) { 

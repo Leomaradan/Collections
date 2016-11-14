@@ -37,34 +37,11 @@ abstract class CollectionsDAO extends ConnecteurDAO {
     }
 
     public function getAll($pagination) {
-        $paginateRequest = '';
         $paginate = false;
         $result = [];
 
-        if (isset($pagination['perPage'])) {
-            $paginate = true;
-            $perPage = $pagination['perPage'];
-            //if($pagination['page'] > 0) {
-            $offset = $perPage * $pagination['page'];
-            $paginateRequest = "LIMIT $offset,$perPage";
-            /* } else {
-              $paginateRequest = "LIMIT $perPage";
-              } */
-        }
 
-        $add_fields = '';
-
-        if ($this->supfield !== null) {
-            if (!is_array($this->supfield)) {
-                $this->supfield = [$this->supfield];
-            }
-
-            foreach ($this->supfield as $supfield) {
-                $add_fields .= ",'' as $supfield";
-            }
-        }
-
-        $result['data'] = $this->requestMultiple("SELECT SQL_CACHE * $add_fields FROM {$this->view} ORDER BY {$this->titleField} $paginateRequest");
+        $result['data'] = $this->requestMultiple($this->getQuery());
 
         if ($paginate) {
             $result['pagination'] = [];
@@ -95,7 +72,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
             }
         }
 
-        $result = ['data' => $this->requestSingle("SELECT SQL_CACHE * $add_fields FROM {$this->view} WHERE id = ? LIMIT 1", [$id])];
+        $result = ['data' => $this->requestSingle($this->getQuery("id = ?", true), [$id])];
 
         return $result;
     }
@@ -136,7 +113,46 @@ abstract class CollectionsDAO extends ConnecteurDAO {
             }
         }
 
-        return $this->requestMultiple("SELECT SQL_CACHE * $add_fields  FROM {$this->view} WHERE $q; ORDER BY {$this->titleField}", $args);
+        return $this->requestMultiple($this->getQuery($q), $args);
+    }
+
+    protected function getQuery($where = null, $single = false) {
+
+        $paginateRequest = '';
+        $whereRequest = '';
+
+        if($single) {
+        	$paginateRequest = "LIMIT 1";
+        }
+
+        if (isset($pagination['perPage'])) {
+            $perPage = $pagination['perPage'];
+            //if($pagination['page'] > 0) {
+            $offset = $perPage * $pagination['page'];
+            $paginateRequest = "LIMIT $offset,$perPage";
+            /* } else {
+              $paginateRequest = "LIMIT $perPage";
+              } */
+        }
+
+        if($where !== null) {
+			$whereRequest = "WHERE $where";
+        }
+
+
+        $add_fields = '';
+
+        if ($this->supfield !== null) {
+            if (!is_array($this->supfield)) {
+                $this->supfield = [$this->supfield];
+            }
+
+            foreach ($this->supfield as $supfield) {
+                $add_fields .= ",'' as $supfield";
+            }
+        }
+
+        return "SELECT SQL_CACHE * $add_fields FROM {$this->view} $whereRequest ORDER BY {$this->titleField} $paginateRequest";   	
     }
 
     public function create($data, $extraData = null) {
