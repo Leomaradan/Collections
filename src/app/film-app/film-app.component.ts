@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Film } from './film';
 import { FilmService } from './film.service';
@@ -20,7 +20,7 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
 
     features = Film.featuresList;
 
-    constructor(protected commonsService: FilmService, protected route: ActivatedRoute) {
+    constructor(protected commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 
@@ -37,15 +37,19 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
             if(genre) {
                 this.commonsService.getItemsByGenre(genre).then(films => {this.items = films; this.loading--});
                 this.filterBy = "genre";
+                this.cloneObject = {genre: genre};
             } else if (serie) {
                 this.commonsService.getItemsBySerie(serie).then(films => {this.items = films; this.loading--});
                 this.filterBy = "série";
+                this.cloneObject = {serie: serie};
             } else if (auteur) {
                 this.commonsService.getItemsByAuteur(auteur).then(films => {this.items = films; this.loading--});
                 this.filterBy = "auteur";
+                this.cloneObject = {auteur: auteur};
             } else if (format) {
                 this.commonsService.getItemsByFormat(format).then(films => {this.items = films; this.loading--});
-                this.filterBy = "auteur";
+                this.filterBy = "format";
+                this.cloneObject = {format: format};
             } else {
               this.commonsService.getAllItems().then(films => {this.items = films; this.loading--});
               this.filterBy = null;

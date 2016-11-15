@@ -11,7 +11,7 @@ import { CommonsDetailsComponent } from '../commons/';
 @Component({
   selector: 'manga-details',
   templateUrl: '../commons/views/details.component.html',
-  styleUrls: ['../commons/views/details.component.css'],
+  styleUrls: ['../commons/views/details.component.css', '../commons/views/shared.css'],
   providers: [MangaService]
 })
 export class MangaDetailsComponent extends CommonsDetailsComponent<Manga> implements OnInit {
@@ -27,13 +27,7 @@ export class MangaDetailsComponent extends CommonsDetailsComponent<Manga> implem
 
       
   ngOnInit() {
-    this.route.params.forEach((params: Params) => {
-      let id = +params['id'];
-      this.commonsService.getItemById(id)
-        .then(data => {
-            this.item = data
-        });
-    });
+      this.init();
   }
   
 }

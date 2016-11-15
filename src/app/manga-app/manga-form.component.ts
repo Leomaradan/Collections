@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
-import { CompleterService, CompleterData } from 'ng2-completer';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CompleterService } from 'ng2-completer';
 
 import { Manga } from './manga';
 import { MangaService } from './manga.service';
@@ -10,7 +10,7 @@ import { CommonsFormComponent } from '../commons';
 @Component({
     selector: 'manga-form',
     templateUrl: '../commons/views/form.component.html',
-    styleUrls: ['../commons/views/form.component.css'],
+    styleUrls: ['../commons/views/form.component.css', '../commons/views/shared.css'],
     providers: [MangaService]
 })
 export class MangaFormComponent extends CommonsFormComponent<Manga> implements OnInit {
@@ -27,25 +27,22 @@ export class MangaFormComponent extends CommonsFormComponent<Manga> implements O
                 protected completerService: CompleterService) {
         super();
     }
+    
+    initNewItem() {
+        this.item = <any>new Manga({
+            titre: '',
+            genre: null,
+            volume_max: 1,
+            volumes:  [],
+            listVolumeMax: [1],
+            auteurs: []
+        });
+        this.initLists();
+
+    }
 
     ngOnInit() {
-        this.route.params.forEach((params: Params) => {
-            let id = +params['id'];
-            if (id) {
-                this.initItem(id);
-            } else {
-                this.item = <any>new Manga({
-                    titre: '',
-                    genre: null,
-                    volume_max: 1,
-                    volumes:  [],
-                    listVolumeMax: [1],
-                    auteurs: []
-                });
-                this.initLists();
-            }
-
-        });
+        this.init();
     }
     
     volumeMaxChanged() {

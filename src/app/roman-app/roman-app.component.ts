@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Roman } from './roman';
 import { RomanService } from './roman.service';
@@ -21,7 +21,7 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
 
     features = Roman.featuresList;  
 
-  constructor(protected commonsService: RomanService, protected route: ActivatedRoute) {
+  constructor(protected commonsService: RomanService, protected route: ActivatedRoute, protected router: Router) {
     super();
   }
     
@@ -37,12 +37,15 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
       if(genre) {
           this.commonsService.getItemsByGenre(genre).then(romans => {this.items = romans; this.loading--});
           this.filterBy = "genre";
+          this.cloneObject = {genre: genre};
       } else if (serie) {
           this.commonsService.getItemsBySerie(serie).then(romans => {this.items = romans; this.loading--});
           this.filterBy = "série";
+          this.cloneObject = {serie: serie};
       } else if (auteur) {
           this.commonsService.getItemsByAuteur(auteur).then(romans => {this.items = romans; this.loading--});
           this.filterBy = "auteur";
+          this.cloneObject = {auteur: auteur};
       } else {
         this.commonsService.getAllItems().then(romans => {this.items = romans; this.loading--});
         this.filterBy = null;

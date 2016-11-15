@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Bd } from './bd';
 import { BdService } from './bd.service';
@@ -21,7 +21,7 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
 
     features = Bd.featuresList;  
 
-  constructor(protected commonsService: BdService, protected route: ActivatedRoute) {
+  constructor(protected commonsService: BdService, protected route: ActivatedRoute, protected router: Router) {
     super();
   }
     
@@ -37,12 +37,15 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
       if(genre) {
           this.commonsService.getItemsByGenre(genre).then(bds => {this.items = bds; this.loading--});
           this.filterBy = "genre";
+          this.cloneObject = {genre: genre};
       } else if (serie) {
           this.commonsService.getItemsBySerie(serie).then(bds => {this.items = bds; this.loading--});
           this.filterBy = "série";
+          this.cloneObject = {serie: serie};
       } else if (auteur) {
           this.commonsService.getItemsByAuteur(auteur).then(bds => {this.items = bds; this.loading--});
           this.filterBy = "auteur";
+          this.cloneObject = {auteur: auteur};
       } else {
         this.commonsService.getAllItems().then(bds => {this.items = bds; this.loading--});
         this.filterBy = null;

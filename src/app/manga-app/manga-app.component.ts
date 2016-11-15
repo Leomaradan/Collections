@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Manga } from './manga';
 import { MangaService } from './manga.service';
@@ -21,7 +21,7 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
 
     features = Manga.featuresList;  
 
-  constructor(protected commonsService: MangaService, protected route: ActivatedRoute) {
+  constructor(protected commonsService: MangaService, protected route: ActivatedRoute, protected router: Router) {
     super();
   }
     
@@ -36,9 +36,11 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
       if(genre) {
           this.commonsService.getItemsByGenre(genre).then(mangas => {this.items = mangas; this.loading--});
           this.filterBy = "genre";
+          this.cloneObject = {genre: genre};
       } else if (auteur) {
           this.commonsService.getItemsByAuteur(auteur).then(mangas => {this.items = mangas; this.loading--});
           this.filterBy = "auteur";
+          this.cloneObject = {auteur: auteur};
       } else {
         this.commonsService.getAllItems().then(mangas => {this.items = mangas; this.loading--});
         this.filterBy = null;

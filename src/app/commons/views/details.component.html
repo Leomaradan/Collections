@@ -13,7 +13,7 @@
         <p *ngIf="features.indexOf('serie') !== -1 && item.serie">Série : <i>{{ item.serie.nom }}</i></p>
         <p>Auteur(s) : </p>
         <ul>
-            <li *ngFor="let auteur of item.auteurs">{{ auteur.nom }}</li>
+            <li *ngFor="let auteur of item.auteurs">{{ auteur.nom }}<button class="btn btn-success btn-right" (click)="cloneItem('auteur', auteur.id)"><span class="glyphicons glyphicons-plus-sign"></span></button></li>
         </ul>
         <p *ngIf="features.indexOf('volume') !== -1">Volume : <i>{{ item.volume }}</i></p>
         <p *ngIf="features.indexOf('volume_possedes') !== -1">Volume(s) possedés : <i>{{ item.volumes.length }}</i></p>
@@ -28,6 +28,7 @@
     </div>
     
     <a class="btn btn-primary" [routerLink]="['/'+appUrl+'/' + item.id + '/edit']">Editer</a>
+    <button class="btn btn-info" (click)="cloneItem()">Clone</button>
     <button class="btn btn-danger" (click)="deleteItem()">Supprimer</button>
     
 </div>

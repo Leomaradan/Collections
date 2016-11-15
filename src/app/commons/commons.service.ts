@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -19,7 +19,7 @@ export class CommonsService<T extends Commons> {
         'Manga': 'manga',
         'Bd': 'bd'
     };
-    
+        
     protected http: Http;
 
     //lastId: number = 0;
@@ -104,6 +104,14 @@ export class CommonsService<T extends Commons> {
             .then(response => this.factories(response.json().data))
             .catch(this.handleError);
     }
+    
+    getGenreById(id: number): Promise<Genre> {
+        let url = `api/genre/${id}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(response => this.factory(response.json().data))
+            .catch(this.handleError);
+    }    
 
     getSerieList(): Promise<Serie[]> {
         return this.http.get(this.itemsUrl + '/info/serie')
@@ -111,11 +119,27 @@ export class CommonsService<T extends Commons> {
             .then(response => this.factories(response.json().data))
             .catch(this.handleError);
     }
+    
+    getSerieById(id: number): Promise<Serie> {
+        let url = `api/serie/${id}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(response => this.factory(response.json().data))
+            .catch(this.handleError);
+    }    
 
     getAuteurList(): Promise<Auteur[]> {
         return this.http.get('api/auteur')
             .toPromise()
             .then(response => this.factories(response.json().data))
+            .catch(this.handleError);
+    }
+    
+    getAuteurById(id: number): Promise<Auteur> {
+        let url = `api/auteur/${id}`;
+        return this.http.get(url)
+            .toPromise()
+            .then(response => this.factory(response.json().data))
             .catch(this.handleError);
     }
 

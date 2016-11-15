@@ -10,7 +10,7 @@ import { CommonsDetailsComponent } from '../commons/';
 @Component({
     selector: 'film-details',
     templateUrl: '../commons/views/details.component.html',
-    styleUrls: ['../commons/views/details.component.css'],
+    styleUrls: ['../commons/views/details.component.css', '../commons/views/shared.css'],
     providers: [FilmService]
 })
 export class FilmDetailsComponent extends CommonsDetailsComponent<Film> implements OnInit {
@@ -25,13 +25,7 @@ export class FilmDetailsComponent extends CommonsDetailsComponent<Film> implemen
     }
 
     ngOnInit() {
-        this.route.params.forEach((params: Params) => {
-            let id = +params['id'];
-            this.commonsService.getItemById(id)
-                .then(data => {
-                    this.item = data;
-                });
-        });
+      this.init();
     }
 
 }

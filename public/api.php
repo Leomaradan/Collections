@@ -41,12 +41,6 @@ $json_middleware = function ($req, $res, $next) {
 
 $app->add($json_middleware);
 
-
-$app->get('/', function($request, $response) {
-	return $response->write('Salut les gens');
-});
-
-
 $types = [
     //'all' => 'Commons\CommonsController', 
     'bd' => 'Commons\BdController', 

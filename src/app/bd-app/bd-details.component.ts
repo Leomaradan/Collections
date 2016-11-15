@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 import { Bd } from './bd';
@@ -11,7 +11,7 @@ import { CommonsDetailsComponent } from '../commons/';
 @Component({
   selector: 'bd-details',
   templateUrl: '../commons/views/details.component.html',
-  styleUrls: ['../commons/views/details.component.css'],
+  styleUrls: ['../commons/views/details.component.css', '../commons/views/shared.css'],
   providers: [BdService]
 })
 export class BdDetailsComponent extends CommonsDetailsComponent<Bd> implements OnInit {
@@ -27,11 +27,7 @@ export class BdDetailsComponent extends CommonsDetailsComponent<Bd> implements O
 
       
   ngOnInit() {
-    this.route.params.forEach((params: Params) => {
-      let id = +params['id'];
-      this.commonsService.getItemById(id)
-        .then(data => this.item = data);
-    });
+      this.init();
   }
   
 }

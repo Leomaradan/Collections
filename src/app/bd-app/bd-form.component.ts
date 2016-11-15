@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CompleterService } from 'ng2-completer';
 
 import { Bd } from './bd';
@@ -10,7 +10,7 @@ import { CommonsFormComponent } from '../commons';
 @Component({
     selector: 'bd-form',
     templateUrl: '../commons/views/form.component.html',
-    styleUrls: ['../commons/views/form.component.css'],
+    styleUrls: ['../commons/views/form.component.css', '../commons/views/shared.css'],
     providers: [BdService]
 })
 export class BdFormComponent extends CommonsFormComponent<Bd> implements OnInit {
@@ -31,24 +31,20 @@ export class BdFormComponent extends CommonsFormComponent<Bd> implements OnInit 
         super();
     }
 
-    ngOnInit() {
-        this.route.params.forEach((params: Params) => {
-            let id = +params['id'];
-            if (id) {
-                this.initItem(id);
-            } else {
-                this.item = <any>new Bd({
-                    titre: '',
-                    serie: null,
-                    genre: null,
-                    volume: null,
-                    auteurs: []
-                });
-                this.serieSwitcher = "null";
-                this.initLists();  
-            }
-
+    initNewItem() {
+        this.item = <any>new Bd({
+            titre: '',
+            serie: null,
+            genre: null,
+            volume: null,
+            auteurs: []
         });
+
+        this.initLists();    
+    }
+    
+    ngOnInit() {
+        this.init();
     }
 
 }

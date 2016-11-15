@@ -1,5 +1,5 @@
 import { Serie, Genre, Auteur, Commons, CommonsService } from '.';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { CompleterService, CompleterData } from 'ng2-completer';
 
@@ -24,14 +24,18 @@ export abstract class CommonsFormComponent<T extends Commons> {
     
     formErrors: string[];
 
-    genreSwitcherNew: boolean = false;
-    serieSwitcher: string;
+    //genreSwitcherNew: boolean = false;
+    //serieSwitcher: string;
 
     protected commonsService: CommonsService<T>;
     protected router: Router;
+    protected route: ActivatedRoute;
     
     protected completerService: CompleterService;
-    protected dataService: CompleterData;
+    
+    protected auteurDataService: CompleterData;
+    protected genreDataService: CompleterData;
+    protected serieDataService: CompleterData;
     
     loading: boolean = false;
     
@@ -39,9 +43,9 @@ export abstract class CommonsFormComponent<T extends Commons> {
         
         this.addGenre(this.genreDisplay);
         
-        if (this.features.indexOf('serie') !== -1) {
+        /*if (this.features.indexOf('serie') !== -1) {
             this.addSerie((<any>this).serieDisplay);
-        }
+        }*/
         
         if (this.features.indexOf('volume_possedes') !== -1) {
             //this.addSerie((<any>this).serieDisplay);
@@ -93,6 +97,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
         }
 
         (<any>this.item).serie = serie[0];
+        (<any>this.item).serieVolumeMax = serie[0].volume_max;
     }
 
     addAuteur(nom: string) {
@@ -112,15 +117,6 @@ export abstract class CommonsFormComponent<T extends Commons> {
         }
 
     }
-
-    /*addAuteurList() {
-        console.log(this.auteurSelect);
-        this.addAuteur(this.auteurSelect.nom);
-    }
-    addAuteurNew() {
-        this.addAuteur(this.auteurNew);
-        this.auteurNew = null;
-    }*/
     
     addAuteurAutocomplete(value: string) {
         this.addAuteur(value)
@@ -135,24 +131,99 @@ export abstract class CommonsFormComponent<T extends Commons> {
 
     }
 
-    switchSerie(id: string, checked: boolean) {
+    switchSerie(value: string) {
+        this.addSerie(value);
+    }
+
+    /*switchSerieOld(id: string, checked: boolean) {
         if (checked) {
             this.serieSwitcher = id;
             if (id == 'null') {
                 (<any>this).serieDisplay = '';
             }
         }
-    }
+    }*/
 
     initLists() {
-        this.commonsService.getGenreList().then(data => this.listGenre = data);
-        this.commonsService.getSerieList().then(data => this.listSerie = data);
+        this.commonsService.getGenreList().then(data => {
+            this.listGenre = data
+            this.genreDataService = this.completerService.local(this.listGenre, 'nom', 'nom'); 
+        });
+        this.commonsService.getSerieList().then(data => {
+            this.listSerie = data;
+            this.serieDataService = this.completerService.local(this.listSerie, 'nom', 'nom'); 
+        });
         this.commonsService.getAuteurList().then(data => {
             this.listAuteur = data
             //this.auteurSelect = data[0];
-            this.dataService = this.completerService.local(this.listAuteur, 'nom', 'nom');  
+            this.auteurDataService = this.completerService.local(this.listAuteur, 'nom', 'nom');  
         });  
     }
+    
+    init(): void {
+        this.route.params.forEach((params: Params) => {
+            let id = +params['id'];
+            let clone = +params['clone'];
+            if (id) {
+                this.initItem(id);
+            } else {
+                if(clone) {
+                    this.initItem(id);
+                    this.item.id = null;
+                } else {
+                    this.initNewItem();
+                    
+                    let titre = params['titre'];
+                    let serie = params['serie'];
+                    let genre = params['genre'];
+                    let volume = +params['volume'];
+                    let auteur = +params['auteur'];
+                    let format = params['format'];
+
+                    if(titre) {
+                        this.item.titre = titre;
+                    }
+                    
+                    if(serie) {
+                        if(serie == "null") {
+                            (<any>this.item).serie = null;
+                            //(<any>this).serieSwitcher = "null";
+                            (<any>this).serieDisplay = "";
+                        } else {
+                            this.commonsService.getSerieById(serie).then(serie => {
+                                (<any>this.item).serie = serie;
+                                (<any>this).serieDisplay = serie.nom;
+                                //(<any>this).serieSwitcher = "list";
+                                //(<any>this).serieDisplay = serie.nom;
+                                (<any>this).serieVolumeMax = serie.volume_max;                                
+                            });
+                        }
+                    }
+                    
+                    if(genre) {
+                        this.commonsService.getGenreById(genre).then(genre => {this.item.genre = genre; this.genreDisplay = this.item.genre.nom;});
+                    }  
+                    
+                    if(volume) {
+                        (<any>this.item).volume = volume;
+                    }    
+                    
+                    if(format) {
+                        (<any>this.item).format = format;
+                    }                                                            
+
+                    if(auteur) {
+                        this.commonsService.getAuteurById(auteur).then(auteur => this.item.auteurs.push(auteur));
+                    }
+                    
+                  
+                }
+            }
+
+        });        
+    }
+    
+    abstract initNewItem(): void;
 
     initItem(id: number) {
 
