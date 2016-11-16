@@ -168,8 +168,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
                 this.initItem(id);
             } else {
                 if(clone) {
-                    this.initItem(clone);
-                    this.item.id = null;
+                    this.initItem(clone).then(() => this.item.id = null);
                 } else {
                     this.initNewItem();
                     
@@ -222,9 +221,9 @@ export abstract class CommonsFormComponent<T extends Commons> {
     
     abstract initNewItem(): void;
 
-    initItem(id: number) {
+    initItem(id: number): Promise<T> {
 
-        this.commonsService.getItemById(id).then(data => {
+        let promise = this.commonsService.getItemById(id).then(data => {
             if(data.id == undefined) {
                 this.item = <T>new Commons();
                 return;
@@ -249,7 +248,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
         });
         
         this.initLists();
-
+        return promise;
     }
 
 

@@ -60435,8 +60435,7 @@ var CommonsFormComponent = (function () {
             }
             else {
                 if (clone) {
-                    _this.initItem(clone);
-                    _this.item.id = null;
+                    _this.initItem(clone).then(function () { return _this.item.id = null; });
                 }
                 else {
                     _this.initNewItem();
@@ -60480,7 +60479,7 @@ var CommonsFormComponent = (function () {
     };
     CommonsFormComponent.prototype.initItem = function (id) {
         var _this = this;
-        this.commonsService.getItemById(id).then(function (data) {
+        var promise = this.commonsService.getItemById(id).then(function (data) {
             if (data.id == undefined) {
                 _this.item = new __WEBPACK_IMPORTED_MODULE_0____["a" /* Commons */]();
                 return;
@@ -60501,6 +60500,7 @@ var CommonsFormComponent = (function () {
             _this.genreDisplay = _this.item.genre.nom;
         });
         this.initLists();
+        return promise;
     };
     return CommonsFormComponent;
 }());
