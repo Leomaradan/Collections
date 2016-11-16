@@ -60435,7 +60435,7 @@ var CommonsFormComponent = (function () {
             }
             else {
                 if (clone) {
-                    _this.initItem(id);
+                    _this.initItem(clone);
                     _this.item.id = null;
                 }
                 else {
@@ -60452,15 +60452,12 @@ var CommonsFormComponent = (function () {
                     if (serie) {
                         if (serie == "null") {
                             _this.item.serie = null;
-                            //(<any>this).serieSwitcher = "null";
                             _this.serieDisplay = "";
                         }
                         else {
                             _this.commonsService.getSerieById(serie).then(function (serie) {
                                 _this.item.serie = serie;
                                 _this.serieDisplay = serie.nom;
-                                //(<any>this).serieSwitcher = "list";
-                                //(<any>this).serieDisplay = serie.nom;
                                 _this.serieVolumeMax = serie.volume_max;
                             });
                         }

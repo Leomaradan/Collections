@@ -168,7 +168,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
                 this.initItem(id);
             } else {
                 if(clone) {
-                    this.initItem(id);
+                    this.initItem(clone);
                     this.item.id = null;
                 } else {
                     this.initNewItem();
@@ -187,14 +187,11 @@ export abstract class CommonsFormComponent<T extends Commons> {
                     if(serie) {
                         if(serie == "null") {
                             (<any>this.item).serie = null;
-                            //(<any>this).serieSwitcher = "null";
                             (<any>this).serieDisplay = "";
                         } else {
                             this.commonsService.getSerieById(serie).then(serie => {
                                 (<any>this.item).serie = serie;
                                 (<any>this).serieDisplay = serie.nom;
-                                //(<any>this).serieSwitcher = "list";
-                                //(<any>this).serieDisplay = serie.nom;
                                 (<any>this).serieVolumeMax = serie.volume_max;                                
                             });
                         }
