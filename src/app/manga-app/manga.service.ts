@@ -20,10 +20,10 @@ export class MangaService extends CommonsService<Manga> {
     }
     
     getAllItems(page: number = 0): Promise<{data: Manga[], pagination: any}> {    
-        return super.getAllItems(page).then(mangas => Manga.addVolumesLists(mangas.data));
+        return super.getAllItems(page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
     }    
     
     protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<{data: Manga[], pagination: any}> {
-        return super.getItemsByFilter(id, filter, page).then(mangas => Manga.addVolumesLists(mangas.data));
+        return super.getItemsByFilter(id, filter, page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
     }
 }
