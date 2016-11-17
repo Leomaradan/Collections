@@ -5,8 +5,8 @@ export class Commons {
     titre: string;
     genre: Genre;
     auteurs: Auteur[];
-    //couverture: string;
-    
+    couverture: string;
+
     static featuresList: string[];
     static featuresDetails: string[];
     static featuresForm: string[];
@@ -17,5 +17,13 @@ export class Commons {
 
     get auteurs_display() {
         return this.auteurs.join(',');
+    }
+    
+    getCouverture() {
+        if(this.couverture) {
+            return this.couverture;
+        } else {
+            return 'assets/unknown_cover.png';
+        }
     }    
 }

@@ -1,4 +1,4 @@
-import { Serie, Genre, Auteur, Commons, CommonsService } from '.';
+import { Serie, Genre, Auteur, Commons, CommonsService, Errors } from '.';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { CompleterService, CompleterData } from 'ng2-completer';
@@ -22,7 +22,8 @@ export abstract class CommonsFormComponent<T extends Commons> {
     listGenre: Genre[];
     listSerie: Serie[];
     
-    formErrors: string[];
+    //formErrors: {} = {};
+    formErrors: Errors = new Errors();
 
     //genreSwitcherNew: boolean = false;
     //serieSwitcher: string;
@@ -41,7 +42,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
     
     saveItem() {
         
-        this.addGenre(this.genreDisplay);
+        //this.addGenre(this.genreDisplay);
         
         /*if (this.features.indexOf('serie') !== -1) {
             this.addSerie((<any>this).serieDisplay);
@@ -60,14 +61,18 @@ export abstract class CommonsFormComponent<T extends Commons> {
                     this.loading = false;
                     this.router.navigate(['/'+this.appUrl, item.id]);
                 })
-                .catch(error => { this.formErrors = JSON.parse(error._body); this.loading = false;});
+                .catch(error => { 
+                    this.formErrors.setErrors(JSON.parse(error._body)); 
+                    //this.formErrors = JSON.parse(error._body); 
+                    this.loading = false;
+                });
         } else {
             this.commonsService.addItem(this.item)
                 .then((item) => {
                     this.loading = false;
                     this.router.navigate(['/'+this.appUrl, item.id]);
                 })
-                .catch(error => { this.formErrors = [error._body]; this.loading = false;});
+                .catch(error => { this.formErrors.setErrors(JSON.parse(error._body));  this.loading = false;});
         }
     }
 
@@ -131,9 +136,9 @@ export abstract class CommonsFormComponent<T extends Commons> {
 
     }
 
-    switchSerie(value: string) {
+    /*switchSerie(value: string) {
         this.addSerie(value);
-    }
+    }*/
 
     /*switchSerieOld(id: string, checked: boolean) {
         if (checked) {

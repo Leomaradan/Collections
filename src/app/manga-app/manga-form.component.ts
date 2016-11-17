@@ -10,7 +10,7 @@ import { CommonsFormComponent } from '../commons';
 @Component({
     selector: 'manga-form',
     templateUrl: '../commons/views/form.component.html',
-    styleUrls: ['../commons/views/form.component.css', '../commons/views/shared.css'],
+    styleUrls: ['../commons/views/form.component.scss'],
     providers: [MangaService]
 })
 export class MangaFormComponent extends CommonsFormComponent<Manga> implements OnInit {

@@ -8,3 +8,15 @@
     position: fixed;
     transform: translate(-50%, 0%); 
 }
+
+.list_couverture  {
+    
+    padding-top: 0;
+    padding-bottom: 0;
+    
+    img {
+        height: 80px;    
+    }
+}
+
+@import "shared";

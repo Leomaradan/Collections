@@ -26,3 +26,9 @@
     transform: translate(-50%, -50%);    
     z-index: 100;
 }
+
+.alert-list {
+    list-style: none;
+}
+
+@import "shared";

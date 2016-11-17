@@ -11,7 +11,7 @@ import { CommonsDetailsComponent } from '../commons/';
 @Component({
   selector: 'manga-details',
   templateUrl: '../commons/views/details.component.html',
-  styleUrls: ['../commons/views/details.component.css', '../commons/views/shared.css'],
+  styleUrls: ['../commons/views/details.component.scss'],
   providers: [MangaService]
 })
 export class MangaDetailsComponent extends CommonsDetailsComponent<Manga> implements OnInit {

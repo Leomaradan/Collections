@@ -10,7 +10,7 @@ import { CommonsDetailsComponent } from '../commons/';
 @Component({
     selector: 'film-details',
     templateUrl: '../commons/views/details.component.html',
-    styleUrls: ['../commons/views/details.component.css', '../commons/views/shared.css'],
+    styleUrls: ['../commons/views/details.component.scss'],
     providers: [FilmService]
 })
 export class FilmDetailsComponent extends CommonsDetailsComponent<Film> implements OnInit {
@@ -26,6 +26,11 @@ export class FilmDetailsComponent extends CommonsDetailsComponent<Film> implemen
 
     ngOnInit() {
       this.init();
+    }
+    
+    getIcon(formatValue: string) {
+        let format = Film.listFormat.filter(f => f.value === formatValue)[0];
+        return `assets/${format.icon}.svg`;;
     }
 
 }

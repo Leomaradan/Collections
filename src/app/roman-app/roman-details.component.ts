@@ -11,7 +11,7 @@ import { CommonsDetailsComponent } from '../commons/';
 @Component({
   selector: 'roman-details',
   templateUrl: '../commons/views/details.component.html',
-  styleUrls: ['../commons/views/details.component.css', '../commons/views/shared.css'],
+  styleUrls: ['../commons/views/details.component.scss'],
   providers: [RomanService]
 })
 export class RomanDetailsComponent extends CommonsDetailsComponent<Roman> implements OnInit {

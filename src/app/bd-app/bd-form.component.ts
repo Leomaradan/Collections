@@ -10,7 +10,7 @@ import { CommonsFormComponent } from '../commons';
 @Component({
     selector: 'bd-form',
     templateUrl: '../commons/views/form.component.html',
-    styleUrls: ['../commons/views/form.component.css', '../commons/views/shared.css'],
+    styleUrls: ['../commons/views/form.component.scss'],
     providers: [BdService]
 })
 export class BdFormComponent extends CommonsFormComponent<Bd> implements OnInit {

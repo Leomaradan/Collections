@@ -11,4 +11,5 @@ export class Roman extends Commons {
         static featuresList = ["serie", "volume"];
         static featuresDetails = ["serie", "volume"];
         static featuresForm = ["serie", "volume"];        
+
 }

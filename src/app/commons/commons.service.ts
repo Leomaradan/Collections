@@ -11,9 +11,11 @@ export class CommonsService<T extends Commons> {
     private itemsUrl = 'api/roman';
     private headers = new Headers({ 'Content-Type': 'application/json' });
     
-    protected pagination: number = null;
+    public pagination: number = 5;
+    public paginationResponse: any;
+
     
-    private urls = {
+    private urls: {[key:string]:string} = {
         'Roman': 'roman',
         'Film': 'film',
         'Manga': 'manga',
@@ -63,18 +65,26 @@ export class CommonsService<T extends Commons> {
     }
 
     // GET /roman
-    getAllItems(page: number = 0): Promise<T[]> {
+    getAllItems(page: number = 0): Promise<{data: T[], pagination: any}> {
         let url = this.itemsUrl;
         if (this.pagination !== null) {
             url += '?page='+page+'&pagination='+this.pagination;
         }
         return this.http.get(url)
             .toPromise()
-            .then(response => this.factories(response.json().data))
+            .then(response => {
+                let res = response.json();
+                if(res.pagination !== undefined) {
+                    this.paginationResponse = res.pagination;
+                    this.paginationResponse.currentPage = page;
+                    console.log(this.paginationResponse);
+                }
+                return {data: this.factories(res.data), pagination: this.paginationResponse};
+            })
             .catch(this.handleError);
     }
 
-    // GET /roman/:id
+        // GET /roman/:id
     getItemById(id: number): Promise<T> {
         let url = `${this.itemsUrl}/${id}`;
         return this.http.get(url)
@@ -84,18 +94,18 @@ export class CommonsService<T extends Commons> {
     }
 
     // GET /roman/genre/:genre
-    getItemsByGenre(genre: number): Promise<T[]> {
-        return this.getItemsByFilter(genre, 'genre');
+    getItemsByGenre(genre: number, page: number = 0): Promise<{data: T[], pagination: any}> {
+        return this.getItemsByFilter(genre, 'genre', page);
     }
 
     // GET /roman/serie/:serie
-    getItemsBySerie(serie: number): Promise<T[]> {
-        return this.getItemsByFilter(serie, 'serie');
+    getItemsBySerie(serie: number, page: number = 0): Promise<{data: T[], pagination: any}> {
+        return this.getItemsByFilter(serie, 'serie', page);
     }
 
     // GET /roman/serie/:serie
-    getItemsByAuteur(auteur: number): Promise<T[]> {
-        return this.getItemsByFilter(auteur, 'auteur');
+    getItemsByAuteur(auteur: number, page: number = 0): Promise<{data: T[], pagination: any}> {
+        return this.getItemsByFilter(auteur, 'auteur', page);
     }
 
     getGenreList(): Promise<Genre[]> {
@@ -143,11 +153,23 @@ export class CommonsService<T extends Commons> {
             .catch(this.handleError);
     }
 
-    protected getItemsByFilter(id: any, filter: string): Promise<T[]> {
+    protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<{data: T[], pagination: any}> {
         let url = `${this.itemsUrl}/${filter}/${id}`;
+        if (this.pagination !== null) {
+            url += '?page='+page+'&pagination='+this.pagination;
+        }        
         return this.http.get(url)
             .toPromise()
-            .then(response => this.factories(response.json()))
+            .then(response => {
+
+                let res = response.json();
+                
+                if(res.pagination !== undefined) {
+                    this.paginationResponse = res.pagination;
+                    console.log(this.paginationResponse);
+                }
+                return {data: this.factories(res.data), pagination: this.paginationResponse};                
+             })
             .catch(this.handleError);
     }
 

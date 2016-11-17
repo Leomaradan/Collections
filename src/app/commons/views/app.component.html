@@ -14,19 +14,29 @@
 <button *ngIf="filterBy" class="btn btn-success" (click)="cloneItem()">Ajouter ({{ filterBy }})</button>
 <table class="table">
     <tr>
-        <th>Titre</th>
+        <th colspan="2">Titre</th>
         <th>Genre</th>
         <th *ngIf="features.indexOf('serie') !== -1">Série</th>
         <th>Auteur(s)</th>
-        <th *ngIf="features.indexOf('format') !== -1">Format</th>
-        <th *ngIf="features.indexOf('volume_possedes') !== -1">Format</th>
+        <th *ngIf="features.indexOf('volume_possedes') !== -1">Volumes</th>
     </tr>
-    <tr *ngFor="let item of items">
-        <td><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a></td>
+    <tr *ngFor="let item of items.data">
+        <td class="list_couverture"><img [src]="item.getCouverture()" /></td>
+        <td><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a><span *ngIf="features.indexOf('format') !== -1">
+                <a *ngFor="let format of item.format" [routerLink]="['/'+appUrl+'/format/'+format]"><img [src]="getIcon(format)" class="format_icon" /></a>
+            </span></td>
         <td><a [routerLink]="['/'+appUrl+'/genre/'+item.genre.id]">{{ item.genre.nom }}</a></td>
         <td *ngIf="features.indexOf('serie') !== -1"><a *ngIf="item.serie" [routerLink]="['/'+appUrl+'/serie/'+item.serie.id]">{{ item.serie.nom }}</a></td>
         <td class="app_list"><span *ngFor="let auteur of item.auteurs"><a [routerLink]="['/'+appUrl+'/auteur/'+auteur.id]">{{ auteur.nom }}</a></span></td>
-        <td *ngIf="features.indexOf('format') !== -1" class="app_list"><span *ngFor="let format of item.format"><a [routerLink]="['/'+appUrl+'/format/'+format]">{{ format }}</a></span></td>
         <td *ngIf="features.indexOf('volume_possedes') !== -1">{{ item.volumes.length }} / {{ item.volume_max }}</td>
     </tr>
 </table>
+
+<ngb-pagination *ngIf="items.pagination.nb_pages" 
+    [collectionSize]="items.pagination.nb_items" 
+    [(page)]="items.pagination.page" 
+    [pageSize]="items.pagination.perPage"
+    [maxSize]="5" 
+    [rotate]="true" 
+    [boundaryLinks]="true"
+    (pageChange)="pageChange($event)"></ngb-pagination>

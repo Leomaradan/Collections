@@ -46,23 +46,23 @@ h6, .h6 {
 }
 
 /* Nav links */
-.nav-link {
+.nav-item a {
   position: relative;
   padding: 1rem;
   font-weight: 500;
   color: #cdddeb;
 }
-.nav-link:hover,
-.nav-link:focus {
+.nav-item a:hover,
+.nav-item a:focus {
   color: #fff;
-  background-color: transparent;
+  /*background-color: transparent;*/
 }
 
 /* Active state gets a caret at the bottom */
-.nav-link.active {
+.nav-item.active a, .navbar-toggler {
   color: #fff;
 }
-.nav-link.active:after {
+.nav-item.active a:after {
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -74,6 +74,21 @@ h6, .h6 {
   border-right: .3rem solid transparent;
   border-bottom: .3rem solid;
   border-left: .3rem solid transparent;
+}
+
+@media (max-width: 575px) {
+    
+.nav-item.active a:after {
+        top: 45%;
+        border-top: .3rem solid transparent;
+        border-left: .3rem solid;
+        border-bottom: .3rem solid transparent;
+
+        left: .3rem;
+        
+        border-right: none;
+        bottom: auto;
+    }
 }
 
 

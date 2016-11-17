@@ -13,6 +13,8 @@ import { BdModule } from './bd-app';
 import { MangaModule } from './manga-app';
 //import { RomanAppComponent } from './roman-app/roman-app.component';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 const routes: Routes = [
     /*{
         path: '',
@@ -28,7 +30,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent    
   ],
   imports: [
     BrowserModule,
@@ -38,7 +40,8 @@ const routes: Routes = [
     FilmModule,
     BdModule,
     MangaModule,
-    RouterModule.forRoot(routes, { useHash: true })
+    RouterModule.forRoot(routes, { useHash: true }),
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

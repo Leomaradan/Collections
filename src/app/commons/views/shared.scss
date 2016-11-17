@@ -26,3 +26,21 @@
 .btn-link .glyphicons {
     filter: invert(100%) sepia(100%) saturate(100) hue-rotate(165deg);
 }
+
+.format_icon {
+    height: 20px;
+}
+
+h1{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    white-space: nowrap;
+}
+
+.breadcrumb-item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 33%;
+    white-space: nowrap;
+}

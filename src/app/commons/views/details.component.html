@@ -18,13 +18,12 @@
         <p *ngIf="features.indexOf('volume') !== -1">Volume : <i>{{ item.volume }}</i></p>
         <p *ngIf="features.indexOf('volume_possedes') !== -1">Volume(s) possedés : <i>{{ item.volumes.length }}</i></p>
         <p *ngIf="features.indexOf('volume_max') !== -1">Volume(s) max : <i>{{ item.volume_max }}</i></p>
-        <p *ngIf="features.indexOf('format') !== -1">Format : </p>
-        <ul *ngIf="features.indexOf('format') !== -1">
-            <li *ngFor="let format of item.format">{{ format }}</li>
-        </ul>
+        <p *ngIf="features.indexOf('format') !== -1">Format : 
+            <img *ngFor="let format of item.format" [src]="getIcon(format)" class="format_icon" />
+        </p>
     </div>
     <div class="col-xs">
-        <img *ngIf="item.couverture" [src]="item.couverture" />
+        <img class="image_couverture" [src]="item.getCouverture()" />
     </div>
     
     <a class="btn btn-primary" [routerLink]="['/'+appUrl+'/' + item.id + '/edit']">Editer</a>

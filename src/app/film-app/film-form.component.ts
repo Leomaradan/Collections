@@ -10,7 +10,7 @@ import { CommonsFormComponent } from '../commons';
 @Component({
     selector: 'film-form',
     templateUrl: '../commons/views/form.component.html',
-    styleUrls: ['../commons/views/form.component.css', '../commons/views/shared.css'],
+    styleUrls: ['../commons/views/form.component.scss'],
     providers: [FilmService]
 })
 export class FilmFormComponent extends CommonsFormComponent<Film> implements OnInit {
@@ -19,6 +19,7 @@ export class FilmFormComponent extends CommonsFormComponent<Film> implements OnI
     serieDisplay: string;
     serieVolumeMax: number = 1;
     features = Film.featuresDetails;
+    listFormat = Film.listFormat;
     
     appUrl: string = "film";
     appTitre: string = "Films";

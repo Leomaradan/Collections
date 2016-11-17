@@ -9,7 +9,7 @@ import { CommonsAppComponent } from '../commons/';
 @Component({
   selector: 'manga-app',
   templateUrl: '../commons/views/app.component.html',
-  styleUrls: ['../commons/views/app.component.css'],
+  styleUrls: ['../commons/views/app.component.scss'],
   providers: [MangaService]
 })
 export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnInit {
@@ -30,19 +30,20 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
     this.route.params.forEach((params: Params) => {
       let genre = +params['genre'];
       let auteur = +params['auteur'];
+      let page = (+params['page']) ? +params['page'] : 1;
       
       this.loading++;
       
       if(genre) {
-          this.commonsService.getItemsByGenre(genre).then(mangas => {this.items = mangas; this.loading--});
+          this.commonsService.getItemsByGenre(genre, page).then(mangas => {this.items = mangas; this.loading--});
           this.filterBy = "genre";
           this.cloneObject = {genre: genre};
       } else if (auteur) {
-          this.commonsService.getItemsByAuteur(auteur).then(mangas => {this.items = mangas; this.loading--});
+          this.commonsService.getItemsByAuteur(auteur, page).then(mangas => {this.items = mangas; this.loading--});
           this.filterBy = "auteur";
           this.cloneObject = {auteur: auteur};
       } else {
-        this.commonsService.getAllItems().then(mangas => {this.items = mangas; this.loading--});
+        this.commonsService.getAllItems(page).then(mangas => {this.items = mangas; this.loading--});
         this.filterBy = null;
       }
     });

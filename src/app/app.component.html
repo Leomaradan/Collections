@@ -1,13 +1,16 @@
-<div class="masthead">
-  <div class="container">
-    <nav class="nav blog-nav">
-      <a class="nav-link" [routerLink]="['/roman']" routerLinkActive="active">Roman</a>
-      <a class="nav-link" [routerLink]="['/film']" routerLinkActive="active">Film</a>
-      <a class="nav-link" [routerLink]="['/manga']" routerLinkActive="active">Manga</a>
-      <a class="nav-link" [routerLink]="['/bd']" routerLinkActive="active">BD</a>
-    </nav>
+<nav class="masthead">
+  <button class="navbar-toggler hidden-sm-up" type="button" (click)="isCollapsed = !isCollapsed" aria-controls="collapsingNavbar" aria-expanded="false" aria-label="Toggle navigation">
+    &#9776;
+  </button>
+  <div class="collapse navbar-toggleable-xs" [ngbCollapse]="isCollapsed">
+    <ul class="nav navbar-nav">
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/roman']">Roman</a></li>
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/film']">Film</a></li>
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/manga']">Manga</a></li>
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/bd']">BD</a></li>
+    </ul>
   </div>
-</div>
+</nav>
 
 <div class="container">
     <div class="row">

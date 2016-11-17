@@ -10,5 +10,5 @@ export class Bd extends Commons {
         
         static featuresList = ["serie", "volume"];
         static featuresDetails = ["serie", "volume"];
-        static featuresForm = ["serie", "volume"];        
+        static featuresForm = ["serie", "volume"];              
 }
