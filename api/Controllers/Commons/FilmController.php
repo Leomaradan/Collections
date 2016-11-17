@@ -20,8 +20,10 @@ class FilmController extends CommonsController
 
 	public function filterByFormat(Request $request, Response $response, $args) {
 		$dao = $this->getCurrentDAO();
+
+		$pagination = $this->getPagination($request);
 		
-		$data = $this->container->$dao->getByFormat($args['format']);
+		$data = $this->container->$dao->getByFormat($args['format'], $pagination);
 
 		return $response->withJson($data);
 	}		

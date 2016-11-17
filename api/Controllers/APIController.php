@@ -50,7 +50,8 @@ class APIController
 		$params = $request->getParams();
 		if(isset($params['pagination'])) {
 			$pagination['perPage'] = $params['pagination'];
-			$pagination['page'] = (isset($params['page'])) ? $params['page'] : 0;
+			$pagination['page'] = (isset($params['page'])) ? max($params['page'] - 1, 0) : 0;
+			$pagination['offset'] = $pagination['perPage'] * $pagination['page'];
 		}
 
 		return $pagination;

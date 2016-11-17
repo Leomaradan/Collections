@@ -37,24 +37,14 @@ abstract class CollectionsDAO extends ConnecteurDAO {
     }
 
     public function getAll($pagination) {
-        $paginate = false;
+        //$paginate = false;
         $result = [];
 
 
-        $result['data'] = $this->requestMultiple($this->getQuery());
+        $result['data'] = $this->requestMultiple($this->getQuery(['pagination' => $pagination]));
 
-        if ($paginate) {
-            $result['pagination'] = [];
-            $nb_elem_page = count($result['data']);
-            if ($nb_elem_page == $perPage) {
-                // Il reste des pages
-                $result['pagination']['nextpage'] = true;
-                $result['pagination']['page'] = $pagination['page'];
-            }
-            if ($offset !== 0) {
-                $result['pagination']['previouspage'] = true;
-            }
-        }
+        $this->addPagination($pagination, $result);
+
 
         return $result;
     }
@@ -72,12 +62,33 @@ abstract class CollectionsDAO extends ConnecteurDAO {
             }
         }
 
-        $result = ['data' => $this->requestSingle($this->getQuery("id = ?", true), [$id])];
+        $result = ['data' => $this->requestSingle($this->getQuery(['where' => "id = ?", 'single' => true]), [$id])];
 
         return $result;
     }
 
-    public function search($query) {
+    public function getCountItems($where = null, $args = []) {
+
+        $whereRequest = '';
+
+        if($where !== null) {
+            $whereRequest = "WHERE $where";
+        }
+
+        //$data = $this->requestSingle();
+
+        $this->prepare("SELECT SQL_CACHE count(*) AS count FROM {$this->view} $whereRequest");
+
+        $this->executePreparedStatement($args);
+
+        $data = $this->fetch(PDO::FETCH_ASSOC);        
+
+        //var_dump($data);
+
+        return $data['count'];
+    }
+
+    public function search($query, $pagination) {
 
         $filter = array_intersect_key($query, array_flip($this->searchItems));
 
@@ -113,10 +124,54 @@ abstract class CollectionsDAO extends ConnecteurDAO {
             }
         }
 
-        return $this->requestMultiple($this->getQuery($q), $args);
+        $result = [];
+
+
+        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $q, 'pagination' => $pagination]), $args);
+
+        $this->addPagination($pagination, $result, $q, $args);
+
+
+        return $result;
+
+        //return $this->requestMultiple($this->getQuery(['where' => $q]), $args);
     }
 
-    protected function getQuery($where = null, $single = false) {
+    protected function addPagination($pagination, &$result, $where = null, $args = []) {
+
+        if (isset($pagination['page'])) {
+
+            $result['pagination'] = [];
+            $nb_elem_page = count($result['data']);
+            $perPage = $pagination['perPage'];
+            $offset = $pagination['offset'];
+
+            if ($nb_elem_page == $perPage) {
+                // Il reste des pages
+                $result['pagination']['nextpage'] = true; 
+            }
+
+            if ($offset !== 0) {
+                $result['pagination']['previouspage'] = true;
+            }
+
+            $result['pagination']['page'] = +$pagination['page'] + 1;
+            $result['pagination']['perPage'] = +$perPage;
+            $result['pagination']['nb_items'] = $this->getCountItems($where, $args);
+            $result['pagination']['nb_pages'] = ceil($result['pagination']['nb_items'] / $perPage);
+        }
+
+        
+    }
+
+    //protected function getQuery($where = null, $single = false) {
+    protected function getQuery($args = []) {
+
+        $where = null;
+        $single = '';
+        $pagination = [];
+
+        extract($args, EXTR_IF_EXISTS);
 
         $paginateRequest = '';
         $whereRequest = '';
@@ -127,12 +182,12 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 
         if (isset($pagination['perPage'])) {
             $perPage = $pagination['perPage'];
-            //if($pagination['page'] > 0) {
-            $offset = $perPage * $pagination['page'];
-            $paginateRequest = "LIMIT $offset,$perPage";
-            /* } else {
-              $paginateRequest = "LIMIT $perPage";
-              } */
+            if($pagination['page'] > 0) {
+                $offset = $pagination['offset'];
+                $paginateRequest = "LIMIT $offset,$perPage";
+            } else {
+                $paginateRequest = "LIMIT $perPage";
+            } 
         }
 
         if($where !== null) {
@@ -151,7 +206,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
                 $add_fields .= ",'' as $supfield";
             }
         }
-
+//var_dump("SELECT SQL_CACHE * $add_fields FROM {$this->view} $whereRequest ORDER BY {$this->titleField} $paginateRequest"); die();
         return "SELECT SQL_CACHE * $add_fields FROM {$this->view} $whereRequest ORDER BY {$this->titleField} $paginateRequest";   	
     }
 

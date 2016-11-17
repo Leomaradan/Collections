@@ -15,7 +15,9 @@ class CommonsController extends APIController
 	public function filterByGenre(Request $request, Response $response, $args) {
 		$dao = $this->getCurrentDAO();
 		
-		$data = $this->container->$dao->getByGenre($args['genre']);
+		$pagination = $this->getPagination($request);
+
+		$data = $this->container->$dao->getByGenre($args['genre'], $pagination);
 
 		return $response->withJson($data);
 	}	
@@ -23,7 +25,9 @@ class CommonsController extends APIController
 	public function filterByAuteur(Request $request, Response $response, $args) {
 		$dao = $this->getCurrentDAO();
 		
-		$data = $this->container->$dao->getByAuteur($args['auteur']);
+		$pagination = $this->getPagination($request);
+
+		$data = $this->container->$dao->getByAuteur($args['auteur'], $pagination);
 
 		return $response->withJson($data);
 	}	
@@ -31,10 +35,12 @@ class CommonsController extends APIController
 	public function filterBySerie(Request $request, Response $response, $args) {
 		$dao = $this->getCurrentDAO();
 
+		$pagination = $this->getPagination($request);
+
 		if(isset($args['serie'])) {
-			$data = $this->container->$dao->getBySerie($args['serie']);
+			$data = $this->container->$dao->getBySerie($args['serie'], $pagination);
 		} else {
-			$data = $this->container->$dao->getByNullSerie(); 
+			$data = $this->container->$dao->getByNullSerie($pagination); 
 		}
 
 		return $response->withJson($data);
@@ -62,9 +68,11 @@ class CommonsController extends APIController
 			return $response->getBody()->write(json_encode(['error' => 'missing term in search']));
 		}
 
+		$pagination = $this->getPagination($request);
+
 		$dao = $this->getCurrentDAO();
 
-		$data = $this->container->$dao->search($query);
+		$data = $this->container->$dao->search($query, $pagination);
 
 		return $response->withJson($data);
 	}

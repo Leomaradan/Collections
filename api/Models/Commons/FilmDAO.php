@@ -27,8 +27,19 @@ class FilmDAO extends CommonsDAO {
 		return explode(',',$value);
 	}	
 
-	public function getByFormat($format) {
-		return $this->requestMultiple($this->getQuery("FIND_IN_SET(?, format)"), [$format]);
+	public function getByFormat($format, $pagination) {
+
+        $result = [];
+
+		$where = "FIND_IN_SET(?, format)";
+        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), [$format]);
+
+        $this->addPagination($pagination, $result, $where, [$format]);
+
+
+        return $result;
+     
+
 	}	
 
 	public function getFormat() {

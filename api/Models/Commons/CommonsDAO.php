@@ -27,20 +27,60 @@ class CommonsDAO extends CollectionsDAO {
         }
     }
 
-    public function getByGenre($genre) {    	
-        return $this->requestMultiple($this->getQuery("genre_id = ?"), [$genre]);
+    public function getByGenre($genre, $pagination) {    
+
+        $result = [];
+
+        $where = "genre_id = ?";
+        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), [$genre]);
+
+        $this->addPagination($pagination, $result, $where, [$genre]);
+
+
+        return $result;
+
     }
 
-    public function getByAuteur($auteur) {
-    	return $this->requestMultiple($this->getQuery("auteurs_id LIKE ?"), ['%|' . $auteur . '|%']);
+    public function getByAuteur($auteur, $pagination) {
+
+        $result = [];
+
+        $where = "auteurs_id LIKE ?";
+        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), ['%|' . $auteur . '|%']);
+
+        $this->addPagination($pagination, $result, $where, ['%|' . $auteur . '|%']);
+
+
+        return $result;
+
     }
 
-    public function getBySerie($serie) {
-    	return $this->requestMultiple($this->getQuery("serie_id = ?"), [$serie]);
+    public function getBySerie($serie, $pagination) {
+
+        $result = [];
+
+        $where = "serie_id = ?";
+        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), [$serie]);
+
+        $this->addPagination($pagination, $result, $where, [$serie]);
+
+
+        return $result;
+
     }
 
-    public function getByNullSerie() {
-    	return $this->requestMultiple($this->getQuery("serie_id IS NULL"));
+    public function getByNullSerie($pagination) {
+
+        $result = [];
+
+        $where = "serie_id IS NULL";
+        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]));
+
+        $this->addPagination($pagination, $result, $where);
+
+
+        return $result;
+
     }
 
     public function create($data, $extraData = null) {
