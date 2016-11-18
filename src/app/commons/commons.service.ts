@@ -192,7 +192,9 @@ export class CommonsService<T extends Commons> {
                 }
                 
                 this.requestUrl = res.request;
-                return {data: this.factories(res.data), pagination: this.paginationResponse};                
+                
+                let responseObj: CommonsResponse<T> = { data: this.factories(res.data), pagination: this.paginationResponse, request: res.request};
+                return responseObj;               
              })
             .catch(this.handleError);
     }

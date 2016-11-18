@@ -16,12 +16,16 @@ export class MangaService extends CommonsService<Manga> {
     }
         
     getItemById(id: number): Promise<Manga> {
-        return super.getItemById(id).then(manga => Manga.addVolumesList(manga))
+        return super.getItemById(id).then(manga => {Manga.addVolumesList(manga); return manga;})
     }
     
     getAllItems(page: number = 0): Promise<CommonsResponse<Manga>> {    
         return super.getAllItems(page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
     }    
+    
+    recallUrl(page: number): Promise<CommonsResponse<Manga>> {
+        return super.recallUrl(page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
+    }
     
     protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<CommonsResponse<Manga>> {
         return super.getItemsByFilter(id, filter, page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
