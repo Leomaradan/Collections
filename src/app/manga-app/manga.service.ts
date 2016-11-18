@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { Manga } from './manga';
-import { CommonsService } from '../commons';
+import { CommonsService, CommonsResponse } from '../commons';
 
 
 @Injectable()
@@ -19,11 +19,11 @@ export class MangaService extends CommonsService<Manga> {
         return super.getItemById(id).then(manga => Manga.addVolumesList(manga))
     }
     
-    getAllItems(page: number = 0): Promise<{data: Manga[], pagination: any}> {    
+    getAllItems(page: number = 0): Promise<CommonsResponse<Manga>> {    
         return super.getAllItems(page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
     }    
     
-    protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<{data: Manga[], pagination: any}> {
+    protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<CommonsResponse<Manga>> {
         return super.getItemsByFilter(id, filter, page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
     }
 }

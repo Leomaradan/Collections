@@ -33,7 +33,7 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
       let page = (+params['page']) ? +params['page'] : 1;
       
       this.loading++;
-      
+            
       if(genre) {
           this.commonsService.getItemsByGenre(genre, page).then(mangas => {this.items = mangas; this.loading--});
           this.filterBy = "genre";

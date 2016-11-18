@@ -2,13 +2,38 @@
     float: right;
 }    
 
+.btn-small {
+    padding-top: 0;
+    float: right;
+    height: 22px;
+    padding-bottom: 0;    
+}
+
 .glyphicons {
-    display: block;
+    display: inline-block;
     height: 14px;
     width: 14px;
     filter: invert(100%);
     background-size: 14px 14px;
     background-repeat: no-repeat;
+}
+
+.glyphicons-smallicon {
+    height: 14px;
+    width: 14px;
+    background-size: 14px 14px;
+}
+
+.glyphicons + span {
+    margin: .5rem;
+}
+
+.glyphicons-bin {
+    background-image: url(assets/glyphicons-17-bin.png);
+}
+
+.glyphicons-pencil {
+    background-image: url(assets/glyphicons-31-pencil.png);
 }
 
 .glyphicons-minus-sign {
@@ -17,6 +42,14 @@
 
 .glyphicons-plus-sign {
     background-image: url(assets/glyphicons-191-plus-sign.png);
+}
+
+.glyphicons-ok-sign {
+    background-image: url(assets/glyphicons-194-ok-sign.png);
+}
+
+.glyphicons-duplicate {
+    background-image: url(assets/glyphicons-511-duplicate.png);
 }
 
 .btn-secondary .glyphicons {
@@ -43,4 +76,14 @@ h1{
     text-overflow: ellipsis;
     max-width: 33%;
     white-space: nowrap;
+}
+
+.action_menu {
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    position: fixed;  
+    box-shadow: 0 -.1rem .25rem rgba(0,0,0,.1);
+    padding: .5rem;
+    background-color: white;
 }

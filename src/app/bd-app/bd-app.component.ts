@@ -35,6 +35,8 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
       
       this.loading++;
       
+      this.features = Bd.featuresList.slice();
+      
       if(genre) {
           this.commonsService.getItemsByGenre(genre, page).then(bds => {this.items = bds; this.loading--});
           this.filterBy = "genre";
@@ -42,6 +44,7 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
       } else if (serie) {
           this.commonsService.getItemsBySerie(serie, page).then(bds => {this.items = bds; this.loading--});
           this.filterBy = "série";
+          this.features.push('volume');
           this.cloneObject = {serie: serie};
       } else if (auteur) {
           this.commonsService.getItemsByAuteur(auteur, page).then(bds => {this.items = bds; this.loading--});

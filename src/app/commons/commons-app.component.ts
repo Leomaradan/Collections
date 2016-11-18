@@ -35,7 +35,8 @@ export abstract class CommonsAppComponent<T extends Commons> {
       //console.log(event);
       //console.log(this.items.pagination.page);
       if (this.items.pagination.currentPage !== undefined && event !== this.items.pagination.currentPage) {
-        this.router.navigate(['.', {page: event}]);
+        this.loading++;
+        this.commonsService.recallUrl(event).then(items => { this.items = items; this.loading--});
       }
   }
 

@@ -35,6 +35,8 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
       
       this.loading++;
       
+      this.features = Roman.featuresList.slice();
+      
       if(genre) {
           this.commonsService.getItemsByGenre(genre, page).then(romans => {this.items = romans; this.loading--});
           this.filterBy = "genre";
@@ -42,6 +44,7 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
       } else if (serie) {
           this.commonsService.getItemsBySerie(serie, page).then(romans => {this.items = romans; this.loading--});
           this.filterBy = "série";
+          this.features.push('volume');
           this.cloneObject = {serie: serie};
       } else if (auteur) {
           this.commonsService.getItemsByAuteur(auteur, page).then(romans => {this.items = romans; this.loading--});

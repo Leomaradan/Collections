@@ -35,7 +35,7 @@ class APIController
 
 	public function index(Request $request, Response $response) {
 		$dao = $this->getCurrentDAO();
-		
+
 		$pagination = $this->getPagination($request);
 
 		$data = $this->container->$dao->getAll($pagination);
@@ -52,7 +52,9 @@ class APIController
 			$pagination['perPage'] = $params['pagination'];
 			$pagination['page'] = (isset($params['page'])) ? max($params['page'] - 1, 0) : 0;
 			$pagination['offset'] = $pagination['perPage'] * $pagination['page'];
+			
 		}
+		$pagination['request'] = $request->getUri()->getPath();
 
 		return $pagination;
 	}
@@ -61,6 +63,7 @@ class APIController
 		$dao = $this->getCurrentDAO();
 		
 		$data = $this->container->$dao->getById($args['id']);
+		$data['request'] = $request->getUri()->getPath();
 
 		return $response->withJson($data);
 	}	

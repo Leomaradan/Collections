@@ -9,25 +9,29 @@
 
     <h1>{{ item.titre }}</h1>
     <div class="col-xs-6">
-        <p>Genre : <i>{{ item.genre.nom }}</i></p>
-        <p *ngIf="features.indexOf('serie') !== -1 && item.serie">Série : <i>{{ item.serie.nom }}</i></p>
+        <p>Genre : <i>{{ item.genre.nom }}</i><button class="btn btn-success btn-small btn-right" (click)="cloneItem('genre', item.genre.id)"><span class="glyphicons glyphicons-plus-sign"></span></button></p>
+        <p *ngIf="features.indexOf('serie') !== -1 && item.serie">Série : <i>{{ item.serie.nom }}</i><button class="btn btn-success btn-small btn-right" (click)="cloneItem('serie', item.serie.id)"><span class="glyphicons glyphicons-plus-sign"></span></button></p>
         <p>Auteur(s) : </p>
         <ul>
-            <li *ngFor="let auteur of item.auteurs">{{ auteur.nom }}<button class="btn btn-success btn-right" (click)="cloneItem('auteur', auteur.id)"><span class="glyphicons glyphicons-plus-sign"></span></button></li>
+            <li *ngFor="let auteur of item.auteurs">{{ auteur.nom }}<button class="btn btn-success btn-small btn-right" (click)="cloneItem('auteur', auteur.id)"><span class="glyphicons glyphicons-plus-sign"></span></button></li>
         </ul>
         <p *ngIf="features.indexOf('volume') !== -1">Volume : <i>{{ item.volume }}</i></p>
-        <p *ngIf="features.indexOf('volume_possedes') !== -1">Volume(s) possedés : <i>{{ item.volumes.length }}</i></p>
+        <p *ngIf="features.indexOf('volume_possedes') !== -1">Volume(s) possedés : <i>{{ item.volume_possedes }}</i></p>
         <p *ngIf="features.indexOf('volume_max') !== -1">Volume(s) max : <i>{{ item.volume_max }}</i></p>
         <p *ngIf="features.indexOf('format') !== -1">Format : 
             <img *ngFor="let format of item.format" [src]="getIcon(format)" class="format_icon" />
         </p>
     </div>
-    <div class="col-xs">
+    <div class="col-xs-6">
         <img class="image_couverture" [src]="item.getCouverture()" />
     </div>
     
-    <a class="btn btn-primary" [routerLink]="['/'+appUrl+'/' + item.id + '/edit']">Editer</a>
-    <button class="btn btn-info" (click)="cloneItem()">Clone</button>
-    <button class="btn btn-danger" (click)="deleteItem()">Supprimer</button>
-    
+
+    <div class="action_menu">
+        <div class="container">
+            <a class="btn btn-primary" [routerLink]="['/'+appUrl+'/' + item.id + '/edit']"><span class="glyphicons glyphicons-pencil"></span><span>Editer</span></a>
+            <button class="btn btn-info" (click)="cloneItem()"><span class="glyphicons glyphicons-duplicate"></span><span>Cloner</span></button>
+            <button class="btn btn-danger" (click)="deleteItem()"><span class="glyphicons glyphicons-bin"></span><span>Supprimer</span></button>        
+        </div>
+    </div>    
 </div>

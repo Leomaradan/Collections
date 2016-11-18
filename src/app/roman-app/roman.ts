@@ -8,7 +8,7 @@ export class Roman extends Commons {
 	volume?: number;
 	auteurs: Auteur[];
         
-        static featuresList = ["serie", "volume"];
+        static featuresList = ["serie"];
         static featuresDetails = ["serie", "volume"];
         static featuresForm = ["serie", "volume"];        
 

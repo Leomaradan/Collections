@@ -6,6 +6,13 @@ import 'rxjs/add/operator/toPromise';
 //import { Roman } from './roman';
 import { Commons, Serie, Genre, Auteur } from '.';
 
+//interface Promise<{data: T[], pagination: any}>
+export interface CommonsResponse<T> {
+    data: T[];
+    pagination: any;
+    request: string;
+}
+
 export class CommonsService<T extends Commons> {
 
     private itemsUrl = 'api/roman';
@@ -13,6 +20,8 @@ export class CommonsService<T extends Commons> {
     
     public pagination: number = 5;
     public paginationResponse: any;
+    
+    public requestUrl: string;
 
     
     private urls: {[key:string]:string} = {
@@ -65,23 +74,12 @@ export class CommonsService<T extends Commons> {
     }
 
     // GET /roman
-    getAllItems(page: number = 0): Promise<{data: T[], pagination: any}> {
+    getAllItems(page: number = 0): Promise<CommonsResponse<T>> {
         let url = this.itemsUrl;
         if (this.pagination !== null) {
             url += '?page='+page+'&pagination='+this.pagination;
         }
-        return this.http.get(url)
-            .toPromise()
-            .then(response => {
-                let res = response.json();
-                if(res.pagination !== undefined) {
-                    this.paginationResponse = res.pagination;
-                    this.paginationResponse.currentPage = page;
-                    console.log(this.paginationResponse);
-                }
-                return {data: this.factories(res.data), pagination: this.paginationResponse};
-            })
-            .catch(this.handleError);
+        return this.getItems(url, page);
     }
 
         // GET /roman/:id
@@ -94,18 +92,36 @@ export class CommonsService<T extends Commons> {
     }
 
     // GET /roman/genre/:genre
-    getItemsByGenre(genre: number, page: number = 0): Promise<{data: T[], pagination: any}> {
+    getItemsByGenre(genre: number, page: number = 0): Promise<CommonsResponse<T>> {
         return this.getItemsByFilter(genre, 'genre', page);
     }
 
     // GET /roman/serie/:serie
-    getItemsBySerie(serie: number, page: number = 0): Promise<{data: T[], pagination: any}> {
+    getItemsBySerie(serie: number, page: number = 0): Promise<CommonsResponse<T>> {
         return this.getItemsByFilter(serie, 'serie', page);
     }
 
     // GET /roman/serie/:serie
-    getItemsByAuteur(auteur: number, page: number = 0): Promise<{data: T[], pagination: any}> {
+    getItemsByAuteur(auteur: number, page: number = 0): Promise<CommonsResponse<T>> {
         return this.getItemsByFilter(auteur, 'auteur', page);
+    }
+    
+    recallUrl(page: number): Promise<CommonsResponse<T>> {
+        let url: string;
+        
+        if (this.requestUrl === undefined) {
+            url = this.itemsUrl;
+        } else {
+            url = this.requestUrl;
+        }
+        
+        if (this.pagination !== null) {
+            url += '?page='+page+'&pagination='+this.pagination;
+        }   
+        
+        return this.getItems(url, page);
+        
+             
     }
 
     getGenreList(): Promise<Genre[]> {
@@ -153,21 +169,29 @@ export class CommonsService<T extends Commons> {
             .catch(this.handleError);
     }
 
-    protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<{data: T[], pagination: any}> {
+    protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<CommonsResponse<T>> {
         let url = `${this.itemsUrl}/${filter}/${id}`;
         if (this.pagination !== null) {
             url += '?page='+page+'&pagination='+this.pagination;
-        }        
+        }    
+        
+        return this.getItems(url, page);
+
+    }
+    
+    protected getItems(url: string, page: number): Promise<CommonsResponse<T>> {
         return this.http.get(url)
             .toPromise()
             .then(response => {
 
-                let res = response.json();
+                let res = <CommonsResponse<T>>response.json();
                 
                 if(res.pagination !== undefined) {
                     this.paginationResponse = res.pagination;
-                    console.log(this.paginationResponse);
+                    this.paginationResponse.currentPage = page;
                 }
+                
+                this.requestUrl = res.request;
                 return {data: this.factories(res.data), pagination: this.paginationResponse};                
              })
             .catch(this.handleError);

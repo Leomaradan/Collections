@@ -159,7 +159,10 @@ abstract class CollectionsDAO extends ConnecteurDAO {
             $result['pagination']['perPage'] = +$perPage;
             $result['pagination']['nb_items'] = $this->getCountItems($where, $args);
             $result['pagination']['nb_pages'] = ceil($result['pagination']['nb_items'] / $perPage);
+            
         }
+
+        $result['request'] = $pagination['request'];
 
         
     }
@@ -170,6 +173,8 @@ abstract class CollectionsDAO extends ConnecteurDAO {
         $where = null;
         $single = '';
         $pagination = [];
+        $orderRequest = $this->titleField;
+        $order = null;
 
         extract($args, EXTR_IF_EXISTS);
 
@@ -194,6 +199,10 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 			$whereRequest = "WHERE $where";
         }
 
+        if($order !== null) {
+            $orderRequest = "$order,$orderRequest";
+        }    
+
 
         $add_fields = '';
 
@@ -207,7 +216,7 @@ abstract class CollectionsDAO extends ConnecteurDAO {
             }
         }
 //var_dump("SELECT SQL_CACHE * $add_fields FROM {$this->view} $whereRequest ORDER BY {$this->titleField} $paginateRequest"); die();
-        return "SELECT SQL_CACHE * $add_fields FROM {$this->view} $whereRequest ORDER BY {$this->titleField} $paginateRequest";   	
+        return "SELECT SQL_CACHE * $add_fields FROM {$this->view} $whereRequest ORDER BY $orderRequest $paginateRequest";   	
     }
 
     public function create($data, $extraData = null) {

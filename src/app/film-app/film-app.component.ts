@@ -34,6 +34,8 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
             let page = (+params['page']) ? +params['page'] : 1;
             
             this.loading++;
+            
+            this.features = Film.featuresList.slice();
 
             if(genre) {
                 this.commonsService.getItemsByGenre(genre, page).then(films => {this.items = films; this.loading--});
@@ -42,6 +44,7 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
             } else if (serie) {
                 this.commonsService.getItemsBySerie(serie, page).then(films => {this.items = films; this.loading--});
                 this.filterBy = "série";
+                this.features.push('volume');
                 this.cloneObject = {serie: serie};
             } else if (auteur) {
                 this.commonsService.getItemsByAuteur(auteur, page).then(films => {this.items = films; this.loading--});

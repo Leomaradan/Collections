@@ -60,7 +60,7 @@ class CommonsDAO extends CollectionsDAO {
         $result = [];
 
         $where = "serie_id = ?";
-        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), [$serie]);
+        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination, 'order' => 'volume']), [$serie]);
 
         $this->addPagination($pagination, $result, $where, [$serie]);
 
