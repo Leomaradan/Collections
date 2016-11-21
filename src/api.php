@@ -46,7 +46,8 @@ $types = [
     'bd' => 'Commons\BdController', 
     'film' => 'Commons\FilmController', 
     'manga' => 'Commons\MangaController', 
-    'roman' => 'Commons\RomanController'
+    'roman' => 'Commons\RomanController',
+    'serietv' => 'Commons\SerieTVController'
 ];
 
 $types_cruds = array_merge($types, [
