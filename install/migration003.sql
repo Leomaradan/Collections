@@ -57,7 +57,7 @@ from (((((`collections_commons` `c` left join `collections_serie` `s` on((`c`.`s
 INSERT INTO `collections_type` (`id`, `nom`) VALUES(6, 'serietv');
 INSERT INTO `collections_type` (`id`, `nom`) VALUES(7, 'video');
 
-DROP VIEW IF EXISTS `collections_view_manga`;
+DROP VIEW IF EXISTS `collections_view_serietv`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `collections_view_serietv` AS select `c`.`id` AS `id`,`c`.`titre` AS `titre`,`c`.`genre_id` AS `genre_id`, `g`.`nom` AS `genre`,`c`.`couverture` AS `couverture`,
 CONCAT('|',group_concat(`a`.`id` order by `a`.`nom` ASC separator '|'),'|') AS `auteurs_id`,
