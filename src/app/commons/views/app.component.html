@@ -12,12 +12,12 @@
 <h1>{{appTitre}}</h1>
 <table class="table">
     <tr>
-        <th colspan="2">Titre</th>
-        <th>Genre</th>
-        <th *ngIf="features.indexOf('serie') !== -1">Série</th>
-        <th *ngIf="features.indexOf('volume') !== -1">Volume</th>
-        <th>Auteur(s)</th>
-        <th *ngIf="features.indexOf('volume_possedes') !== -1">Volumes</th>
+        <th colspan="2" (click)="changeOrder('titre')">Titre <span *ngIf="orderField=='titre'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th (click)="changeOrder('genre')">Genre <span *ngIf="orderField=='genre'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th *ngIf="features.indexOf('serie') !== -1" (click)="changeOrder('serie')">Série <span *ngIf="orderField=='serie'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th *ngIf="features.indexOf('volume') !== -1" (click)="changeOrder('volume')">Volume <span *ngIf="orderField=='volume'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th (click)="changeOrder('auteurs')">Auteur(s) <span *ngIf="orderField=='auteurs'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th *ngIf="features.indexOf('volume_possedes') !== -1" (click)="changeOrder('volume_possedes')">Volumes <span *ngIf="orderField=='volume_possedes'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
     </tr>
     <tr *ngFor="let item of items.data">
         <td class="list_couverture"><img [src]="item.getCouverture()" /></td>

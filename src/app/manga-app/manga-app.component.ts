@@ -27,7 +27,9 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
     
   ngOnInit() {
 
-    this.route.params.forEach((params: Params) => {
+    this.init(Manga.featuresList);
+
+    /*this.route.params.forEach((params: Params) => {
       let genre = +params['genre'];
       let auteur = +params['auteur'];
       let page = (+params['page']) ? +params['page'] : 1;
@@ -46,7 +48,7 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
         this.commonsService.getAllItems(page).then(mangas => {this.items = mangas; this.loading--});
         this.filterBy = null;
       }
-    });
+    });*/
 
       
       

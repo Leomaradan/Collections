@@ -26,7 +26,9 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
   }
     
   ngOnInit() {
-
+      
+      this.init(Bd.featuresList);
+ /*
     this.route.params.forEach((params: Params) => {
       let genre = +params['genre'];
       let serie = +params['serie'];
@@ -55,7 +57,7 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
         this.filterBy = null;
       }
     });
-
+*/
       
       
   }

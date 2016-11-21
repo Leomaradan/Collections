@@ -26,7 +26,9 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
 
     ngOnInit() {
 
-        this.route.params.forEach((params: Params) => {
+        this.init(Film.featuresList);
+
+        /*this.route.params.forEach((params: Params) => {
             let genre = +params['genre'];
             let serie = +params['serie'];
             let auteur = +params['auteur'];
@@ -59,7 +61,7 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
               this.filterBy = null;
             }
 
-        });
+        });*/
 
     }
     

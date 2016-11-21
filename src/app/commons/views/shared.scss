@@ -52,6 +52,22 @@
     background-image: url(assets/glyphicons-511-duplicate.png);
 }
 
+.glyphicons-chevron-up {
+    background-image: url(assets/glyphicons-601-chevron-up.png);
+    filter: none;
+    height: 8px;
+    width: 12px;
+    background-size: 12px 8px;    
+}
+
+.glyphicons-chevron-down {
+    background-image: url(assets/glyphicons-602-chevron-down.png);
+    filter: none;
+    height: 8px;
+    width: 12px;
+    background-size: 12px 8px;       
+}
+
 .btn-secondary .glyphicons {
    filter: invert(0%); 
 }
@@ -78,13 +94,17 @@ h1{
     white-space: nowrap;
 }
 
+
 .action_menu {
-    left: 0;
+    border: 1px solid rgba(0,0,0,.1);
     width: 100%;
-    bottom: 0;
-    position: fixed;  
-    box-shadow: 0 -.1rem .25rem rgba(0,0,0,.1);
+    box-shadow: 0 -0.1rem 0.25rem rgba(0, 0, 0, 0.1);
     padding: .5rem;
-    background-color: white;
-    z-index: 100;
+}
+
+@media (max-width: 576px) {
+    .btn {
+        display: block;
+        width: 100%;
+    }
 }

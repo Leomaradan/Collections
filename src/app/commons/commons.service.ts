@@ -11,6 +11,7 @@ export interface CommonsResponse<T> {
     data: T[];
     pagination: any;
     request: string;
+    order: string;
 }
 
 export class CommonsService<T extends Commons> {
@@ -23,12 +24,15 @@ export class CommonsService<T extends Commons> {
     
     public requestUrl: string;
 
+    public orderField = "titre";
+    public orderDirection = "ASC";    
     
     private urls: {[key:string]:string} = {
         'Roman': 'roman',
         'Film': 'film',
         'Manga': 'manga',
-        'Bd': 'bd'
+        'Bd': 'bd',
+        'SerieTV': 'serietv'
     };
         
     protected http: Http;
@@ -74,12 +78,10 @@ export class CommonsService<T extends Commons> {
     }
 
     // GET /roman
-    getAllItems(page: number = 0): Promise<CommonsResponse<T>> {
+    getAllItems(page: number = 0, order: string = null): Promise<CommonsResponse<T>> {
         let url = this.itemsUrl;
-        if (this.pagination !== null) {
-            url += '?page='+page+'&pagination='+this.pagination;
-        }
-        return this.getItems(url, page);
+
+        return this.getItems(this.getUrlParams(url, page, order), page);
     }
 
         // GET /roman/:id
@@ -106,22 +108,40 @@ export class CommonsService<T extends Commons> {
         return this.getItemsByFilter(auteur, 'auteur', page);
     }
     
-    recallUrl(page: number): Promise<CommonsResponse<T>> {
+    recallUrl(page: number, order: string): Promise<CommonsResponse<T>> {
         let url: string;
         
         if (this.requestUrl === undefined) {
             url = this.itemsUrl;
         } else {
             url = this.requestUrl;
-        }
-        
-        if (this.pagination !== null) {
-            url += '?page='+page+'&pagination='+this.pagination;
         }   
         
-        return this.getItems(url, page);
+        return this.getItems(this.getUrlParams(url, page, order), page);
         
              
+    }
+
+    protected getUrlParams(url: string, page: number, order: string): string {
+        url += '?';
+        let params: string[] = [];
+        
+        if (this.pagination !== null) {
+            params.push('page='+page);
+            params.push('pagination='+this.pagination);
+        }   
+        
+        if (order !== null) {
+            let orders = order.split(' ');
+            params.push('order='+orders[0]);
+            if(orders[1] !== undefined) {
+                params.push('orderDirection='+orders[1]);
+            }
+        }  
+        
+        url += params.join('&');
+        
+        return url;
     }
 
     getGenreList(): Promise<Genre[]> {
@@ -169,13 +189,11 @@ export class CommonsService<T extends Commons> {
             .catch(this.handleError);
     }
 
-    protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<CommonsResponse<T>> {
+    protected getItemsByFilter(id: any, filter: string, page: number = 0, order: string = null): Promise<CommonsResponse<T>> {
         let url = `${this.itemsUrl}/${filter}/${id}`;
-        if (this.pagination !== null) {
-            url += '?page='+page+'&pagination='+this.pagination;
-        }    
+  
         
-        return this.getItems(url, page);
+        return this.getItems(this.getUrlParams(url, page, order), page);
 
     }
     
@@ -193,7 +211,13 @@ export class CommonsService<T extends Commons> {
                 
                 this.requestUrl = res.request;
                 
-                let responseObj: CommonsResponse<T> = { data: this.factories(res.data), pagination: this.paginationResponse, request: res.request};
+                let orders = res.order.split(' ');
+                this.orderField = orders[0];
+                if(orders[1] !== undefined) {
+                    this.orderDirection = orders[1];
+                }
+                
+                let responseObj: CommonsResponse<T> = { data: this.factories(res.data), pagination: this.paginationResponse, request: res.request, order: res.order};
                 return responseObj;               
              })
             .catch(this.handleError);

@@ -19,8 +19,8 @@ export class FilmService extends CommonsService<Film> {
     }
     
     // GET /roman/format/:format
-    getItemsByFormat(format: string, page: number = 0): Promise<CommonsResponse<Film>> {
-        return this.getItemsByFilter(format, 'format', page);
+    getItemsByFormat(format: string, page: number = 0, order: string = null): Promise<CommonsResponse<Film>> {
+        return this.getItemsByFilter(format, 'format', page, order);
     }    
      
 }

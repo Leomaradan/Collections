@@ -23,11 +23,11 @@ export class MangaService extends CommonsService<Manga> {
         return super.getAllItems(page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
     }    
     
-    recallUrl(page: number): Promise<CommonsResponse<Manga>> {
-        return super.recallUrl(page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
+    recallUrl(page: number, order: string): Promise<CommonsResponse<Manga>> {
+        return super.recallUrl(page, order).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
     }
     
-    protected getItemsByFilter(id: any, filter: string, page: number = 0): Promise<CommonsResponse<Manga>> {
-        return super.getItemsByFilter(id, filter, page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
+    protected getItemsByFilter(id: any, filter: string, page: number = 0, order: string = null): Promise<CommonsResponse<Manga>> {
+        return super.getItemsByFilter(id, filter, page, order).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
     }
 }

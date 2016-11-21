@@ -27,7 +27,9 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
     
   ngOnInit() {
 
-    this.route.params.forEach((params: Params) => {
+      this.init(Roman.featuresList);
+
+    /*this.route.params.forEach((params: Params) => {
       let genre = +params['genre'];
       let serie = +params['serie'];
       let auteur = +params['auteur'];
@@ -54,7 +56,7 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
         this.commonsService.getAllItems(page).then(romans => {this.items = romans; this.loading--});
         this.filterBy = null;
       }
-    });
+    });*/
 
       
       
