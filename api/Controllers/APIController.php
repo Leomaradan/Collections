@@ -55,6 +55,9 @@ class APIController
 			
 		}
 		$pagination['request'] = $request->getUri()->getPath();
+		
+		$pagination['orderField'] = (isset($params['order'])) ? $params['order'] : null;
+		$pagination['orderDirection'] = (isset($params['orderDirection'])) ? $params['orderDirection'] : 'ASC';
 
 		return $pagination;
 	}

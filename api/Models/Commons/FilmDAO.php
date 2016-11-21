@@ -5,11 +5,14 @@ namespace App\Models\Commons;
 class FilmDAO extends CommonsDAO {
 
 	protected $view = "collections_view_film";
-	protected $types = ['film'];
+	protected $types = ['film','video'];
 	protected $type = "film";
 	protected $searchItems = ['titre','serie','genre','auteurs','format'];
 	protected $visible = ['titre','serie','genre','auteurs','format','couverture'];
-	protected $fillable = ['titre','serie_id','genre_id','couverture','format'];
+
+	protected $supfield = "format";
+
+	protected $fillable = ['titre','serie_id','genre_id','couverture','metadata'];
 	protected $validation = [
 		'titre' => 'required|min:3|max:100',
 		'serie_id' => 'without:serie_new|integer|reference:collections_serie,id|validator:getSerie',
@@ -19,22 +22,33 @@ class FilmDAO extends CommonsDAO {
 		'auteurs_id' => 'require_without:auteurs_new|array:integer|reference:collections_auteur,id'
 	];
 
-	protected function setFormatAttribute($value, $array) {
-		return implode(',',$value);
-	}
 
 	protected function getFormatAttribute($value, $array) {
-		return explode(',',$value);
+		$meta = json_decode($array['metadata']);
+
+		if(isset($meta->format)) {
+			return $meta->format;
+		}
+
+		return [];			
 	}	
+
+	public function setMetadataAttribute($value,$array) {
+		$meta = json_decode($value);
+		$meta->format = $array['format'];
+		return json_encode($meta);
+	}
+
 
 	public function getByFormat($format, $pagination) {
 
         $result = [];
 
-		$where = "FIND_IN_SET(?, format)";
-        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), [$format]);
+		$where = "metadata LIKE ?";
+		$pattern = '%format":[%'.$format.'%]%';
+        $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), [$pattern]);
 
-        $this->addPagination($pagination, $result, $where, [$format]);
+        $this->addPagination($pagination, $result, $where, [$pattern]);
 
 
         return $result;

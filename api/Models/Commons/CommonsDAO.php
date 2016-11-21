@@ -62,6 +62,8 @@ class CommonsDAO extends CollectionsDAO {
         $where = "serie_id = ?";
         $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination, 'order' => 'volume']), [$serie]);
 
+        $pagination['order'] = 'volume';
+
         $this->addPagination($pagination, $result, $where, [$serie]);
 
 
@@ -117,6 +119,8 @@ class CommonsDAO extends CollectionsDAO {
                 return $auteurs['message'];
             }
         }
+
+        $extraData['metadata'] = "{}";
 
         // Action
         $result = parent::create($data, $extraData);
@@ -181,6 +185,12 @@ class CommonsDAO extends CollectionsDAO {
                 return $auteurs['message'];
             }
         }
+
+        $this->prepare("SELECT metadata FROM {$this->table} WHERE id LIKE ?");
+
+        $this->executePreparedStatement([$id]);
+
+        $extraData['metadata'] = $this->fetch(PDO::FETCH_NUM)[0];
 
         // Action
         $result = parent::update($id, $data, $extraData);

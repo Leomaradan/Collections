@@ -37,3 +37,4 @@ Thumbs.db
 /nbproject/api/nbproject/private/
 .env
 conf.php
+public/assets/

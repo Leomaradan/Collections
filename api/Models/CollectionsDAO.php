@@ -163,6 +163,17 @@ abstract class CollectionsDAO extends ConnecteurDAO {
         }
 
         $result['request'] = $pagination['request'];
+        if($pagination['orderField'] !== null) {
+            $result['order'] = $pagination['orderField'];
+            if ($pagination['orderDirection'] !== 'ASC') {
+                $result['order'] .= ' DESC';
+            }
+        } else if(isset($pagination['order'])) {
+            $result['order'] = $pagination['order'];
+        } else {
+            $result['order'] = $this->titleField;
+        }
+        
 
         
     }
@@ -199,9 +210,16 @@ abstract class CollectionsDAO extends ConnecteurDAO {
 			$whereRequest = "WHERE $where";
         }
 
-        if($order !== null) {
+        if (isset($pagination['orderField'])) {
+            $overrideOrder = $pagination['orderField'];
+            if ($pagination['orderDirection'] !== 'ASC') {
+                $overrideOrder .= ' DESC';
+            }
+
+            $orderRequest = "$overrideOrder,$orderRequest";
+        } else if($order !== null) {
             $orderRequest = "$order,$orderRequest";
-        }    
+        }           
 
 
         $add_fields = '';
@@ -215,7 +233,6 @@ abstract class CollectionsDAO extends ConnecteurDAO {
                 $add_fields .= ",'' as $supfield";
             }
         }
-//var_dump("SELECT SQL_CACHE * $add_fields FROM {$this->view} $whereRequest ORDER BY {$this->titleField} $paginateRequest"); die();
         return "SELECT SQL_CACHE * $add_fields FROM {$this->view} $whereRequest ORDER BY $orderRequest $paginateRequest";   	
     }
 

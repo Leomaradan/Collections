@@ -2,6 +2,8 @@
 
 namespace App\Models\Commons;
 
+use CollectionCompact\Compact;
+
 class MangaDAO extends CommonsDAO {
 
 	protected $view = "collections_view_manga";
@@ -10,9 +12,9 @@ class MangaDAO extends CommonsDAO {
 	protected $searchItems = ['titre','genre','auteurs'];
 	protected $visible = ['titre','genre','auteurs','volume_possedes','volume_max','couverture'];
 
-	protected $supfield = "volume_max";
+	protected $supfield = ["volume_possedes", "volume_max"];
 
-	protected $fillable = ['titre','genre_id','volume_possedes','couverture'];
+	protected $fillable = ['titre','genre_id','metadata','couverture'];
 	protected $validation = [
 		'titre' => 'required|min:3|max:100',
 		'genre_id' => 'require_only:genre_new|integer|reference:collections_genre,id|validator:getGenre',
@@ -23,24 +25,38 @@ class MangaDAO extends CommonsDAO {
 	];	
 
 
-	public function setVolumePossedesAttribute($value,$array) {
-		return $this->compactVolumes($value) . '/' . $array['volume_max'];
+	public function setMetadataAttribute($value,$array) {
+		$meta = json_decode($value);
+
+		$meta->volumePossedes = Compact::compact($array['volume_possedes']);
+		$meta->volumeMax = $array['volume_max'];
+		return json_encode($meta);
 	}
 
+
 	public function getVolumePossedesAttribute($value,$array) {
-		$arr = explode('/',$value);
-		if(count($arr) == 2) {
-			return $arr[0];
+
+		$meta = json_decode($array['metadata']);
+
+		if(isset($meta->volumePossedes)) {
+			return $meta->volumePossedes;
 		}
-		return '';
+
+		return [];		
 	}
 
 	public function getVolumeMaxAttribute($value,$array) {
-		$arr = explode('/',$array['volume_possedes']);
-		return $arr[1];
+
+		$meta = json_decode($array['metadata']);
+
+		if(isset($meta->volumeMax)) {
+			return $meta->volumeMax;
+		}
+
+		return 1;
 	}
 
-	public function compactVolumes($volumes) {
+	/*public function compactVolumes($volumes) {
 		if(count($volumes) == 0) {
 			return '';
 		}
@@ -83,6 +99,6 @@ class MangaDAO extends CommonsDAO {
 		}
 
 		return $string;
-	}
+	}*/
 
 }
