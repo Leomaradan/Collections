@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "271f96cf940af670993ac176a2890e71",
-    "content-hash": "3733bcd1f29e55d88a5b8979aff8b2f9",
+    "hash": "dac828d03b8ba5f79fbadb59a2012f19",
+    "content-hash": "840e3a3fd8179ce227f2a904ef6717ec",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -33,6 +33,36 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "time": "2014-12-30 15:22:37"
+        },
+        {
+            "name": "leomaradan/collection-compact",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Leomaradan/CollectionCompact.git",
+                "reference": "493cff72a282b6718b228f763931569335994b2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Leomaradan/CollectionCompact/zipball/493cff72a282b6718b228f763931569335994b2b",
+                "reference": "493cff72a282b6718b228f763931569335994b2b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CollectionCompact\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Compact collection of numbers to string",
+            "time": "2016-11-21 15:23:46"
         },
         {
             "name": "nikic/fast-route",
@@ -175,16 +205,16 @@
         },
         {
             "name": "slim/slim",
-            "version": "3.5.0",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slimphp/Slim.git",
-                "reference": "184352bc1913d7ba552ab4131d62f4730ddb0893"
+                "reference": "a685fe91a9435e1432e8eeb7cf516e2f5cee7f64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slimphp/Slim/zipball/184352bc1913d7ba552ab4131d62f4730ddb0893",
-                "reference": "184352bc1913d7ba552ab4131d62f4730ddb0893",
+                "url": "https://api.github.com/repos/slimphp/Slim/zipball/a685fe91a9435e1432e8eeb7cf516e2f5cee7f64",
+                "reference": "a685fe91a9435e1432e8eeb7cf516e2f5cee7f64",
                 "shasum": ""
             },
             "require": {
@@ -241,13 +271,15 @@
                 "micro",
                 "router"
             ],
-            "time": "2016-07-26 15:12:13"
+            "time": "2016-11-20 20:48:49"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "leomaradan/collection-compact": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
