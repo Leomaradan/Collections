@@ -5,15 +5,26 @@
   <div class="collapse navbar-toggleable-xs" [ngbCollapse]="isCollapsed">
     <ul class="nav navbar-nav">
         <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/roman']">Roman</a></li>
-        <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/film']">Film</a></li>
         <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/manga']">Manga</a></li>
         <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/bd']">BD</a></li>
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/film']">Film</a></li>        
+        <li class="nav-item" routerLinkActive="active"><a class="nav-link" [routerLink]="['/serietv']">Série TV</a></li>  
+
+        
+        <li ngbDropdown  class="nav-item">
+          <a class="nav-link dropdown-toggle" id="supportedContentDropdown" ngbDropdownToggle>Données</a>
+          <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
+            <li><a class="nav-link">Genres</a></li>
+            <li><a class="nav-link">Séries</a></li>
+            <li><a class="nav-link">Auteurs</a></li>
+          </div>
+        </li>   
+        
+        
     </ul>
   </div>
 </nav>
 
 <div class="container main">
-    <div class="row">
-        <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
 </div>

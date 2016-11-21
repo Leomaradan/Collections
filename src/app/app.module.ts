@@ -7,30 +7,28 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
+import { HomeComponent } from './home.component';
+
 import { RomanModule } from './roman-app';
 import { FilmModule } from './film-app';
 import { BdModule } from './bd-app';
 import { MangaModule } from './manga-app';
-//import { RomanAppComponent } from './roman-app/roman-app.component';
+import { SerieTVModule } from './serietv-app';
+
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
-    /*{
-        path: '',
-        redirectTo: '/roman',
-        pathMatch: 'full'
-    }*/
     {
       path: '',
-      redirectTo: 'roman',
-      pathMatch: 'full'
+      component: HomeComponent
     },    
 ];
 
 @NgModule({
   declarations: [
-    AppComponent    
+    AppComponent,
+    HomeComponent    
   ],
   imports: [
     BrowserModule,
@@ -40,6 +38,7 @@ const routes: Routes = [
     FilmModule,
     BdModule,
     MangaModule,
+    SerieTVModule,
     RouterModule.forRoot(routes, { useHash: true }),
     NgbModule.forRoot()
   ],
