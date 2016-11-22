@@ -10,6 +10,7 @@
 </ol>
 
 <h1>{{appTitre}}</h1>
+<input-debounce delay="500" placeholder="Recherche..." (value)="searchChanged($event)"></input-debounce>
 <table class="table">
     <tr>
         <th colspan="2" (click)="changeOrder('titre')">Titre <span *ngIf="orderField=='titre'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>

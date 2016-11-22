@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Ng2CompleterModule } from "ng2-completer";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { CommonsModule } from '../commons';
 
 import { SerieTVAppComponent } from './serietv-app.component';
 import { SerieTVDetailsComponent } from './serietv-details.component';
@@ -14,9 +14,8 @@ import { SerieTVAppRouting } from './routing';
   imports: [
     CommonModule,
     SerieTVAppRouting,
-    Ng2CompleterModule,
     FormsModule,
-    NgbModule
+    CommonsModule
   ],
   exports: [
     SerieTVAppComponent,

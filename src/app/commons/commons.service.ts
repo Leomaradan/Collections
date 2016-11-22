@@ -108,6 +108,18 @@ export class CommonsService<T extends Commons> {
         return this.getItemsByFilter(auteur, 'auteur', page);
     }
     
+    // GET /roman/recherche?titre=Seigneur
+    searchItems(term: string, page: number = 0): Promise<CommonsResponse<T>> {
+ 
+        if(term == '') {
+            return this.getAllItems(page, null);
+        }
+        
+        let url = `${this.itemsUrl}/recherche?titre=${term}`;
+                
+        return this.getItems(this.getUrlParams(url, page, null), page);
+    }
+    
     recallUrl(page: number, order: string): Promise<CommonsResponse<T>> {
         let url: string;
         
@@ -123,7 +135,12 @@ export class CommonsService<T extends Commons> {
     }
 
     protected getUrlParams(url: string, page: number, order: string): string {
-        url += '?';
+        
+        if (url.indexOf('?') !== -1) {
+            url += '&';
+        } else {
+            url += '?';
+        }
         let params: string[] = [];
         
         if (this.pagination !== null) {

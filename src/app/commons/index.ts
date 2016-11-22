@@ -7,3 +7,4 @@ export * from './commons-form.component';
 export * from './commons-app.component';
 export * from './commons-details.component';
 export * from './errors';
+export * from './commons.module';

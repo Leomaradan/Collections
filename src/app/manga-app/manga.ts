@@ -29,7 +29,7 @@ export class Manga extends Commons {
         let volumes_list: number[] = [];
         if(manga.volume_possedes != '') {
             //return manga;
-
+            manga.volume_possedes = String(manga.volume_possedes);
             let volumes = manga.volume_possedes.split(',');
             
             for(let volumeGroup of volumes) {

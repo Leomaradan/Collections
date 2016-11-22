@@ -25,6 +25,16 @@ export abstract class CommonsAppComponent<T extends Commons> {
   cloneItem(): void {
         this.router.navigate([`/${this.appUrl}/new/create`, this.cloneObject]);
   }  
+  
+  searchChanged(search: string) {
+      this.commonsService.searchItems(search).then(items => { 
+            this.items = items; 
+            this.loading--;
+            this.orderField = this.commonsService.orderField;
+            this.orderDirection = this.commonsService.orderDirection;
+        });
+
+  }
     
   changeOrder(order: string) {
       if (order == this.commonsService.orderField) {
@@ -66,6 +76,7 @@ export abstract class CommonsAppComponent<T extends Commons> {
       let serie = +params['serie'];
       let auteur = +params['auteur'];
       let format = params['format'];
+      let recherche = params['recherche'];
       let page = (+params['page']) ? +params['page'] : 1;
       
       this.loading++;
@@ -91,6 +102,9 @@ export abstract class CommonsAppComponent<T extends Commons> {
           promise = (<any>this.commonsService).getItemsByFormat(format, page);
           this.filterBy = "format";
           this.cloneObject = {format: format};
+       } else if (recherche) {
+          promise = this.commonsService.searchItems(recherche, page);
+          this.filterBy = null;
        } else {
         promise = this.commonsService.getAllItems(page);
         this.filterBy = null;

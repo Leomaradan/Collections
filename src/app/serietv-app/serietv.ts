@@ -36,7 +36,7 @@ export class SerieTV extends Commons {
         static addVolumesList(serietv: SerieTV): SerieTV {
             let volumes_list: number[] = [];
             if(serietv.volume_possedes != '') {
-
+                serietv.volume_possedes = String(serietv.volume_possedes);
                 let volumes = serietv.volume_possedes.split(',');
 
                 for(let volumeGroup of volumes) {
