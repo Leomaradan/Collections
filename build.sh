@@ -10,6 +10,8 @@ yarn
 
 ng build --target=production --environment=prod
 
+grunt
+
 mv ~/collection.conf.php conf.php
 
 chmod +x build.sh
