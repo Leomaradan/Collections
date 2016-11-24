@@ -21,7 +21,7 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
 
     features = Bd.featuresList;  
 
-  constructor(protected commonsService: BdService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(public commonsService: BdService, protected route: ActivatedRoute, protected router: Router) {
     super();
   }
     

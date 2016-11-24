@@ -16009,19 +16009,19 @@ module.exports = ".form-section {\n  padding: 30px;\n  border: 1px solid rgba(0,
 /* 130 */
 /***/ function(module, exports) {
 
-module.exports = "<div *ngIf=\"loading > 0\" class=\"loader\">\r\n    <img src=\"assets/ajax-loader-small.gif\">\r\n</div>\r\n<ol *ngIf=\"filterBy\" class=\"breadcrumb\">\r\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['/'+appUrl+'/']\">{{ appTitre }}</a></li>\r\n      <li class=\"breadcrumb-item active\">Filtré par {{ filterBy }}</li>\r\n</ol>\r\n<ol *ngIf=\"!filterBy\" class=\"breadcrumb\">\r\n      <li class=\"breadcrumb-item active\">{{ appTitre }}</li>\r\n</ol>\r\n\r\n<h1>{{appTitre}}</h1>\r\n<input-debounce delay=\"500\" placeholder=\"Recherche...\" (value)=\"searchChanged($event)\"></input-debounce>\r\n<table class=\"table\">\r\n    <tr>\r\n        <th colspan=\"2\" (click)=\"changeOrder('titre')\">Titre <span *ngIf=\"orderField=='titre'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th (click)=\"changeOrder('genre')\">Genre <span *ngIf=\"orderField=='genre'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th *ngIf=\"features.indexOf('serie') !== -1\" (click)=\"changeOrder('serie')\">Série <span *ngIf=\"orderField=='serie'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th *ngIf=\"features.indexOf('volume') !== -1\" (click)=\"changeOrder('volume')\">Volume <span *ngIf=\"orderField=='volume'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th (click)=\"changeOrder('auteurs')\">Auteur(s) <span *ngIf=\"orderField=='auteurs'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th *ngIf=\"features.indexOf('volume_possedes') !== -1\" (click)=\"changeOrder('volume_possedes')\">Volumes <span *ngIf=\"orderField=='volume_possedes'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n    </tr>\r\n    <tr *ngFor=\"let item of items.data\">\r\n        <td class=\"list_couverture\"><img [src]=\"item.getCouverture()\" /></td>\r\n        <td><a [routerLink]=\"['/'+appUrl+'/'+item.id]\">{{ item.titre }}</a><span *ngIf=\"features.indexOf('format') !== -1\">\r\n                <a *ngFor=\"let format of item.format\" [routerLink]=\"['/'+appUrl+'/format/'+format]\"><img [src]=\"getIcon(format)\" class=\"format_icon\" /></a>\r\n            </span></td>\r\n        <td><a [routerLink]=\"['/'+appUrl+'/genre/'+item.genre.id]\">{{ item.genre.nom }}</a></td>\r\n        <td *ngIf=\"features.indexOf('serie') !== -1\"><a *ngIf=\"item.serie\" [routerLink]=\"['/'+appUrl+'/serie/'+item.serie.id]\">{{ item.serie.nom }}</a></td>\r\n        <td *ngIf=\"features.indexOf('volume') !== -1\">{{ item.volume }}</td>\r\n        <td class=\"app_list\"><span *ngFor=\"let auteur of item.auteurs\"><a [routerLink]=\"['/'+appUrl+'/auteur/'+auteur.id]\">{{ auteur.nom }}</a></span></td>\r\n        <td *ngIf=\"features.indexOf('volume_possedes') !== -1\">{{ item.volumes.length }} / {{ item.volume_max }}</td>\r\n    </tr>\r\n</table>\r\n\r\n<ngb-pagination *ngIf=\"items.pagination.nb_pages\" \r\n    [collectionSize]=\"items.pagination.nb_items\" \r\n    [(page)]=\"items.pagination.page\" \r\n    [pageSize]=\"items.pagination.perPage\"\r\n    [maxSize]=\"5\" \r\n    [rotate]=\"true\" \r\n    [boundaryLinks]=\"true\"\r\n    (pageChange)=\"pageChange($event)\"></ngb-pagination>\r\n\r\n<div class=\"action_menu\">\r\n    <div class=\"container\">\r\n        <a class=\"btn btn-primary\" [routerLink]=\"['/'+appUrl+'/new/create']\"><span class=\"glyphicons glyphicons-plus-sign\"></span><span>Ajouter</span></a>\r\n        <button *ngIf=\"filterBy\" class=\"btn btn-success\" (click)=\"cloneItem()\"><span class=\"glyphicons glyphicons-plus-sign\"></span><span>Ajouter ({{ (item) ? item.genre.nom : filterBy }})</span></button>\r\n    </div>    \r\n</div>\r\n"
+module.exports = "<div *ngIf=\"loading > 0\" class=\"loader\">\r\n    <img src=\"assets/ajax-loader-small.gif\">\r\n</div>\r\n<ol *ngIf=\"filterBy\" class=\"breadcrumb\">\r\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['/'+appUrl+'/']\">{{ appTitre }}</a></li>\r\n      <li class=\"breadcrumb-item active\">Filtré par {{ filterBy }}</li>\r\n</ol>\r\n<ol *ngIf=\"!filterBy\" class=\"breadcrumb\">\r\n      <li class=\"breadcrumb-item active\">{{ appTitre }}</li>\r\n</ol>\r\n\r\n    <ul>\r\n        <li *ngFor=\"let error of errors.getGeneralsError()\" class=\"alert alert-danger alert-list\">\r\n            {{ error }}\r\n        </li>\r\n    </ul>\r\n\r\n<ngb-alert *ngIf=\"!commonsService.isOnline\" type=\"info\">Application is offline</ngb-alert>\r\n\r\n<h1>{{appTitre}}</h1>\r\n<input-debounce delay=\"500\" placeholder=\"Recherche...\" (value)=\"searchChanged($event)\"></input-debounce>\r\n<table class=\"table\">\r\n    <tr>\r\n        <th colspan=\"2\" (click)=\"changeOrder('titre')\">Titre <span *ngIf=\"orderField=='titre'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th (click)=\"changeOrder('genre')\">Genre <span *ngIf=\"orderField=='genre'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th *ngIf=\"features.indexOf('serie') !== -1\" (click)=\"changeOrder('serie')\">Série <span *ngIf=\"orderField=='serie'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th *ngIf=\"features.indexOf('volume') !== -1\" (click)=\"changeOrder('volume')\">Volume <span *ngIf=\"orderField=='volume'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th (click)=\"changeOrder('auteurs')\">Auteur(s) <span *ngIf=\"orderField=='auteurs'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n        <th *ngIf=\"features.indexOf('volume_possedes') !== -1\" (click)=\"changeOrder('volume_possedes')\">Volumes <span *ngIf=\"orderField=='volume_possedes'\" class=\"glyphicons\" [ngClass]=\"{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}\"></span></th>\r\n    </tr>\r\n    <tr *ngFor=\"let item of items.data\">\r\n        <td class=\"list_couverture\"><img [src]=\"item.getCouverture()\" /></td>\r\n        <td><a [routerLink]=\"['/'+appUrl+'/'+item.id]\">{{ item.titre }}</a><span *ngIf=\"features.indexOf('format') !== -1\">\r\n                <a *ngFor=\"let format of item.format\" [routerLink]=\"['/'+appUrl+'/format/'+format]\"><img [src]=\"getIcon(format)\" class=\"format_icon\" /></a>\r\n            </span></td>\r\n        <td><a [routerLink]=\"['/'+appUrl+'/genre/'+item.genre.id]\">{{ item.genre.nom }}</a></td>\r\n        <td *ngIf=\"features.indexOf('serie') !== -1\"><a *ngIf=\"item.serie\" [routerLink]=\"['/'+appUrl+'/serie/'+item.serie.id]\">{{ item.serie.nom }}</a></td>\r\n        <td *ngIf=\"features.indexOf('volume') !== -1\">{{ item.volume }}</td>\r\n        <td class=\"app_list\"><span *ngFor=\"let auteur of item.auteurs\"><a [routerLink]=\"['/'+appUrl+'/auteur/'+auteur.id]\">{{ auteur.nom }}</a></span></td>\r\n        <td *ngIf=\"features.indexOf('volume_possedes') !== -1\">{{ item.volumes.length }} / {{ item.volume_max }}</td>\r\n    </tr>\r\n</table>\r\n\r\n<ngb-pagination *ngIf=\"items.pagination.nb_pages\" \r\n    [collectionSize]=\"items.pagination.nb_items\" \r\n    [(page)]=\"items.pagination.page\" \r\n    [pageSize]=\"items.pagination.perPage\"\r\n    [maxSize]=\"5\" \r\n    [rotate]=\"true\" \r\n    [boundaryLinks]=\"true\"\r\n    (pageChange)=\"pageChange($event)\"></ngb-pagination>\r\n\r\n<div class=\"action_menu\" *ngIf=\"commonsService.isOnline\">\r\n    <div class=\"container\">\r\n        <a class=\"btn btn-primary\" [routerLink]=\"['/'+appUrl+'/new/create']\"><span class=\"glyphicons glyphicons-plus-sign\"></span><span>Ajouter</span></a>\r\n        <button *ngIf=\"filterBy\" class=\"btn btn-success\" (click)=\"cloneItem()\"><span class=\"glyphicons glyphicons-plus-sign\"></span><span>Ajouter ({{ (item) ? item.genre.nom : filterBy }})</span></button>\r\n    </div>    \r\n</div>\r\n"
 
 /***/ },
 /* 131 */
 /***/ function(module, exports) {
 
-module.exports = "<div *ngIf=\"!item\" class=\"loader\">\n    <img src=\"assets/ajax-loader-big.gif\">\n</div>\n<div *ngIf=\"item\">\n    <ol class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item active\">{{ item.titre }}</li>\n    </ol>\n\n    <div class=\"row\">\n        <h1>{{ item.titre }}</h1>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-xs-6\">\n            <p>Genre : <i>{{ item.genre.nom }}</i><button class=\"btn btn-success btn-small btn-right\" (click)=\"cloneItem('genre', item.genre.id)\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></p>\n            <p *ngIf=\"features.indexOf('serie') !== -1 && item.serie\">Série : <i>{{ item.serie.nom }}</i><button class=\"btn btn-success btn-small btn-right\" (click)=\"cloneItem('serie', item.serie.id)\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></p>\n            <p>Auteur(s) : </p>\n            <ul>\n                <li *ngFor=\"let auteur of item.auteurs\">{{ auteur.nom }}<button class=\"btn btn-success btn-small btn-right\" (click)=\"cloneItem('auteur', auteur.id)\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></li>\n            </ul>\n            <p *ngIf=\"features.indexOf('volume') !== -1\">Volume : <i>{{ item.volume }}</i></p>\n            <p *ngIf=\"features.indexOf('volume_possedes') !== -1\">Volume(s) possedés : <i>{{ item.volume_possedes }}</i></p>\n            <p *ngIf=\"features.indexOf('volume_max') !== -1\">Volume(s) max : <i>{{ item.volume_max }}</i></p>\n            <p *ngIf=\"features.indexOf('format') !== -1\">Format : \n                <img *ngFor=\"let format of item.format\" [src]=\"getIcon(format)\" class=\"format_icon\" />\n            </p>\n        </div>\n        <div class=\"col-xs-6\">\n            <img class=\"image_couverture\" [src]=\"item.getCouverture()\" />\n        </div>\n    </div>\n    \n\n    <div class=\"row action_menu\">\n        <div class=\"container\">\n            <a class=\"btn btn-primary\" [routerLink]=\"['/'+appUrl+'/' + item.id + '/edit']\"><span class=\"glyphicons glyphicons-pencil\"></span><span>Editer</span></a>\n            <button class=\"btn btn-info\" (click)=\"cloneItem()\"><span class=\"glyphicons glyphicons-duplicate\"></span><span>Cloner</span></button>\n            <button class=\"btn btn-danger\" (click)=\"deleteItem()\"><span class=\"glyphicons glyphicons-bin\"></span><span>Supprimer</span></button>        \n        </div>\n    </div>    \n</div>"
+module.exports = "<div *ngIf=\"!item\" class=\"loader\">\n    <img src=\"assets/ajax-loader-big.gif\">\n</div>\n<div *ngIf=\"item\">\n    <ol class=\"breadcrumb\">\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ appTitre }}</a></li>\n      <li class=\"breadcrumb-item active\">{{ item.titre }}</li>\n    </ol>\n\n    <ul>\n        <li *ngFor=\"let error of errors.getGeneralsError()\" class=\"alert alert-danger alert-list\">\n            {{ error }}\n        </li>\n    </ul>    \n    \n    <ngb-alert *ngIf=\"!commonsService.isOnline\" type=\"info\">Application is offline</ngb-alert>\n    \n    <div class=\"row\">\n        <h1>{{ item.titre }}</h1>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-xs-6\">\n            <p>Genre : <i>{{ item.genre.nom }}</i><button class=\"btn btn-success btn-small btn-right\" (click)=\"cloneItem('genre', item.genre.id)\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></p>\n            <p *ngIf=\"features.indexOf('serie') !== -1 && item.serie\">Série : <i>{{ item.serie.nom }}</i><button class=\"btn btn-success btn-small btn-right\" (click)=\"cloneItem('serie', item.serie.id)\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></p>\n            <p>Auteur(s) : </p>\n            <ul>\n                <li *ngFor=\"let auteur of item.auteurs\">{{ auteur.nom }}<button class=\"btn btn-success btn-small btn-right\" (click)=\"cloneItem('auteur', auteur.id)\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></li>\n            </ul>\n            <p *ngIf=\"features.indexOf('volume') !== -1\">Volume : <i>{{ item.volume }}</i></p>\n            <p *ngIf=\"features.indexOf('volume_possedes') !== -1\">Volume(s) possedés : <i>{{ item.volume_possedes }}</i></p>\n            <p *ngIf=\"features.indexOf('volume_max') !== -1\">Volume(s) max : <i>{{ item.volume_max }}</i></p>\n            <p *ngIf=\"features.indexOf('format') !== -1\">Format : \n                <img *ngFor=\"let format of item.format\" [src]=\"getIcon(format)\" class=\"format_icon\" />\n            </p>\n        </div>\n        <div class=\"col-xs-6\">\n            <img class=\"image_couverture\" [src]=\"item.getCouverture()\" />\n        </div>\n    </div>\n    \n\n    <div class=\"row action_menu\" *ngIf=\"commonsService.isOnline\">\n        <div class=\"container\">\n            <a class=\"btn btn-primary\" [routerLink]=\"['/'+appUrl+'/' + item.id + '/edit']\"><span class=\"glyphicons glyphicons-pencil\"></span><span>Editer</span></a>\n            <button class=\"btn btn-info\" (click)=\"cloneItem()\"><span class=\"glyphicons glyphicons-duplicate\"></span><span>Cloner</span></button>\n            <button class=\"btn btn-danger\" (click)=\"deleteItem()\"><span class=\"glyphicons glyphicons-bin\"></span><span>Supprimer</span></button>        \n        </div>\n    </div>    \n</div>"
 
 /***/ },
 /* 132 */
 /***/ function(module, exports) {
 
-module.exports = "<div *ngIf=\"!item\" class=\"loader\">\r\n    <img src=\"assets/ajax-loader-big.gif\">\r\n</div>\r\n<div *ngIf=\"loading\" class=\"loader-modal\">\r\n    <img src=\"assets/ajax-loader-big.gif\">\r\n</div>\r\n<form *ngIf=\"item\" #f=\"ngForm\" novalidate>\r\n\r\n    <ol *ngIf=\"item.id\" class=\"breadcrumb\">\r\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['../..']\">{{ appTitre }}</a></li>\r\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ item.titre }}</a></li>\r\n      <li class=\"breadcrumb-item active\">Editer</li>\r\n    </ol>  \r\n    <ol *ngIf=\"!item.id\" class=\"breadcrumb\">\r\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['../..']\">{{ appTitre }}</a></li>\r\n      <li class=\"breadcrumb-item active\">Ajouter</li>\r\n    </ol>  \r\n    \r\n   \r\n    <!-- Titre -->\r\n    <div class=\"form-section\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('titre')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n          \r\n            <label for=\"formTitre\" class=\"col-sm-2 col-form-label\">Titre</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"text\" name=\"titre\" [(ngModel)]=\"item.titre\" class=\"form-control form-control-sm\" id=\"formTitre\" placeholder=\"Dune, etc...\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n    <!-- Genre  -->\r\n    <div class=\"form-section\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('genre_id')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('genre_new')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>           \r\n            <label class=\"col-sm-2 col-form-label\">Genre</label>\r\n            <div class=\"col-sm-10\">\r\n                <ng2-completer #genreSelect name=\"genreDisplay\" \r\n                               [(ngModel)]=\"genreDisplay\" class=\"form-control\" \r\n                               [dataService]=\"genreDataService\" \r\n                               [minSearchLength]=\"0\" \r\n                               [textNoResults]=\"\"\r\n                               (change)=\"addGenre(genreSelect.value)\" \r\n                               (selected)=\"addGenre(genreSelect.value)\"></ng2-completer>\r\n            </div>\r\n        </div>\r\n    </div>    \r\n    \r\n    <!-- Série -->\r\n    <div class=\"form-section\" *ngIf=\"features.indexOf('serie') !== -1\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('serie_id')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('serie_new')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>             \r\n            <label class=\"col-sm-2 col-form-label\">Série</label>\r\n            <div class=\"col-sm-10\">\r\n                <ng2-completer #serieSelect name=\"serieDisplay\" \r\n                               class=\"form-control\" \r\n                               [(ngModel)]=\"serieDisplay\" \r\n                               [dataService]=\"serieDataService\" \r\n                               [minSearchLength]=\"0\" \r\n                               [textNoResults]=\"\"\r\n                               (change)=\"addSerie(serieSelect.value)\" \r\n                               (selected)=\"addSerie(serieSelect.value)\"></ng2-completer>\r\n            </div>\r\n        </div>\r\n        <div class=\"form-group row\" *ngIf=\"item.serie !== null\">  \r\n            <label for=\"formSerieNewVolumeMax\" class=\"col-sm-2 col-form-label col-form-label-sm\">Nombre de volume</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"text\" name=\"volume_max\" class=\"form-control form-control-sm\" id=\"formSerieNewVolumeMax\" [(ngModel)]=\"item.serie.volume_max\">\r\n            </div>      \r\n        </div>          \r\n    </div>       \r\n    \r\n    <!-- Auteur -->  \r\n    <div class=\"form-section\">\r\n        <div class=\"form-group row\">\r\n            <label class=\"col-sm-2 col-form-label\">Auteur</label>\r\n            <div class=\"col-sm-10\">\r\n                <p class=\"form-control-static mb-0\" *ngFor=\"let auteur of item.auteurs\">\r\n                   <input type=\"hidden\" value=\"{{auteur.id}}\">\r\n                    {{auteur.nom}}\r\n                    <button class=\"btn btn-danger btn-small btn-right\" (click)=\"removeAuteur(auteur.id, auteur.nom)\"><span class=\"glyphicons glyphicons-minus-sign\"></span></button>\r\n                </p>\r\n            </div>\r\n        </div>\r\n        <div class=\"form-group row\">\r\n\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('auteurs_id')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('auteurs_new')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n            \r\n            <label for=\"formSerieSelect\" class=\"col-sm-2 col-form-label col-form-label-sm\">Ajouter un auteur</label>\r\n            <div class=\"col-sm-8\">\r\n                <ng2-completer #auteurNew class=\"form-control\" [dataService]=\"auteurDataService\" [minSearchLength]=\"0\"></ng2-completer>\r\n            </div> \r\n            <div class=\"col-sm-2\"><button class=\"btn btn-success btn-small btn-right\" (click)=\"addAuteurAutocomplete(auteurNew.value); auteurNew.value = '';\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></div>\r\n        </div>\r\n    </div>\r\n\r\n    <!-- Volume -->    \r\n    <div class=\"form-section\" *ngIf=\"features.indexOf('volume') !== -1\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('volume')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>            \r\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"number\" name=\"volume\" [(ngModel)]=\"item.volume\" class=\"form-control form-control-sm\" id=\"formVolume\">\r\n            </div>\r\n        </div>\r\n    </div>    \r\n    \r\n    <!-- Volume Possedes -->    \r\n    <div class=\"form-section\" *ngIf=\"features.indexOf('volume_possedes') !== -1\">\r\n        <div class=\"form-group row\">\r\n\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('volume_max')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n\r\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume max</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"number\" name=\"volume_max\" [(ngModel)]=\"item.volume_max\" class=\"form-control form-control-sm\" id=\"formVolume\"\r\n                       (change)=\"volumeMaxChanged()\">\r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('volume_possedes')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>            \r\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume(s) possedés</label>\r\n            <div class=\"col-sm-10 form-check\">               \r\n                <label *ngFor=\"let volume of item.listVolumeMax\" class=\"form-check-label-block\">\r\n                    <input type=\"checkbox\" class=\"form-check-input\"\r\n                        [checked]=\"item.volumes.indexOf(volume) !== -1\" \r\n                        (change)=\"$event.target.checked? (item.volumes.push(volume)) : ( item.volumes.splice(item.volumes.indexOf(volume) , 1))\">    \r\n                        {{volume}}\r\n                </label>\r\n            </div>\r\n        </div>     \r\n    </div>        \r\n    \r\n    <!-- Format -->    \r\n    <div class=\"form-section\" *ngIf=\"features.indexOf('format') !== -1\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('format')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>            \r\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Format</label>\r\n            <div class=\"col-sm-10 form-check\">               \r\n                <label *ngFor=\"let format of listFormat\" class=\"form-check-label\">\r\n                    <input type=\"checkbox\" class=\"form-check-input\"\r\n                        [checked]=\"item.format.indexOf(format.value) !== -1\" \r\n                        (change)=\"$event.target.checked? (item.format.push(format.value)) : ( item.format.splice(item.format.indexOf(format.value) , 1))\">    \r\n                        {{format.display}}\r\n                </label>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <!-- Couverture -->    \r\n    <div class=\"form-section\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('couverture')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n          \r\n            <label for=\"formCouverture\" class=\"col-sm-2 col-form-label col-form-label-sm\">Couverture</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"url\" name=\"couverture\" [(ngModel)]=\"item.couverture\" class=\"form-control form-control-sm\" id=\"formCouverture\">\r\n                <img *ngIf=\"item.couverture\" [src]=\"item.couverture\" />\r\n            </div>\r\n        </div>\r\n    </div>   \r\n\r\n    <div class=\"action_menu\">\r\n        <div class=\"container\">\r\n            <button type=\"submit\" class=\"btn btn-primary\" (click)=\"saveItem()\"><span class=\"glyphicons glyphicons-ok-sign\"></span><span>Sauver</span></button>\r\n        </div>\r\n    </div>\r\n</form>"
+module.exports = "<div *ngIf=\"!item\" class=\"loader\">\r\n    <img src=\"assets/ajax-loader-big.gif\">\r\n</div>\r\n<div *ngIf=\"loading\" class=\"loader-modal\">\r\n    <img src=\"assets/ajax-loader-big.gif\">\r\n</div>\r\n<form *ngIf=\"item\" #f=\"ngForm\" novalidate>\r\n\r\n    <ol *ngIf=\"item.id\" class=\"breadcrumb\">\r\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['../..']\">{{ appTitre }}</a></li>\r\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['..']\">{{ item.titre }}</a></li>\r\n      <li class=\"breadcrumb-item active\">Editer</li>\r\n    </ol>  \r\n    <ol *ngIf=\"!item.id\" class=\"breadcrumb\">\r\n      <li class=\"breadcrumb-item\"><a [routerLink]=\"['../..']\">{{ appTitre }}</a></li>\r\n      <li class=\"breadcrumb-item active\">Ajouter</li>\r\n    </ol>  \r\n    \r\n    <ul>\r\n        <li *ngFor=\"let error of formErrors.getGeneralsError()\" class=\"alert alert-danger alert-list\">\r\n            {{ error }}\r\n        </li>\r\n    </ul>\r\n\r\n    <ngb-alert *ngIf=\"!commonsService.isOnline\" type=\"info\">Application is offline</ngb-alert>\r\n   \r\n    <!-- Titre -->\r\n    <div class=\"form-section\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('titre')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n          \r\n            <label for=\"formTitre\" class=\"col-sm-2 col-form-label\">Titre</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"text\" name=\"titre\" [(ngModel)]=\"item.titre\" class=\"form-control form-control-sm\" id=\"formTitre\" placeholder=\"Dune, etc...\">\r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n    <!-- Genre  -->\r\n    <div class=\"form-section\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('genre_id')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('genre_new')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>           \r\n            <label class=\"col-sm-2 col-form-label\">Genre</label>\r\n            <div class=\"col-sm-10\">\r\n                <ng2-completer #genreSelect name=\"genreDisplay\" \r\n                               [(ngModel)]=\"genreDisplay\" class=\"form-control\" \r\n                               [dataService]=\"genreDataService\" \r\n                               [minSearchLength]=\"0\" \r\n                               [textNoResults]=\"\"\r\n                               (change)=\"addGenre(genreSelect.value)\" \r\n                               (selected)=\"addGenre(genreSelect.value)\"></ng2-completer>\r\n            </div>\r\n        </div>\r\n    </div>    \r\n    \r\n    <!-- Série -->\r\n    <div class=\"form-section\" *ngIf=\"features.indexOf('serie') !== -1\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('serie_id')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('serie_new')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>             \r\n            <label class=\"col-sm-2 col-form-label\">Série</label>\r\n            <div class=\"col-sm-10\">\r\n                <ng2-completer #serieSelect name=\"serieDisplay\" \r\n                               class=\"form-control\" \r\n                               [(ngModel)]=\"serieDisplay\" \r\n                               [dataService]=\"serieDataService\" \r\n                               [minSearchLength]=\"0\" \r\n                               [textNoResults]=\"\"\r\n                               (change)=\"addSerie(serieSelect.value)\" \r\n                               (selected)=\"addSerie(serieSelect.value)\"></ng2-completer>\r\n            </div>\r\n        </div>\r\n        <div class=\"form-group row\" *ngIf=\"item.serie !== null\">  \r\n            <label for=\"formSerieNewVolumeMax\" class=\"col-sm-2 col-form-label col-form-label-sm\">Nombre de volume</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"text\" name=\"volume_max\" class=\"form-control form-control-sm\" id=\"formSerieNewVolumeMax\" [(ngModel)]=\"item.serie.volume_max\">\r\n            </div>      \r\n        </div>          \r\n    </div>       \r\n    \r\n    <!-- Auteur -->  \r\n    <div class=\"form-section\">\r\n        <div class=\"form-group row\">\r\n            <label class=\"col-sm-2 col-form-label\">Auteur</label>\r\n            <div class=\"col-sm-10\">\r\n                <p class=\"form-control-static mb-0\" *ngFor=\"let auteur of item.auteurs\">\r\n                   <input type=\"hidden\" value=\"{{auteur.id}}\">\r\n                    {{auteur.nom}}\r\n                    <button class=\"btn btn-danger btn-small btn-right\" (click)=\"removeAuteur(auteur.id, auteur.nom)\"><span class=\"glyphicons glyphicons-minus-sign\"></span></button>\r\n                </p>\r\n            </div>\r\n        </div>\r\n        <div class=\"form-group row\">\r\n\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('auteurs_id')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('auteurs_new')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n            \r\n            <label for=\"formSerieSelect\" class=\"col-sm-2 col-form-label col-form-label-sm\">Ajouter un auteur</label>\r\n            <div class=\"col-sm-8\">\r\n                <ng2-completer #auteurNew class=\"form-control\" [dataService]=\"auteurDataService\" [minSearchLength]=\"0\"></ng2-completer>\r\n            </div> \r\n            <div class=\"col-sm-2\"><button class=\"btn btn-success btn-small btn-right\" (click)=\"addAuteurAutocomplete(auteurNew.value); auteurNew.value = '';\"><span class=\"glyphicons glyphicons-plus-sign\"></span></button></div>\r\n        </div>\r\n    </div>\r\n\r\n    <!-- Volume -->    \r\n    <div class=\"form-section\" *ngIf=\"features.indexOf('volume') !== -1\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('volume')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>            \r\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"number\" name=\"volume\" [(ngModel)]=\"item.volume\" class=\"form-control form-control-sm\" id=\"formVolume\">\r\n            </div>\r\n        </div>\r\n    </div>    \r\n    \r\n    <!-- Volume Possedes -->    \r\n    <div class=\"form-section\" *ngIf=\"features.indexOf('volume_possedes') !== -1\">\r\n        <div class=\"form-group row\">\r\n\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('volume_max')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n\r\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume max</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"number\" name=\"volume_max\" [(ngModel)]=\"item.volume_max\" class=\"form-control form-control-sm\" id=\"formVolume\"\r\n                       (change)=\"volumeMaxChanged()\">\r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('volume_possedes')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>            \r\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Volume(s) possedés</label>\r\n            <div class=\"col-sm-10 form-check\">               \r\n                <label *ngFor=\"let volume of item.listVolumeMax\" class=\"form-check-label-block\">\r\n                    <input type=\"checkbox\" class=\"form-check-input\"\r\n                        [checked]=\"item.volumes.indexOf(volume) !== -1\" \r\n                        (change)=\"$event.target.checked? (item.volumes.push(volume)) : ( item.volumes.splice(item.volumes.indexOf(volume) , 1))\">    \r\n                        {{volume}}\r\n                </label>\r\n            </div>\r\n        </div>     \r\n    </div>        \r\n    \r\n    <!-- Format -->    \r\n    <div class=\"form-section\" *ngIf=\"features.indexOf('format') !== -1\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('format')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>            \r\n            <label for=\"formVolume\" class=\"col-sm-2 col-form-label col-form-label-sm\">Format</label>\r\n            <div class=\"col-sm-10 form-check\">               \r\n                <label *ngFor=\"let format of listFormat\" class=\"form-check-label\">\r\n                    <input type=\"checkbox\" class=\"form-check-input\"\r\n                        [checked]=\"item.format.indexOf(format.value) !== -1\" \r\n                        (change)=\"$event.target.checked? (item.format.push(format.value)) : ( item.format.splice(item.format.indexOf(format.value) , 1))\">    \r\n                        {{format.display}}\r\n                </label>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <!-- Couverture -->    \r\n    <div class=\"form-section\">\r\n        <div class=\"form-group row\">\r\n            <ul>\r\n                <li *ngFor=\"let error of formErrors.getErrors('couverture')\" class=\"alert alert-danger alert-list\">\r\n                    {{ error }}\r\n                </li>\r\n            </ul>\r\n          \r\n            <label for=\"formCouverture\" class=\"col-sm-2 col-form-label col-form-label-sm\">Couverture</label>\r\n            <div class=\"col-sm-10\">\r\n                <input type=\"url\" name=\"couverture\" [(ngModel)]=\"item.couverture\" class=\"form-control form-control-sm\" id=\"formCouverture\">\r\n                <img *ngIf=\"item.couverture\" [src]=\"item.couverture\" />\r\n            </div>\r\n        </div>\r\n    </div>   \r\n\r\n    <div class=\"action_menu\" *ngIf=\"commonsService.isOnline\">\r\n        <div class=\"container\">\r\n            <button type=\"submit\" class=\"btn btn-primary\" (click)=\"saveItem()\"><span class=\"glyphicons glyphicons-ok-sign\"></span><span>Sauver</span></button>\r\n        </div>\r\n    </div>\r\n</form>"
 
 /***/ },
 /* 133 */
@@ -23093,13 +23093,6 @@ var MangaService = (function (_super) {
     MangaService.prototype.getItemById = function (id) {
         return _super.prototype.getItemById.call(this, id).then(function (manga) { __WEBPACK_IMPORTED_MODULE_3__manga__["a" /* Manga */].addVolumesList(manga); return manga; });
     };
-    /*getAllItems(page: number = 0): Promise<CommonsResponse<Manga>> {
-        return super.getAllItems(page).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
-    }
-    
-    recallUrl(page: number, order: string): Promise<CommonsResponse<Manga>> {
-        return super.recallUrl(page, order).then(mangas => {Manga.addVolumesLists(mangas.data); return mangas;});
-    }*/
     MangaService.prototype.getItems = function (url, page) {
         return _super.prototype.getItems.call(this, url, page).then(function (mangas) { __WEBPACK_IMPORTED_MODULE_3__manga__["a" /* Manga */].addVolumesLists(mangas.data); return mangas; });
     };
@@ -69031,13 +69024,16 @@ var BdModule = (function () {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(8);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return CommonsAppComponent; });
+
 var CommonsAppComponent = (function () {
     function CommonsAppComponent() {
         this.items = { data: [], pagination: {} };
         this.loading = 0;
         this.orderField = "titre";
         this.orderDirection = "ASC";
+        this.errors = new __WEBPACK_IMPORTED_MODULE_0____["b" /* Errors */]();
     }
     CommonsAppComponent.prototype.cloneItem = function () {
         this.router.navigate([("/" + this.appUrl + "/new/create"), this.cloneObject]);
@@ -69049,6 +69045,10 @@ var CommonsAppComponent = (function () {
             _this.loading--;
             _this.orderField = _this.commonsService.orderField;
             _this.orderDirection = _this.commonsService.orderDirection;
+        })
+            .catch(function (error) {
+            _this.errors.setErrors(error._body);
+            _this.loading--;
         });
     };
     CommonsAppComponent.prototype.changeOrder = function (order) {
@@ -69073,6 +69073,10 @@ var CommonsAppComponent = (function () {
             _this.loading--;
             _this.orderField = _this.commonsService.orderField;
             _this.orderDirection = _this.commonsService.orderDirection;
+        })
+            .catch(function (error) {
+            _this.errors.setErrors(error._body);
+            _this.loading--;
         });
     };
     /*getPagination(pagination: any) {
@@ -69127,6 +69131,10 @@ var CommonsAppComponent = (function () {
                 _this.loading--;
                 _this.orderField = _this.commonsService.orderField;
                 _this.orderDirection = _this.commonsService.orderDirection;
+            })
+                .catch(function (error) {
+                _this.errors.setErrors(error._body);
+                _this.loading--;
             });
         });
     };
@@ -69143,6 +69151,9 @@ var CommonsAppComponent = (function () {
                 _this.loading--;
                 _this.orderField = _this.commonsService.orderField;
                 _this.orderDirection = _this.commonsService.orderDirection;
+            }).catch(function (error) {
+                _this.errors.setErrors(error._body);
+                _this.loading--;
             });
         }
     };
@@ -69155,9 +69166,12 @@ var CommonsAppComponent = (function () {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0____ = __webpack_require__(8);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return CommonsDetailsComponent; });
+
 var CommonsDetailsComponent = (function () {
     function CommonsDetailsComponent() {
+        this.errors = new __WEBPACK_IMPORTED_MODULE_0____["b" /* Errors */]();
     }
     CommonsDetailsComponent.prototype.deleteItem = function () {
         var _this = this;
@@ -69186,7 +69200,10 @@ var CommonsDetailsComponent = (function () {
             var id = +params['id'];
             //console.log(cache);
             _this.commonsService.getItemById(id)
-                .then(function (data) { return _this.item = data; });
+                .then(function (data) { return _this.item = data; })
+                .catch(function (error) {
+                _this.errors.setErrors(error._body);
+            });
         });
         //} 
         /*      let navigationExtras: NavigationExtras = {
@@ -69212,6 +69229,7 @@ var CommonsFormComponent = (function () {
         //formErrors: {} = {};
         this.formErrors = new __WEBPACK_IMPORTED_MODULE_0____["b" /* Errors */]();
         this.loading = false;
+        this.online = true;
     }
     CommonsFormComponent.prototype.saveItem = function () {
         //this.addGenre(this.genreDisplay);
@@ -69231,8 +69249,7 @@ var CommonsFormComponent = (function () {
                 _this.router.navigate(['/' + _this.appUrl, item.id]);
             })
                 .catch(function (error) {
-                _this.formErrors.setErrors(JSON.parse(error._body));
-                //this.formErrors = JSON.parse(error._body); 
+                _this.formErrors.setErrors(error._body);
                 _this.loading = false;
             });
         }
@@ -69242,7 +69259,10 @@ var CommonsFormComponent = (function () {
                 _this.loading = false;
                 _this.router.navigate(['/' + _this.appUrl, item.id]);
             })
-                .catch(function (error) { _this.formErrors.setErrors(JSON.parse(error._body)); _this.loading = false; });
+                .catch(function (error) {
+                _this.formErrors.setErrors(error._body);
+                _this.loading = false;
+            });
         }
     };
     CommonsFormComponent.prototype.addGenre = function (genreNom) {
@@ -69319,6 +69339,11 @@ var CommonsFormComponent = (function () {
     };
     CommonsFormComponent.prototype.init = function () {
         var _this = this;
+        var t = this;
+        setInterval(function () {
+            t.online = t.commonsService.isOnline;
+        }, 100);
+        //this.online = this.commonsService.isOnline;
         this.route.params.forEach(function (params) {
             var id = +params['id'];
             var clone = +params['clone'];
@@ -69467,6 +69492,7 @@ var CommonsModule = (function () {
 
 var CommonsService = (function () {
     function CommonsService() {
+        var _this = this;
         this.itemsUrl = 'api/roman';
         this.headers = new __WEBPACK_IMPORTED_MODULE_0__angular_http__["Headers"]({ 'Content-Type': 'application/json' });
         this.pagination = 5;
@@ -69479,9 +69505,10 @@ var CommonsService = (function () {
             'Bd': 'bd',
             'SerieTV': 'serietv'
         };
+        this.isOnline = true;
+        window.addEventListener('online', function () { _this.isOnline = true; });
+        window.addEventListener('offline', function () { _this.isOnline = false; });
     }
-    //lastId: number = 0;
-    //romans: Roman[] = [];
     CommonsService.prototype.setUrl = function (urlName) {
         var url = this.urls[urlName];
         this.itemsUrl = "api/" + url;
@@ -69489,31 +69516,35 @@ var CommonsService = (function () {
     // POST /roman
     CommonsService.prototype.addItem = function (roman) {
         var _this = this;
+        if (!this.isOnline) {
+            return new Promise(function (resolve, reject) { reject('The application is offline'); });
+        }
         return this.http
             .post(this.itemsUrl, JSON.stringify(this.filter(roman)), { headers: this.headers })
             .toPromise()
             .then(function (response) { return _this.factory(response.json().data); });
-        //.catch(this.handleError);
-        //return this;
     };
     // DELETE /roman/:id
     CommonsService.prototype.deleteItem = function (roman) {
+        if (!this.isOnline) {
+            return new Promise(function (resolve, reject) { reject('The application is offline'); });
+        }
         var url = this.itemsUrl + "/" + roman.id;
         return this.http.delete(url, { headers: this.headers })
             .toPromise()
             .then(function () { return null; });
-        //.catch(this.handleError);
-        //return this;
     };
     // PUT /roman/:id
     CommonsService.prototype.updateItem = function (roman) {
         var _this = this;
+        if (!this.isOnline) {
+            return new Promise(function (resolve, reject) { reject('The application is offline'); });
+        }
         var url = this.itemsUrl + "/" + roman.id;
         return this.http
             .put(url, JSON.stringify(this.filter(roman)), { headers: this.headers })
             .toPromise()
             .then(function (response) { return _this.factory(response.json().data); });
-        //.catch(this.handleError);
     };
     // GET /roman
     CommonsService.prototype.getAllItems = function (page, order) {
@@ -69573,7 +69604,7 @@ var CommonsService = (function () {
             url += '?';
         }
         var params = [];
-        if (this.pagination !== null) {
+        if (this.pagination !== null && page !== -1) {
             params.push('page=' + page);
             params.push('pagination=' + this.pagination);
         }
@@ -69640,6 +69671,11 @@ var CommonsService = (function () {
     };
     CommonsService.prototype.getItems = function (url, page) {
         var _this = this;
+        if (!this.isOnline) {
+            return new Promise(function (resolve, reject) {
+                reject("The application is offline");
+            });
+        }
         return this.http.get(url)
             .toPromise()
             .then(function (response) {
@@ -69674,7 +69710,7 @@ var CommonsService = (function () {
         json.auteurs_id = [];
         json.auteurs_new = [];
         delete json.auteurs;
-        if (item.genre !== undefined) {
+        if (item.genre !== null && item.genre !== undefined) {
             if (item.genre.id === undefined) {
                 json.genre_new = item.genre.nom;
             }
@@ -69773,9 +69809,22 @@ var Errors = (function () {
         this.hasErrors = false;
     }
     Errors.prototype.setErrors = function (values) {
-        if (values === void 0) { values = {}; }
-        this.data = values;
+        if (values === void 0) { values = ""; }
+        try {
+            this.data = JSON.parse(values);
+        }
+        catch (e) {
+            this.data['_general'] = values;
+        }
         this.hasErrors = true;
+    };
+    Errors.prototype.getGeneralsError = function () {
+        if (this.data['_generals'] === undefined) {
+            return [];
+        }
+        else {
+            return [this.data['_generals']];
+        }
     };
     Errors.prototype.getErrors = function (item) {
         if (this.data[item] === undefined) {

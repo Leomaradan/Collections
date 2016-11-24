@@ -16,6 +16,13 @@
       <li class="breadcrumb-item active">Ajouter</li>
     </ol>  
     
+    <ul>
+        <li *ngFor="let error of formErrors.getGeneralsError()" class="alert alert-danger alert-list">
+            {{ error }}
+        </li>
+    </ul>
+
+    <ngb-alert *ngIf="!commonsService.isOnline" type="info">Application is offline</ngb-alert>
    
     <!-- Titre -->
     <div class="form-section">
@@ -213,7 +220,7 @@
         </div>
     </div>   
 
-    <div class="action_menu">
+    <div class="action_menu" *ngIf="commonsService.isOnline">
         <div class="container">
             <button type="submit" class="btn btn-primary" (click)="saveItem()"><span class="glyphicons glyphicons-ok-sign"></span><span>Sauver</span></button>
         </div>

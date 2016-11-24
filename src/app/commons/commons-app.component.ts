@@ -1,4 +1,4 @@
-import { Commons, CommonsService, CommonsResponse } from '.';
+import { Commons, CommonsService, CommonsResponse, Errors } from '.';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 export abstract class CommonsAppComponent<T extends Commons> {
@@ -13,7 +13,7 @@ export abstract class CommonsAppComponent<T extends Commons> {
   abstract appTitre: string;
   abstract appUrl: string  
 
-  protected commonsService: CommonsService<T>;
+  public commonsService: CommonsService<T>;
   protected router: Router;
   protected route: ActivatedRoute
   
@@ -21,45 +21,55 @@ export abstract class CommonsAppComponent<T extends Commons> {
   public orderDirection = "ASC";     
   
   protected cloneObject: {};
+  
+  errors: Errors = new Errors();
     
   cloneItem(): void {
         this.router.navigate([`/${this.appUrl}/new/create`, this.cloneObject]);
   }  
   
   searchChanged(search: string) {
-      this.commonsService.searchItems(search).then(items => { 
-            this.items = items; 
-            this.loading--;
-            this.orderField = this.commonsService.orderField;
-            this.orderDirection = this.commonsService.orderDirection;
-        });
+    this.commonsService.searchItems(search).then(items => { 
+        this.items = items; 
+        this.loading--;
+        this.orderField = this.commonsService.orderField;
+        this.orderDirection = this.commonsService.orderDirection;
+    })
+    .catch(error => { 
+        this.errors.setErrors(error._body); 
+        this.loading--;
+    });        
 
   }
     
   changeOrder(order: string) {
-      if (order == this.commonsService.orderField) {
-          this.commonsService.orderDirection = (this.commonsService.orderDirection == "DESC") ? 'ASC' : 'DESC';
-      } else {
-          this.commonsService.orderField = order;
-          this.commonsService.orderDirection = 'ASC';
-      }
-      
-      let orderString = this.commonsService.orderField;
-      if(this.commonsService.orderDirection !== 'ASC') {
-          orderString += ' DESC';
-      }
-      
-      let page: number = 0;
-      if(this.items.pagination.currentPage !== undefined) {
+    if (order == this.commonsService.orderField) {
+        this.commonsService.orderDirection = (this.commonsService.orderDirection == "DESC") ? 'ASC' : 'DESC';
+    } else {
+        this.commonsService.orderField = order;
+        this.commonsService.orderDirection = 'ASC';
+    }
+
+    let orderString = this.commonsService.orderField;
+    if(this.commonsService.orderDirection !== 'ASC') {
+        orderString += ' DESC';
+    }
+
+    let page: number = 0;
+    if(this.items.pagination.currentPage !== undefined) {
           page = this.items.pagination.currentPage;
-      }
-      
-      this.commonsService.recallUrl(page, orderString).then(items => { 
-            this.items = items; 
-            this.loading--;
-            this.orderField = this.commonsService.orderField;
-            this.orderDirection = this.commonsService.orderDirection;
-        });
+    }
+
+    this.commonsService.recallUrl(page, orderString).then(items => { 
+        this.items = items; 
+        this.loading--;
+        this.orderField = this.commonsService.orderField;
+        this.orderDirection = this.commonsService.orderDirection;
+    })
+    .catch(error => { 
+        this.errors.setErrors(error._body); 
+        this.loading--;
+    });  
   }
     
   /*getPagination(pagination: any) {
@@ -72,50 +82,54 @@ export abstract class CommonsAppComponent<T extends Commons> {
   
   init(features: string[]) {
     this.route.params.forEach((params: Params) => {
-      let genre = +params['genre'];
-      let serie = +params['serie'];
-      let auteur = +params['auteur'];
-      let format = params['format'];
-      let recherche = params['recherche'];
-      let page = (+params['page']) ? +params['page'] : 1;
+        let genre = +params['genre'];
+        let serie = +params['serie'];
+        let auteur = +params['auteur'];
+        let format = params['format'];
+        let recherche = params['recherche'];
+        let page = (+params['page']) ? +params['page'] : 1;
+
+        this.loading++;
+
+        let promise: Promise<CommonsResponse<T>>;
+
+        this.features = features.slice();
+
+        if(genre) {
+            promise = this.commonsService.getItemsByGenre(genre, page);
+            this.filterBy = "genre";
+            this.cloneObject = {genre: genre};
+        } else if (serie) {
+            promise = this.commonsService.getItemsBySerie(serie, page);
+            this.filterBy = "série";
+            this.features.push('volume');
+            this.cloneObject = {serie: serie};
+        } else if (auteur) {
+            promise = this.commonsService.getItemsByAuteur(auteur, page);
+            this.filterBy = "auteur";
+            this.cloneObject = {auteur: auteur};
+        } else if (format) {
+            promise = (<any>this.commonsService).getItemsByFormat(format, page);
+            this.filterBy = "format";
+            this.cloneObject = {format: format};
+         } else if (recherche) {
+            promise = this.commonsService.searchItems(recherche, page);
+            this.filterBy = null;
+         } else {
+            promise = this.commonsService.getAllItems(page);
+            this.filterBy = null;
+        }
       
-      this.loading++;
-      
-      let promise: Promise<CommonsResponse<T>>;
-      
-      this.features = features.slice();
-            
-      if(genre) {
-          promise = this.commonsService.getItemsByGenre(genre, page);
-          this.filterBy = "genre";
-          this.cloneObject = {genre: genre};
-      } else if (serie) {
-          promise = this.commonsService.getItemsBySerie(serie, page);
-          this.filterBy = "série";
-          this.features.push('volume');
-          this.cloneObject = {serie: serie};
-      } else if (auteur) {
-          promise = this.commonsService.getItemsByAuteur(auteur, page);
-          this.filterBy = "auteur";
-          this.cloneObject = {auteur: auteur};
-      } else if (format) {
-          promise = (<any>this.commonsService).getItemsByFormat(format, page);
-          this.filterBy = "format";
-          this.cloneObject = {format: format};
-       } else if (recherche) {
-          promise = this.commonsService.searchItems(recherche, page);
-          this.filterBy = null;
-       } else {
-        promise = this.commonsService.getAllItems(page);
-        this.filterBy = null;
-      }
-      
-      promise.then(items => {
-        this.items = items;
-        this.loading--;
-        this.orderField = this.commonsService.orderField;
-        this.orderDirection = this.commonsService.orderDirection;        
-       });
+        promise.then(items => {
+            this.items = items;
+            this.loading--;
+            this.orderField = this.commonsService.orderField;
+            this.orderDirection = this.commonsService.orderDirection;        
+        })
+        .catch(error => { 
+            this.errors.setErrors(error._body); 
+            this.loading--;
+        });  
       
     });      
   }
@@ -135,7 +149,10 @@ export abstract class CommonsAppComponent<T extends Commons> {
             this.loading--;
             this.orderField = this.commonsService.orderField;
             this.orderDirection = this.commonsService.orderDirection;
-        });
+        }).catch(error => { 
+            this.errors.setErrors(error._body); 
+            this.loading--;
+        }); 
       }
   }
 

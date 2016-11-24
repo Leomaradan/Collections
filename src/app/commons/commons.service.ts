@@ -36,10 +36,14 @@ export class CommonsService<T extends Commons> {
     };
         
     protected http: Http;
-
-    //lastId: number = 0;
-
-    //romans: Roman[] = [];
+    
+    public isOnline: boolean = true;
+    
+    constructor() {
+      window.addEventListener('online', () => {this.isOnline = true});
+      window.addEventListener('offline', () => {this.isOnline = false});
+    }   
+     
 
     setUrl(urlName: string) {
         let url = this.urls[urlName];
@@ -48,33 +52,37 @@ export class CommonsService<T extends Commons> {
 
     // POST /roman
     addItem(roman: T): Promise<T> {
+        if (!this.isOnline) {
+            return new Promise<T>(function(resolve, reject) { reject('The application is offline')});
+        }
+        
         return this.http
             .post(this.itemsUrl, JSON.stringify(this.filter(roman)), { headers: this.headers })
             .toPromise()
             .then(response => this.factory(response.json().data));
-            //.catch(this.handleError);
-        //return this;
     }
 
     // DELETE /roman/:id
     deleteItem(roman: T): Promise<T> {
+        if (!this.isOnline) {
+            return new Promise<T>(function(resolve, reject) { reject('The application is offline')});
+        }        
         let url = `${this.itemsUrl}/${roman.id}`;
         return this.http.delete(url, { headers: this.headers })
             .toPromise()
             .then(() => null);
-            //.catch(this.handleError);
-
-        //return this;
     }
 
     // PUT /roman/:id
     updateItem(roman: T): Promise<T> {
+        if (!this.isOnline) {
+            return new Promise<T>(function(resolve, reject) { reject('The application is offline')});
+        }        
         let url = `${this.itemsUrl}/${roman.id}`;
         return this.http
             .put(url, JSON.stringify(this.filter(roman)), { headers: this.headers })
             .toPromise()
             .then(response => this.factory(response.json().data));
-            //.catch(this.handleError);
     }
 
     // GET /roman
@@ -143,7 +151,7 @@ export class CommonsService<T extends Commons> {
         }
         let params: string[] = [];
         
-        if (this.pagination !== null) {
+        if (this.pagination !== null && page !== -1) {
             params.push('page='+page);
             params.push('pagination='+this.pagination);
         }   
@@ -215,6 +223,16 @@ export class CommonsService<T extends Commons> {
     }
     
     protected getItems(url: string, page: number): Promise<CommonsResponse<T>> {
+        
+        if (!this.isOnline) {
+            
+                return new Promise<CommonsResponse<T>>(function(resolve, reject) {
+                    reject("The application is offline");  
+                });
+                
+
+        }
+        
         return this.http.get(url)
             .toPromise()
             .then(response => {
@@ -235,6 +253,7 @@ export class CommonsService<T extends Commons> {
                 }
                 
                 let responseObj: CommonsResponse<T> = { data: this.factories(res.data), pagination: this.paginationResponse, request: res.request, order: res.order};
+                
                 return responseObj;               
              })
             .catch(this.handleError);
@@ -261,7 +280,7 @@ export class CommonsService<T extends Commons> {
         json.auteurs_new = [];
         delete json.auteurs;   
             
-        if(item.genre !== undefined) { 
+        if(item.genre !== null && item.genre !== undefined) { 
             if(item.genre.id === undefined) {
                 json.genre_new = item.genre.nom;
             } else {

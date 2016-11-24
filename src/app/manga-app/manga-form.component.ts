@@ -21,7 +21,7 @@ export class MangaFormComponent extends CommonsFormComponent<Manga> implements O
     appUrl: string = "manga"    
     appTitre: string = "Manga";
     
-    constructor(protected commonsService: MangaService, 
+    constructor(public commonsService: MangaService, 
                 protected route: ActivatedRoute, 
                 protected router: Router,
                 protected completerService: CompleterService) {

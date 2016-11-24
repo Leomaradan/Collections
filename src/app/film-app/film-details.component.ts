@@ -20,7 +20,7 @@ export class FilmDetailsComponent extends CommonsDetailsComponent<Film> implemen
     appUrl: string = "film"    
     appTitre: string = "Films";
 
-    constructor(protected commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(public commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 

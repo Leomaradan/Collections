@@ -9,6 +9,14 @@
       <li class="breadcrumb-item active">{{ appTitre }}</li>
 </ol>
 
+    <ul>
+        <li *ngFor="let error of errors.getGeneralsError()" class="alert alert-danger alert-list">
+            {{ error }}
+        </li>
+    </ul>
+
+<ngb-alert *ngIf="!commonsService.isOnline" type="info">Application is offline</ngb-alert>
+
 <h1>{{appTitre}}</h1>
 <input-debounce delay="500" placeholder="Recherche..." (value)="searchChanged($event)"></input-debounce>
 <table class="table">
@@ -42,7 +50,7 @@
     [boundaryLinks]="true"
     (pageChange)="pageChange($event)"></ngb-pagination>
 
-<div class="action_menu">
+<div class="action_menu" *ngIf="commonsService.isOnline">
     <div class="container">
         <a class="btn btn-primary" [routerLink]="['/'+appUrl+'/new/create']"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter</span></a>
         <button *ngIf="filterBy" class="btn btn-success" (click)="cloneItem()"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter ({{ (item) ? item.genre.nom : filterBy }})</span></button>

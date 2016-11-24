@@ -24,7 +24,7 @@ export class FilmFormComponent extends CommonsFormComponent<Film> implements OnI
     appUrl: string = "film";
     appTitre: string = "Films";
 
-    constructor(protected commonsService: FilmService, 
+    constructor(public commonsService: FilmService, 
                 protected route: ActivatedRoute, 
                 protected router: Router,
                 protected completerService: CompleterService) {

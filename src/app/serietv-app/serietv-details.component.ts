@@ -21,7 +21,7 @@ export class SerieTVDetailsComponent extends CommonsDetailsComponent<SerieTV> im
     appUrl: string = "serietv"
     appTitre: string = "Série TV";
 
-    constructor(protected commonsService: SerieTVService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(public commonsService: SerieTVService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 

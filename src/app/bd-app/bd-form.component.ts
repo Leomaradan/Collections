@@ -24,7 +24,7 @@ export class BdFormComponent extends CommonsFormComponent<Bd> implements OnInit 
     appUrl: string = "bd"    
     appTitre: string = "Bd";
     
-    constructor(protected commonsService: BdService, 
+    constructor(public commonsService: BdService, 
                 protected route: ActivatedRoute, 
                 protected router: Router,
                 protected completerService: CompleterService) {

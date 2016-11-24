@@ -20,7 +20,7 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
 
     features = Film.featuresList;
 
-    constructor(protected commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(public commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 

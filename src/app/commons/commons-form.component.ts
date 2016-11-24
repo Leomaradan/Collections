@@ -28,7 +28,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
     //genreSwitcherNew: boolean = false;
     //serieSwitcher: string;
 
-    protected commonsService: CommonsService<T>;
+    public commonsService: CommonsService<T>;
     protected router: Router;
     protected route: ActivatedRoute;
     
@@ -39,6 +39,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
     protected serieDataService: CompleterData;
     
     loading: boolean = false;
+    online: boolean = true;
     
     saveItem() {
         
@@ -62,8 +63,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
                     this.router.navigate(['/'+this.appUrl, item.id]);
                 })
                 .catch(error => { 
-                    this.formErrors.setErrors(JSON.parse(error._body)); 
-                    //this.formErrors = JSON.parse(error._body); 
+                    this.formErrors.setErrors(error._body); 
                     this.loading = false;
                 });
         } else {
@@ -72,7 +72,10 @@ export abstract class CommonsFormComponent<T extends Commons> {
                     this.loading = false;
                     this.router.navigate(['/'+this.appUrl, item.id]);
                 })
-                .catch(error => { this.formErrors.setErrors(JSON.parse(error._body));  this.loading = false;});
+                .catch(error => { 
+                    this.formErrors.setErrors(error._body);  
+                    this.loading = false;
+                 });
         }
     }
 
@@ -166,6 +169,15 @@ export abstract class CommonsFormComponent<T extends Commons> {
     }
     
     init(): void {
+        
+        let t = this;
+        
+        setInterval(function() { 
+            t.online = t.commonsService.isOnline 
+        }, 100);
+        
+        //this.online = this.commonsService.isOnline;
+        
         this.route.params.forEach((params: Params) => {
             let id = +params['id'];
             let clone = +params['clone'];

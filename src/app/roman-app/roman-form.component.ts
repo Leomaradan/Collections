@@ -24,7 +24,7 @@ export class RomanFormComponent extends CommonsFormComponent<Roman> implements O
     appUrl: string = "roman"    
     appTitre: string = "Romans";
     
-    constructor(protected commonsService: RomanService, 
+    constructor(public commonsService: RomanService, 
                 protected route: ActivatedRoute, 
                 protected router: Router,
                 protected completerService: CompleterService) {

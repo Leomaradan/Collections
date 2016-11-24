@@ -7,6 +7,14 @@
       <li class="breadcrumb-item active">{{ item.titre }}</li>
     </ol>
 
+    <ul>
+        <li *ngFor="let error of errors.getGeneralsError()" class="alert alert-danger alert-list">
+            {{ error }}
+        </li>
+    </ul>    
+    
+    <ngb-alert *ngIf="!commonsService.isOnline" type="info">Application is offline</ngb-alert>
+    
     <div class="row">
         <h1>{{ item.titre }}</h1>
     </div>
@@ -31,7 +39,7 @@
     </div>
     
 
-    <div class="row action_menu">
+    <div class="row action_menu" *ngIf="commonsService.isOnline">
         <div class="container">
             <a class="btn btn-primary" [routerLink]="['/'+appUrl+'/' + item.id + '/edit']"><span class="glyphicons glyphicons-pencil"></span><span>Editer</span></a>
             <button class="btn btn-info" (click)="cloneItem()"><span class="glyphicons glyphicons-duplicate"></span><span>Cloner</span></button>

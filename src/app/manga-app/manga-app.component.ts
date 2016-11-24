@@ -21,7 +21,7 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
 
     features = Manga.featuresList;  
 
-  constructor(protected commonsService: MangaService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(public commonsService: MangaService, protected route: ActivatedRoute, protected router: Router) {
     super();
   }
     

@@ -21,7 +21,7 @@ export class RomanDetailsComponent extends CommonsDetailsComponent<Roman> implem
     appUrl: string = "roman"    
     appTitre: string = "Romans";
 
-  constructor(protected commonsService: RomanService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(public commonsService: RomanService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 

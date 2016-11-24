@@ -21,7 +21,7 @@ export class RomanAppComponent extends CommonsAppComponent<Roman> implements OnI
 
     features = Roman.featuresList;  
 
-  constructor(protected commonsService: RomanService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(public commonsService: RomanService, protected route: ActivatedRoute, protected router: Router) {
     super();
   }
     

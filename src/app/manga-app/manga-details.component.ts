@@ -21,7 +21,7 @@ export class MangaDetailsComponent extends CommonsDetailsComponent<Manga> implem
     appUrl: string = "manga"    
     appTitre: string = "Manga";
 
-  constructor(protected commonsService: MangaService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(public commonsService: MangaService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 

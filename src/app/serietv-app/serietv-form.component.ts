@@ -23,7 +23,7 @@ export class SerieTVFormComponent extends CommonsFormComponent<SerieTV> implemen
     
     listFormat = SerieTV.listFormat;
     
-    constructor(protected commonsService: SerieTVService, 
+    constructor(public commonsService: SerieTVService, 
                 protected route: ActivatedRoute, 
                 protected router: Router,
                 protected completerService: CompleterService) {

@@ -1,4 +1,4 @@
-import { Commons, CommonsService } from '.';
+import { Commons, CommonsService, Errors } from '.';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 
@@ -11,9 +11,11 @@ export abstract class CommonsDetailsComponent<T extends Commons> {
   abstract appTitre: string;  
   abstract appUrl: string    
 
-  protected commonsService: CommonsService<T>;  
+  public commonsService: CommonsService<T>;  
   protected router: Router
   protected route: ActivatedRoute;
+  
+  errors: Errors = new Errors();
  
   deleteItem(): void {
       this.commonsService.deleteItem(this.item).then(() => this.router.navigate(['/film']));
@@ -46,7 +48,10 @@ export abstract class CommonsDetailsComponent<T extends Commons> {
           
           
           this.commonsService.getItemById(id)
-            .then(data => this.item = data);
+            .then(data => this.item = data)
+            .catch(error => { 
+                this.errors.setErrors(error._body); 
+            });
         });     
     //} 
       

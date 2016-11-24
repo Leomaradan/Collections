@@ -21,7 +21,7 @@ export class SerieTVAppComponent extends CommonsAppComponent<SerieTV> implements
 
     features = SerieTV.featuresList;
 
-    constructor(protected commonsService: SerieTVService, protected route: ActivatedRoute, protected router: Router) {
+    constructor(public commonsService: SerieTVService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 

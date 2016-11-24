@@ -21,7 +21,7 @@ export class BdDetailsComponent extends CommonsDetailsComponent<Bd> implements O
     appUrl: string = "bd"    
     appTitre: string = "Bd";
 
-  constructor(protected commonsService: BdService, protected route: ActivatedRoute, protected router: Router) {
+  constructor(public commonsService: BdService, protected route: ActivatedRoute, protected router: Router) {
         super();
     }
 

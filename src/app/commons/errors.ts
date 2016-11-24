@@ -6,9 +6,27 @@ export class Errors {
     
 	
     
-    setErrors(values: Object = {}) {
-        this.data = values;
+    setErrors(values: string = "") {
+        
+        try
+        {
+           this.data = JSON.parse(values);
+        }
+        catch(e)
+        {
+           this.data['_general'] = values;
+        }
+        
+
         this.hasErrors = true;
+    }
+    
+    getGeneralsError() {
+        if(this.data['_generals'] === undefined) {
+            return [];
+        } else { 
+            return [this.data['_generals']];
+        }
     }
     
     getErrors(item: string): string[] {        
