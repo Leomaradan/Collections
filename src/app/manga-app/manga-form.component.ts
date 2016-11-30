@@ -4,27 +4,37 @@ import { CompleterService } from 'ng2-completer';
 
 import { Manga } from './manga';
 import { MangaService } from './manga.service';
+import { MangaNewsService } from './manga-news.service';
 
 import { CommonsFormComponent } from '../commons';
+
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
     selector: 'manga-form',
     templateUrl: '../commons/views/form.component.html',
     styleUrls: ['../commons/views/form.component.scss'],
-    providers: [MangaService]
+    providers: [MangaService, MangaNewsService]
 })
 export class MangaFormComponent extends CommonsFormComponent<Manga> implements OnInit {
 
     
-    features = Manga.featuresDetails;
+    features = Manga.featuresForm;
        
     appUrl: string = "manga"    
     appTitre: string = "Manga";
-    
+        
     constructor(public commonsService: MangaService, 
                 protected route: ActivatedRoute, 
                 protected router: Router,
-                protected completerService: CompleterService) {
+                protected completerService: CompleterService, public gathererService: MangaNewsService) {
         super();
     }
     
@@ -53,6 +63,10 @@ export class MangaFormComponent extends CommonsFormComponent<Manga> implements O
         } else {
             this.item.listVolumeMax.splice(this.item.volume_max, this.item.listVolumeMax.length - this.item.volume_max);
         }
-    }      
+    }  
+    
+    //queryGatherer(text$: Observable<string>) {
+         
+    //}    
 
 }

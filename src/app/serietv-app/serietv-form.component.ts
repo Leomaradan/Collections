@@ -16,7 +16,7 @@ import { CommonsFormComponent } from '../commons';
 export class SerieTVFormComponent extends CommonsFormComponent<SerieTV> implements OnInit {
 
     
-    features = SerieTV.featuresDetails;
+    features = SerieTV.featuresForm;
        
     appUrl: string = "serietv"    
     appTitre: string = "Série TV";

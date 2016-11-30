@@ -1,7 +1,10 @@
-import { Serie, Genre, Auteur, Commons, CommonsService, Errors } from '.';
+import { Serie, Genre, Auteur, Commons, CommonsService, Errors, GathererService } from '.';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { CompleterService, CompleterData } from 'ng2-completer';
+import { NgbTypeaheadSelectItemEvent } from '@ng-bootstrap/ng-bootstrap';
+
+import {Observable} from 'rxjs/Observable';
 
 export abstract class CommonsFormComponent<T extends Commons> {
 
@@ -29,6 +32,8 @@ export abstract class CommonsFormComponent<T extends Commons> {
     //serieSwitcher: string;
 
     public commonsService: CommonsService<T>;
+    public gathererService: GathererService<T>;
+    
     protected router: Router;
     protected route: ActivatedRoute;
     
@@ -40,6 +45,15 @@ export abstract class CommonsFormComponent<T extends Commons> {
     
     loading: boolean = false;
     online: boolean = true;
+    
+    gathererModel: any;
+    gathererSearching = false;
+    gathererSearchFailed = false;    
+    gathererFormatter = (result: any) => this.gathererService.parseSearchItem(result);  
+    gathererSelectItem = (e: NgbTypeaheadSelectItemEvent) => {
+        e.preventDefault();
+        this.gathererService.gatherData(e.item.url).then(item => console.log(item));
+    };
     
     saveItem() {
         
@@ -237,6 +251,21 @@ export abstract class CommonsFormComponent<T extends Commons> {
     }
     
     abstract initNewItem(): void;
+    
+    //queryGatherer(text$: Observable<string>) {}
+   queryGatherer = (text$: Observable<string>) =>        
+        text$
+          .debounceTime(300)
+          .distinctUntilChanged()
+          .do(() => this.gathererSearching = true)
+          .switchMap(term =>
+              this.gathererService.search(term)
+                .do(() => this.gathererSearchFailed = false)
+                .catch(() => {
+                  this.gathererSearchFailed = true;
+                  return Observable.of([]);
+                }))
+          .do(() => this.gathererSearching = false);       
 
     initItem(id: number): Promise<T> {
 

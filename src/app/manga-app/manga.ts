@@ -15,7 +15,7 @@ export class Manga extends Commons {
                 
         static featuresList: string[] = ['volume_possedes','volume_max'];
         static featuresDetails: string[] = ['volume_possedes','volume_max'];
-        static featuresForm: string[] = ['volume_possedes','volume_max'];        
+        static featuresForm: string[] = ['volume_possedes','volume_max','gatherer'];        
         
     static addVolumesLists(mangas: Manga[]) : Manga[] {
         mangas.forEach(function(manga) {

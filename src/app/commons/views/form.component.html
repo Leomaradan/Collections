@@ -37,6 +37,26 @@
             <div class="col-sm-10">
                 <input type="text" name="titre" [(ngModel)]="item.titre" class="form-control form-control-sm" id="formTitre" placeholder="Dune, etc...">
             </div>
+            
+            <div *ngIf="features.indexOf('gatherer') !== -1">
+            
+                <template #rt let-r="result" let-t="term">
+                    <img [src]="r.thumbnail" width="16">
+                    {{ r.title}}
+                </template>
+                
+                <div class="form-group" [class.has-danger]="gathererSearchFailed">
+                  <input type="text" name="gathererModel" class="form-control" 
+                         [(ngModel)]="gathererModel" 
+                         [ngbTypeahead]="queryGatherer" 
+                         placeholder="Recherche" 
+                         [resultTemplate]="rt" 
+                         [inputFormatter]="gathererFormatter"
+                         (selectItem)="gathererSelectItem($event)" />
+                  <span *ngIf="gathererSearching">recherche...</span>
+                  <div class="form-control-feedback" *ngIf="gathererSearchFailed">Sorry, suggestions could not be loaded.</div>
+                </div>  
+            </div>
         </div>
     </div>
     

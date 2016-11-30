@@ -81,6 +81,9 @@ foreach ($types as $key => $value) {
 
 $app->get('/api/film/format/{format}', 'App\Controllers\Commons\FilmController:filterByFormat');
 
+$app->get('/api/bridge/manganews/search', 'App\Controllers\Bridge\MangaNewsController:search');
+$app->get('/api/bridge/manganews/gather', 'App\Controllers\Bridge\MangaNewsController:gather');
+
 /*$app->get('/api/auteur', 'App\Controllers\Auteur\AuteurController:index');
 $app->get('/api/auteur/{id:[0-9]+}', 'App\Controllers\Auteur\AuteurController:show');
 $app->get('/api/auteur/recherche', 'App\Controllers\Auteur\AuteurController:search');

@@ -19,7 +19,7 @@ export class BdFormComponent extends CommonsFormComponent<Bd> implements OnInit 
     serieDisplay: string;
     serieVolumeMax: number = 1;    
     
-    features = Bd.featuresDetails;
+    features = Bd.featuresForm;
     
     appUrl: string = "bd"    
     appTitre: string = "Bd";

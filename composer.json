@@ -12,6 +12,7 @@
     },
     "require": {
         "slim/slim": "^3.5",
-        "leomaradan/collection-compact": "dev-master"
+        "leomaradan/collection-compact": "dev-master",
+        "emanueleminotto/simple-html-dom": "^1.5"
     }
 }

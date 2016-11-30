@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dac828d03b8ba5f79fbadb59a2012f19",
-    "content-hash": "840e3a3fd8179ce227f2a904ef6717ec",
+    "hash": "7c317cd12ade60b67e0f3ab08e5e0683",
+    "content-hash": "07096231df9091a6797b13f1ad58b84e",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -33,6 +33,43 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "time": "2014-12-30 15:22:37"
+        },
+        {
+            "name": "emanueleminotto/simple-html-dom",
+            "version": "1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EmanueleMinotto/simple-html-dom.git",
+                "reference": "09b7f3ad5b62d1cc3dfc2d326845e73d2cdc2819"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EmanueleMinotto/simple-html-dom/zipball/09b7f3ad5b62d1cc3dfc2d326845e73d2cdc2819",
+                "reference": "09b7f3ad5b62d1cc3dfc2d326845e73d2cdc2819",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "simple_html_dom.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "S.C. Chen",
+                    "email": "me578022@gmail.com"
+                },
+                {
+                    "name": "Emanuele Minotto",
+                    "email": "minottoemanuele@gmail.com"
+                }
+            ],
+            "description": "PHP Simple HTML DOM Parser",
+            "time": "2015-08-31 00:31:29"
         },
         {
             "name": "leomaradan/collection-compact",

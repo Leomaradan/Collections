@@ -18,7 +18,7 @@ export class FilmFormComponent extends CommonsFormComponent<Film> implements OnI
     //roman: Roman;
     serieDisplay: string;
     serieVolumeMax: number = 1;
-    features = Film.featuresDetails;
+    features = Film.featuresForm;
     listFormat = Film.listFormat;
     
     appUrl: string = "film";

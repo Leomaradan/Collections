@@ -19,7 +19,7 @@ export class RomanFormComponent extends CommonsFormComponent<Roman> implements O
     serieDisplay: string;
     serieVolumeMax: number = 1;    
     
-    features = Roman.featuresDetails;
+    features = Roman.featuresForm;
     
     appUrl: string = "roman"    
     appTitre: string = "Romans";
