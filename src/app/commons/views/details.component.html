@@ -2,24 +2,25 @@
     <img src="assets/ajax-loader-big.gif">
 </div>
 <div *ngIf="item">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a [routerLink]="['..']">{{ appTitre }}</a></li>
-      <li class="breadcrumb-item active">{{ item.titre }}</li>
-    </ol>
+    <div class="row">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a [routerLink]="['..']">{{ appTitre }}</a></li>
+          <li class="breadcrumb-item active">{{ item.titre }}</li>
+        </ol>
 
-    <ul>
-        <li *ngFor="let error of errors.getGeneralsError()" class="alert alert-danger alert-list">
-            {{ error }}
-        </li>
-    </ul>    
-    
-    <ngb-alert *ngIf="!commonsService.isOnline" type="info">Application is offline</ngb-alert>
-    
+        <ul>
+            <li *ngFor="let error of errors.getGeneralsError()" class="alert alert-danger alert-list">
+                {{ error }}
+            </li>
+        </ul>    
+
+        <ngb-alert *ngIf="!commonsService.isOnline" type="info">Application is offline</ngb-alert>
+    </div>
     <div class="row">
         <h1>{{ item.titre }}</h1>
     </div>
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-md-6">
             <p>Genre : <i>{{ item.genre.nom }}</i><button class="btn btn-success btn-small btn-right" (click)="cloneItem('genre', item.genre.id)"><span class="glyphicons glyphicons-plus-sign"></span></button></p>
             <p *ngIf="features.indexOf('serie') !== -1 && item.serie">Série : <i>{{ item.serie.nom }}</i><button class="btn btn-success btn-small btn-right" (click)="cloneItem('serie', item.serie.id)"><span class="glyphicons glyphicons-plus-sign"></span></button></p>
             <p>Auteur(s) : </p>
@@ -33,7 +34,7 @@
                 <img *ngFor="let format of item.format" [src]="getIcon(format)" class="format_icon" />
             </p>
         </div>
-        <div class="col-xs-6">
+        <div class="col-md-6">
             <img class="image_couverture" [src]="item.getCouverture()" />
         </div>
     </div>
@@ -41,9 +42,9 @@
 
     <div class="row action_menu" *ngIf="commonsService.isOnline">
         <div class="container">
-            <a class="btn btn-primary" [routerLink]="['/'+appUrl+'/' + item.id + '/edit']"><span class="glyphicons glyphicons-pencil"></span><span>Editer</span></a>
-            <button class="btn btn-info" (click)="cloneItem()"><span class="glyphicons glyphicons-duplicate"></span><span>Cloner</span></button>
-            <button class="btn btn-danger" (click)="deleteItem()"><span class="glyphicons glyphicons-bin"></span><span>Supprimer</span></button>        
+            <a class="btn btn-large btn-primary" [routerLink]="['/'+appUrl+'/' + item.id + '/edit']"><span class="glyphicons glyphicons-pencil"></span><span>Editer</span></a>
+            <button class="btn btn-large btn-info" (click)="cloneItem()"><span class="glyphicons glyphicons-duplicate"></span><span>Cloner</span></button>
+            <button class="btn btn-large btn-danger" (click)="deleteItem()"><span class="glyphicons glyphicons-bin"></span><span>Supprimer</span></button>        
         </div>
     </div>    
 </div>

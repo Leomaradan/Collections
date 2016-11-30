@@ -6,7 +6,8 @@
     padding-top: 0;
     float: right;
     height: 22px;
-    padding-bottom: 0;    
+    padding-bottom: 0;  
+    margin-right: 15px;
 }
 
 .glyphicons {
@@ -103,8 +104,8 @@ h1{
 }
 
 @media (max-width: 576px) {
-    .btn {
+    .btn-large {
         display: block;
         width: 100%;
-    }
+    }   
 }

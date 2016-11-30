@@ -19,4 +19,60 @@
     }
 }
 
+@media (max-width: 576px) {
+    table {
+        tbody {
+            width: 100%;
+            
+            tr:first-child {
+                display: none;
+            }
+            
+            tr {
+                height: 200px;
+                width: 100%;
+                border: 1px solid black;                    
+            }
+            td {
+                width: 100%;
+                display: block;
+                padding: 10px;
+                border: none;
+                text-align: right;
+                padding: 10px 5px;
+                background-color: rgba(255,255,255,.8);
+                margin-top: 5px;      
+                
+                &>* {
+                    font-weight: bold;
+                    &:before {
+                        content: attr(data-label);
+                        float: left;
+
+                        font-weight: normal;
+                        font-style: italic;                    
+                    }
+                }
+
+            }
+        }
+    }
+    
+    .list_couverture {
+        height: 200px;
+        position: absolute;
+        z-index: -1;
+        overflow: hidden;   
+        margin-top: 0 !important;
+        img {
+            width: 100%;
+            height: auto;
+            position: relative;
+            top: -100%;
+            left: -27px;
+        }
+    }
+    
+}
+
 @import "shared";

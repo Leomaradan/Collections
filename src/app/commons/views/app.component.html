@@ -30,14 +30,14 @@
     </tr>
     <tr *ngFor="let item of items.data">
         <td class="list_couverture"><img [src]="item.getCouverture()" /></td>
-        <td><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a><span *ngIf="features.indexOf('format') !== -1">
+        <td><span data-label="Titre"><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a></span><span *ngIf="features.indexOf('format') !== -1">
                 <a *ngFor="let format of item.format" [routerLink]="['/'+appUrl+'/format/'+format]"><img [src]="getIcon(format)" class="format_icon" /></a>
             </span></td>
-        <td><a [routerLink]="['/'+appUrl+'/genre/'+item.genre.id]">{{ item.genre.nom }}</a></td>
-        <td *ngIf="features.indexOf('serie') !== -1"><a *ngIf="item.serie" [routerLink]="['/'+appUrl+'/serie/'+item.serie.id]">{{ item.serie.nom }}</a></td>
-        <td *ngIf="features.indexOf('volume') !== -1">{{ item.volume }}</td>
-        <td class="app_list"><span *ngFor="let auteur of item.auteurs"><a [routerLink]="['/'+appUrl+'/auteur/'+auteur.id]">{{ auteur.nom }}</a></span></td>
-        <td *ngIf="features.indexOf('volume_possedes') !== -1">{{ item.volumes.length }} / {{ item.volume_max }}</td>
+        <td><span data-label="Genre"><a [routerLink]="['/'+appUrl+'/genre/'+item.genre.id]">{{ item.genre.nom }}</a></span></td>
+        <td *ngIf="features.indexOf('serie') !== -1"><span data-label="Série"><a *ngIf="item.serie" [routerLink]="['/'+appUrl+'/serie/'+item.serie.id]">{{ item.serie.nom }}</a></span></td>
+        <td *ngIf="features.indexOf('volume') !== -1"><span data-label="Volume" >{{ item.volume }}</span></td>
+        <td class="app_list"><span data-label="Auteur(s)" class="auteurs_list"><span *ngFor="let auteur of item.auteurs"><a [routerLink]="['/'+appUrl+'/auteur/'+auteur.id]">{{ auteur.nom }}</a></span></span></td>
+        <td *ngIf="features.indexOf('volume_possedes') !== -1"><span data-label="Volumes" >{{ item.volumes.length }} / {{ item.volume_max }}</span></td>
     </tr>
 </table>
 
@@ -52,7 +52,7 @@
 
 <div class="action_menu" *ngIf="commonsService.isOnline">
     <div class="container">
-        <a class="btn btn-primary" [routerLink]="['/'+appUrl+'/new/create']"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter</span></a>
-        <button *ngIf="filterBy" class="btn btn-success" (click)="cloneItem()"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter ({{ (item) ? item.genre.nom : filterBy }})</span></button>
+        <a class="btn btn-large btn-primary" [routerLink]="['/'+appUrl+'/new/create']"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter</span></a>
+        <button *ngIf="filterBy" class="btn btn-large btn-success" (click)="cloneItem()"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter ({{ (item) ? item.genre.nom : filterBy }})</span></button>
     </div>    
 </div>
