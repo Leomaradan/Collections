@@ -41,7 +41,7 @@
             <div *ngIf="features.indexOf('gatherer') !== -1">
             
                 <template #rt let-r="result" let-t="term">
-                    <img [src]="r.thumbnail" width="16">
+                    <img *ngIf="r.thumbnail" [src]="r.thumbnail" width="16">
                     {{ r.title}} <span *ngIf="r.tag" class="tag tag-default">{{r.tag}}</span>
                 </template>
                 

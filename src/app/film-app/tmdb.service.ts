@@ -63,7 +63,9 @@ export class TMDBService extends GathererService<Film> {
         let results = data.results.slice(0,10);
         
         for(let i in results) {
-            results[i].thumbnail = 'https://image.tmdb.org/t/p/w640/' + results[i].poster_path;
+            if(results[i].poster_path !== null) {
+                results[i].thumbnail = 'https://image.tmdb.org/t/p/w640/' + results[i].poster_path;
+            }
             results[i].url = results[i].id;
         }
         
