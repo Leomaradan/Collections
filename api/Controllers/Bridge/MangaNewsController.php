@@ -108,7 +108,7 @@ class MangaNewsController {
 					$return['auteurs'][] = ucwords(strtolower($item)); 
 				}
 			}
-
+			$return['auteurs'] = array_unique($return['auteurs']);
 
 			$volume_raw = $html->find('#numberblock')[0]->plaintext;
 

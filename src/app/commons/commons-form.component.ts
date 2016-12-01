@@ -52,7 +52,7 @@ export abstract class CommonsFormComponent<T extends Commons> {
     gathererFormatter = (result: any) => this.gathererService.parseSearchItem(result);  
     gathererSelectItem = (e: NgbTypeaheadSelectItemEvent) => {
         e.preventDefault();
-        this.gathererService.gatherData(e.item.url).then(item => console.log(item));
+        this.gathererService.gatherData(this.item, e.item.url);//.then(item => console.log(item));
     };
     
     saveItem() {

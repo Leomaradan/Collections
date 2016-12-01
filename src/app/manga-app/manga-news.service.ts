@@ -3,7 +3,15 @@ import { Http, Jsonp } from '@angular/http';
 
 import { Manga } from './manga';
 
-import { GathererService } from '../commons' ;
+import { GathererService, Genre, Auteur } from '../commons' ;
+
+export interface MangaNewsData {
+    titre: string;
+    couverture: string;
+    genre: string;
+    auteurs: string[];
+    volume_max: number;
+}
 
 @Injectable()
 export class MangaNewsService extends GathererService<Manga> {
@@ -26,17 +34,23 @@ export class MangaNewsService extends GathererService<Manga> {
         super();
     }
         
-    parseGatheredData(data: any): Manga {
+    parseGatheredData(current: Manga, data: MangaNewsData): Manga {
         
-        console.log(data);
+        //console.log(data);
+        current.titre = data.titre;
+        current.couverture = data.couverture;
         
-        //let url = `http://www.manga-news.com/services.php?f=autoCompleteElasticSearch&q=${title}&limit=10&timestamp=${timestamp}`;
-        /*return this.http.get(url)
-            .toPromise()
-            .then(response => {
-                console.log(response)
-            });   */
-            return null;
+        current.genre = new Genre({nom: data.genre});
+
+        current.auteurs = [];
+
+        for (let i in data.auteurs) {
+            current.auteurs.push(new Auteur({nom: data.auteurs[i]}));
+        }
+        
+        current.volume_max = data.volume_max;
+        
+        return current;
     }
         
     parseSearchItem(item: {title: string}) : string {

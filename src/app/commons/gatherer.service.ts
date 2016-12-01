@@ -37,17 +37,17 @@ export abstract class GathererService<T> {
               //.map(response => <string[]> response.json());
     }
     
-    gatherData(url: string): Promise<T> {
+    gatherData(current: T, url: string): Promise<T> {
           
           let params = new URLSearchParams();
           
           params.set(this.gatherResourceTerm, url);
           
-          return this.http.get(this.urlGather, { search: params }).toPromise().then(item => this.parseGatheredData(item));   
+          return this.http.get(this.urlGather, { search: params }).toPromise().then(item => { return this.parseGatheredData(current, item.json())});   
           
     }
     
-    abstract parseGatheredData(data: any): T;
+    abstract parseGatheredData(current: T, data: any): T;
     
     parseSearch(data: any): string[] {
         return data;

@@ -31,6 +31,11 @@ $container['notFoundHandler'] = function ($container) {
     };
 }; 
 
+$container['cache'] = function () {
+    return new \Slim\HttpCache\CacheProvider();
+};
+
+
 $json_middleware = function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
@@ -40,6 +45,7 @@ $json_middleware = function ($req, $res, $next) {
 };
 
 $app->add($json_middleware);
+$app->add(new \Slim\HttpCache\Cache('public', 86400));
 
 $types = [
     //'all' => 'Commons\CommonsController', 

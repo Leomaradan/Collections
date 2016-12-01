@@ -114,6 +114,8 @@ class CommonsDAO extends CollectionsDAO {
 
         if (isset($data['auteurs_new'])) {
 
+            $data['auteurs_new'] = array_unique($data['auteurs_new']);
+
             $auteurs = $this->addAuteurs($data['auteurs_new'], $extraData);
             if (count($auteurs['message']) > 0) {
                 return $auteurs['message'];

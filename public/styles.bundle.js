@@ -1,6 +1,6 @@
 webpackJsonp([1,2],{
 
-/***/ 1078:
+/***/ 1080:
 /***/ function(module, exports) {
 
 /*
@@ -253,24 +253,24 @@ function updateLink(linkElement, obj) {
 
 /***/ },
 
-/***/ 1081:
+/***/ 1083:
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(524);
+module.exports = __webpack_require__(528);
 
 
 /***/ },
 
-/***/ 524:
+/***/ 528:
 /***/ function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(807);
+var content = __webpack_require__(813);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(1078)(content, {});
+var update = __webpack_require__(1080)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -288,10 +288,10 @@ if(false) {
 
 /***/ },
 
-/***/ 807:
+/***/ 813:
 /***/ function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(808)();
+exports = module.exports = __webpack_require__(814)();
 // imports
 
 
@@ -303,7 +303,7 @@ exports.push([module.i, "/*!\n * Bootstrap v4.0.0-alpha.5 (https://getbootstrap.
 
 /***/ },
 
-/***/ 808:
+/***/ 814:
 /***/ function(module, exports) {
 
 /*
@@ -360,5 +360,5 @@ module.exports = function() {
 
 /***/ }
 
-},[1081]);
+},[1083]);
 //# sourceMappingURL=styles.map
