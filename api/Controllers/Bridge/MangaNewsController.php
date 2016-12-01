@@ -68,51 +68,58 @@ class MangaNewsController {
 
 		$resource = $query['resourceUrl'];
 
-		$return = [];
+ 		$files_cache = new Cache\Files($options);
 
-		$url = "http://www.manga-news.com/index.php/$resource";
+		if ( !$return = $cache->load('manganews-cache.'.$resource) ) {
+			
+			$return = [];
 
-		$html = file_get_html($url);	
+			$url = "http://www.manga-news.com/index.php/$resource";
 
-		$return['titre'] = $html->find('h1.entryTitle')[0]->plaintext;
-		$return['couverture'] = $html->find('a[rel="imagebox-covert"]')[0]->href;
-		$genre = trim($html->find('a[href^="http://www.manga-news.com/index.php/type/"]')[0]->plaintext);
+			$html = file_get_html($url);	
 
-		if(isset($this->genreEquivalence[$genre])) {
-			$genre = $this->genreEquivalence[$genre];
-		}
+			$return['titre'] = $html->find('h1.entryTitle')[0]->plaintext;
+			$return['couverture'] = $html->find('a[rel="imagebox-covert"]')[0]->href;
+			$genre = trim($html->find('a[href^="http://www.manga-news.com/index.php/type/"]')[0]->plaintext);
 
-		$return['genre'] = $genre;
-
-		$auteursList = $html->find('a[href^="http://www.manga-news.com/index.php/auteur/"]');
-		$return['auteurs'] = [];
-
-		foreach($auteursList as $auteurItem) {
-			$item = trim($auteurItem->plaintext);
-			if($item !== '') { 
-
-				preg_match("/[A-Z ]+/", $item, $output_array);
-
-				$majuscule = $output_array[0];
-				$index = strrpos($majuscule, ' ');
-
-				$nom = substr ( $item , 0 , $index );
-				$prenom = substr ( $item , $index - strlen($item) + 1 );
-
-				$item = "$prenom $nom";
-
-				$return['auteurs'][] = ucwords(strtolower($item)); 
+			if(isset($this->genreEquivalence[$genre])) {
+				$genre = $this->genreEquivalence[$genre];
 			}
-		}
+
+			$return['genre'] = $genre;
+
+			$auteursList = $html->find('a[href^="http://www.manga-news.com/index.php/auteur/"]');
+			$return['auteurs'] = [];
+
+			foreach($auteursList as $auteurItem) {
+				$item = trim($auteurItem->plaintext);
+				if($item !== '') { 
+
+					preg_match("/[A-Z ]+/", $item, $output_array);
+
+					$majuscule = $output_array[0];
+					$index = strrpos($majuscule, ' ');
+
+					$nom = substr ( $item , 0 , $index );
+					$prenom = substr ( $item , $index - strlen($item) + 1 );
+
+					$item = "$prenom $nom";
+
+					$return['auteurs'][] = ucwords(strtolower($item)); 
+				}
+			}
 
 
-		$volume_raw = $html->find('#numberblock')[0]->plaintext;
+			$volume_raw = $html->find('#numberblock')[0]->plaintext;
 
-		preg_match("/VF : +(\d+) /im", $volume_raw, $output_array);
+			preg_match("/VF : +(\d+) /im", $volume_raw, $output_array);
 
-		$return['volume_max'] = $output_array[1];
+			$return['volume_max'] = $output_array[1];
 
-		$return['stoppee'] = ($html->find('a[title="série stoppée"]')[0]->plaintext !== null);
+			$return['stoppee'] = ($html->find('a[title="série stoppée"]')[0]->plaintext !== null);
+
+			$cache->save($return, 'manganews-cache.'.$resource);
+		} 
 
 		return $response->withJson($return);
 
