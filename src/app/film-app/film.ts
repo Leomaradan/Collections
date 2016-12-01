@@ -11,7 +11,7 @@ export class Film extends Commons {
         
         static featuresList = ["serie", "format"];
         static featuresDetails = ["serie", "format"];
-        static featuresForm = ["serie", "format"];
+        static featuresForm = ["serie", "format", 'gatherer'];
         
         static listFormat = [
             { value: 'dvd', display: 'DVD', icon: 'DVD_logo' },

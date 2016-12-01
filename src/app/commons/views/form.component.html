@@ -42,7 +42,7 @@
             
                 <template #rt let-r="result" let-t="term">
                     <img [src]="r.thumbnail" width="16">
-                    {{ r.title}}
+                    {{ r.title}} <span *ngIf="r.tag" class="tag tag-default">{{r.tag}}</span>
                 </template>
                 
                 <div class="form-group" [class.has-danger]="gathererSearchFailed">

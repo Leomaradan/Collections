@@ -25,7 +25,7 @@ export class MangaNewsService extends GathererService<Manga> {
     
     timestamp: null;
     
-    params = {
+    paramsSearch = {
         'limit': '10',
         'f': 'autoCompleteElasticSearch'
     };
@@ -34,6 +34,14 @@ export class MangaNewsService extends GathererService<Manga> {
         super();
     }
         
+    parseSearch(data: any[]): any[] {
+        for(let i in data) {
+            data[i].tag = (data[i].category == 'serie') ? 'Manga' : 'Anime';
+        }
+        
+        return data;
+    }     
+    
     parseGatheredData(current: Manga, data: MangaNewsData): Manga {
         
         //console.log(data);

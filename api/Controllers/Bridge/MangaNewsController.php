@@ -4,6 +4,7 @@ namespace App\Controllers\Bridge;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Apix\Cache;
 
 /**
 * 
@@ -68,9 +69,15 @@ class MangaNewsController {
 
 		$resource = $query['resourceUrl'];
 
+      	$options = array(
+      		'directory'  => sys_get_temp_dir() . '/apix-cache'
+  		);
+
+   
+      
  		$files_cache = new Cache\Files($options);
 
-		if ( !$return = $cache->load('manganews-cache.'.$resource) ) {
+		if ( !$return = $files_cache->load('manganews-cache.'.$resource) ) {
 			
 			$return = [];
 
@@ -118,7 +125,7 @@ class MangaNewsController {
 
 			$return['stoppee'] = ($html->find('a[title="série stoppée"]')[0]->plaintext !== null);
 
-			$cache->save($return, 'manganews-cache.'.$resource);
+			$files_cache->save($return, 'manganews-cache.'.$resource);
 		} 
 
 		return $response->withJson($return);

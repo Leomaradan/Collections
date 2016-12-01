@@ -34,7 +34,8 @@ export class MangaFormComponent extends CommonsFormComponent<Manga> implements O
     constructor(public commonsService: MangaService, 
                 protected route: ActivatedRoute, 
                 protected router: Router,
-                protected completerService: CompleterService, public gathererService: MangaNewsService) {
+                protected completerService: CompleterService, 
+                public gathererService: MangaNewsService) {
         super();
     }
     

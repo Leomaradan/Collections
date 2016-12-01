@@ -7,11 +7,15 @@ export abstract class GathererService<T> {
     abstract urlGather: string;
     
     abstract searchTerm: string;
-    abstract gatherResourceTerm: string;
+    abstract gatherResourceTerm: string|null;
     
     abstract timestamp: string|null;
     
-    abstract params: {[key:string]:string};
+    paramsSearch: {[key:string]:string} = {};
+    paramsGather: {[key:string]:string} = {};
+    
+    api_name: string = null;
+    api_key: string = null;
     
     protected http: Http;
             
@@ -24,13 +28,17 @@ export abstract class GathererService<T> {
           let params = new URLSearchParams();
           params.set(this.searchTerm, term);
           
-          for (let index in this.params) {
-              params.set(index, this.params[index]);
+          for (let index in this.paramsSearch) {
+              params.set(index, this.paramsSearch[index]);
           }
           
           if (this.timestamp !== null) {
               params.set(this.timestamp, Date.now().toString());
           }
+          
+          if (this.api_name !== null) {
+            params.set(this.api_name, this.api_key);
+          }              
 
           return this.http.get(this.urlSearch, {search: params})
               .map(response => this.parseSearch(response.json()));
@@ -41,7 +49,17 @@ export abstract class GathererService<T> {
           
           let params = new URLSearchParams();
           
-          params.set(this.gatherResourceTerm, url);
+          for (let index in this.paramsGather) {
+              params.set(index, this.paramsGather[index]);
+          }          
+          
+          if (this.gatherResourceTerm !== null) {
+            params.set(this.gatherResourceTerm, url);
+          }
+          
+          if (this.api_name !== null) {
+            params.set(this.api_name, this.api_key);
+          }          
           
           return this.http.get(this.urlGather, { search: params }).toPromise().then(item => { return this.parseGatheredData(current, item.json())});   
           
@@ -49,7 +67,7 @@ export abstract class GathererService<T> {
     
     abstract parseGatheredData(current: T, data: any): T;
     
-    parseSearch(data: any): string[] {
+    parseSearch(data: any): any[] {
         return data;
     } 
         
