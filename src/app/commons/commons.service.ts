@@ -46,7 +46,10 @@ export class CommonsService<T extends Commons> {
      
 
     setUrl(urlName: string) {
-        let url = this.urls[urlName];
+        let url = urlName;
+        if(this.urls[urlName] !== undefined) {
+            url = this.urls[urlName];
+        }
         this.itemsUrl = `api/${url}`;
     }
 

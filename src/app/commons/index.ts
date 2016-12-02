@@ -1,6 +1,7 @@
 export * from './models/auteur';
 export * from './models/genre';
 export * from './models/serie';
+export * from './models/type';
 export * from './commons';
 export * from './commons.service';
 export * from './commons-form.component';

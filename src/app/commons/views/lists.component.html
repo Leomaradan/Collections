@@ -1,0 +1,50 @@
+<div *ngIf="loading > 0" class="loader">
+    <img src="assets/ajax-loader-small.gif">
+</div>
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">Listes</li>
+    <li class="breadcrumb-item active"><a [routerLink]="['/lists/'+appUrl+'/']">{{ appTitre }}</a></li>
+</ol>
+
+<ul>
+    <li *ngFor="let error of errors.getGeneralsError()" class="alert alert-danger alert-list">
+        {{ error }}
+    </li>
+</ul>
+
+<ngb-alert *ngIf="!commonsService.isOnline" type="info">Application is offline</ngb-alert>
+
+<h1>{{ appTitre }}</h1>
+<table class="table">
+    <tr>
+        <th (click)="changeOrder('nom')">Nom <span *ngIf="orderField=='nom'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th *ngIf="features.indexOf('type') !== -1" (click)="changeOrder('type')">Type <span *ngIf="orderField=='type'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th *ngIf="features.indexOf('volume_max') !== -1" (click)="changeOrder('volume_max')">Volume max <span *ngIf="orderField=='volume_max'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th>Utilisation</th>
+        <th>Editer</th>
+        <th>Supprimer</th>
+    </tr>
+    <tr *ngFor="let item of items.data">
+        <td><input type="text" name="nom" [(ngModel)]="item.nom" class="form-control form-control-sm" id="formTitre" placeholder="Dune, etc..."></td>
+        <td *ngIf="features.indexOf('type') !== -1">
+            <select name="type" [(ngModel)]="item.type_id">
+                <option *ngFor="let type of listTypes" [value]="type.id">  
+                {{type.description}}
+                </option>
+            </select>        
+        </td>
+        <td *ngIf="features.indexOf('volume_max') !== -1"><input type="number" name="volume_max" [(ngModel)]="item.volume_max" class="form-control form-control-sm" id="formVolume"></td>
+        <td>{{ item.utilisation }}</td>
+        <td><button class="btn btn-primary" (click)="updateItem(item)"><span class="glyphicons glyphicons-pencil"></span><span>Editer</span></button></td>
+        <td><button class="btn btn-danger" (click)="deleteItem(item)"><span class="glyphicons glyphicons-bin"></span><span>Supprimer</span></button></td>
+    </tr>
+</table>
+
+<ngb-pagination *ngIf="items.pagination.nb_pages" 
+    [collectionSize]="items.pagination.nb_items" 
+    [(page)]="items.pagination.page" 
+    [pageSize]="items.pagination.perPage"
+    [maxSize]="5" 
+    [rotate]="true" 
+    [boundaryLinks]="true"
+    (pageChange)="pageChange($event)"></ngb-pagination>

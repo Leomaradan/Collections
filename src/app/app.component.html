@@ -14,9 +14,9 @@
         <li ngbDropdown  class="nav-item">
           <a class="nav-link dropdown-toggle" id="supportedContentDropdown" ngbDropdownToggle>Données</a>
           <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
-            <li><a class="nav-link">Genres</a></li>
-            <li><a class="nav-link">Séries</a></li>
-            <li><a class="nav-link">Auteurs</a></li>
+            <li><a class="nav-link" [routerLink]="['/lists/genre']">Genres</a></li>
+            <li><a class="nav-link" [routerLink]="['/lists/serie']">Séries</a></li>
+            <li><a class="nav-link" [routerLink]="['/lists/auteur']">Auteurs</a></li>
           </div>
         </li>   
         

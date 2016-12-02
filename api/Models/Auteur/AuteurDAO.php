@@ -6,10 +6,13 @@ use App\Models\CollectionsDAO;
 
 class AuteurDAO extends CollectionsDAO {
 
+    protected $view = "collections_view_auteur";
     protected $table = "collections_auteur";
     protected $pivot = "collections_auteur_commons";
     protected $searchItems = ['nom'];
+    protected $visible = ['nom', 'utilisation'];    
     protected $fillable = ['nom'];
+
     protected $validation = [
         'nom' => 'required|min:3|max:50'
     ];

@@ -59,7 +59,8 @@ $types = [
 $types_cruds = array_merge($types, [
     'auteur' => 'Auteur\AuteurController',
     'genre' => 'Genre\GenreController',
-    'serie' => 'Serie\SerieController'
+    'serie' => 'Serie\SerieController',
+    'type' => 'Type\TypeController',
 ]);
 
 // CRUDS methods

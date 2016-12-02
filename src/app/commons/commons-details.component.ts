@@ -18,7 +18,7 @@ export abstract class CommonsDetailsComponent<T extends Commons> {
   errors: Errors = new Errors();
  
   deleteItem(): void {
-      this.commonsService.deleteItem(this.item).then(() => this.router.navigate(['/film']));
+      this.commonsService.deleteItem(this.item).then(() => this.router.navigate([`/${this.appUrl}`]));
   }  
   
   cloneItem(field?: string, value?: any): void {

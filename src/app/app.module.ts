@@ -15,6 +15,8 @@ import { BdModule } from './bd-app';
 import { MangaModule } from './manga-app';
 import { SerieTVModule } from './serietv-app';
 
+import { ListsModule } from './commons/lists.module';
+
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -40,6 +42,7 @@ const routes: Routes = [
     BdModule,
     MangaModule,
     SerieTVModule,
+    ListsModule,
     RouterModule.forRoot(routes, { useHash: true }),
     NgbModule.forRoot()
   ],
