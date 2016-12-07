@@ -1,4 +1,4 @@
-export class Type {
+export class ItemType {
     id: number;
     //nom: string;
     description: string;

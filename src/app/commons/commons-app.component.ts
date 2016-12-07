@@ -1,5 +1,6 @@
 import { Commons, CommonsService, CommonsResponse, Errors } from '.';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+//import { NullablePipe } from '../nullable.pipe';
 
 export abstract class CommonsAppComponent<T extends Commons> {
 
@@ -83,7 +84,7 @@ export abstract class CommonsAppComponent<T extends Commons> {
   init(features: string[]) {
     this.route.params.forEach((params: Params) => {
         let genre = +params['genre'];
-        let serie = +params['serie'];
+        let serie = params['serie'];
         let auteur = +params['auteur'];
         let format = params['format'];
         let recherche = params['recherche'];

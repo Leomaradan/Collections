@@ -16,6 +16,8 @@ export abstract class CommonsFormComponent<T extends Commons> {
 
     genreDisplay: string;
     
+    needVolume: boolean = false;
+    
     abstract features: string[] = [];
     
     abstract appTitre: string;  
@@ -109,9 +111,11 @@ export abstract class CommonsFormComponent<T extends Commons> {
 
         if (serieNom == undefined || serieNom == '') {
             (<any>this.item).serie = null;
+            this.needVolume = false;
             return;
         }
 
+        this.needVolume = true;
         let serie = this.listSerie.filter(h => h.nom === serieNom);
 
         if (serie.length == 0) {

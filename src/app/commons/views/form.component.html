@@ -39,7 +39,9 @@
             </div>
             
             <div *ngIf="features.indexOf('gatherer') !== -1">
-            
+                
+                <template ngbModalContainer></template>
+                
                 <template #rt let-r="result" let-t="term">
                     <img *ngIf="r.thumbnail" [src]="r.thumbnail" width="16">
                     {{ r.title}} <span *ngIf="r.tag" class="tag tag-default">{{r.tag}}</span>
@@ -154,7 +156,7 @@
     </div>
 
     <!-- Volume -->    
-    <div class="form-section" *ngIf="features.indexOf('volume') !== -1">
+    <div class="form-section" *ngIf="features.indexOf('volume') !== -1 && needVolume">
         <div class="form-group row">
             <ul>
                 <li *ngFor="let error of formErrors.getErrors('volume')" class="alert alert-danger alert-list">
@@ -222,6 +224,54 @@
             </div>
         </div>
     </div>
+    
+    <!-- vue -->
+    <div class="form-section" *ngIf="features.indexOf('vue') !== -1">
+        <div class="form-group row">
+            <ul>
+                <li *ngFor="let error of formErrors.getErrors('vue')" class="alert alert-danger alert-list">
+                    {{ error }}
+                </li>
+            </ul>            
+            <label for="formVolume" class="col-sm-2 col-form-label col-form-label-sm">Vue</label>
+            <div class="col-sm-10 form-check">               
+                <label class="form-check-label">
+                    <input type="checkbox" name="vue" class="form-check-input" [(ngModel)]="item.vue"></label>
+            </div>
+        </div>
+    </div>  
+    
+    <!-- série terminé -->
+    <div class="form-section" *ngIf="features.indexOf('serie_termine') !== -1">
+        <div class="form-group row">
+            <ul>
+                <li *ngFor="let error of formErrors.getErrors('serie_termine')" class="alert alert-danger alert-list">
+                    {{ error }}
+                </li>
+            </ul>            
+            <label for="formVolume" class="col-sm-2 col-form-label col-form-label-sm">Série terminée</label>
+            <div class="col-sm-10 form-check">               
+                <label class="form-check-label">
+                    <input type="checkbox" name="serie_termine" class="form-check-input" [(ngModel)]="item.serie_termine"></label>
+            </div>
+        </div>
+    </div>   
+
+    <!-- série abandonnée -->
+    <div class="form-section" *ngIf="features.indexOf('serie_abandonne') !== -1">
+        <div class="form-group row">
+            <ul>
+                <li *ngFor="let error of formErrors.getErrors('serie_abandonne')" class="alert alert-danger alert-list">
+                    {{ error }}
+                </li>
+            </ul>            
+            <label for="formVolume" class="col-sm-2 col-form-label col-form-label-sm">Série abandonnée</label>
+            <div class="col-sm-10 form-check">               
+                <label class="form-check-label">
+                    <input type="checkbox" name="serie_abandonne" class="form-check-input" [(ngModel)]="item.serie_abandonne"></label>
+            </div>
+        </div>
+    </div>   
 
     <!-- Couverture -->    
     <div class="form-section">

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {  Http } from '@angular/http';
 
-import { Genre, Auteur, Serie, Errors, Type } from '.';
+import { Genre, Auteur, Serie, Errors, ItemType } from '.';
 import { ListsService, Lists } from './lists.service';
 
 enum ListsComponentType { Genre, Auteur, Serie };
@@ -22,7 +22,7 @@ export class ListsComponent implements OnInit {
 
     private currentType: ListsComponentType;
     
-    listTypes: Type[] = [];
+    listTypes: ItemType[] = [];
 
     features: string[];
 
@@ -76,7 +76,7 @@ export class ListsComponent implements OnInit {
             this.commonsService.getTypeList().then(data => {
                 //this.listTypes = data
                 //this.listTypes.push();
-                this.listTypes = [new Type({id: null, description: '--- Aucun ---'})].concat(data);
+                this.listTypes = [new ItemType({id: null, description: '--- Aucun ---'})].concat(data);
             });            
 
             this.commonsService.getAllItems(page).then(response => {

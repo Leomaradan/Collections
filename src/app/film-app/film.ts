@@ -8,10 +8,11 @@ export class Film extends Commons {
 	volume?: number;
 	auteurs: Auteur[];
         format: string[];
+        vue: boolean = false;
         
-        static featuresList = ["serie", "format"];
-        static featuresDetails = ["serie", "format"];
-        static featuresForm = ["serie", "format", 'gatherer'];
+        static featuresList = ['serie', 'format', 'volume', 'vue'];
+        static featuresDetails = ['serie', 'format', 'volume', 'vue'];
+        static featuresForm = ['serie', 'format', 'volume', 'vue', 'gatherer'];
         
         static listFormat = [
             { value: 'dvd', display: 'DVD', icon: 'DVD_logo' },

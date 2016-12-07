@@ -24,20 +24,27 @@
         <th colspan="2" (click)="changeOrder('titre')">Titre <span *ngIf="orderField=='titre'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
         <th (click)="changeOrder('genre')">Genre <span *ngIf="orderField=='genre'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
         <th *ngIf="features.indexOf('serie') !== -1" (click)="changeOrder('serie')">Série <span *ngIf="orderField=='serie'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
-        <th *ngIf="features.indexOf('volume') !== -1" (click)="changeOrder('volume')">Volume <span *ngIf="orderField=='volume'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
+        <th *ngIf="features.indexOf('volume') !== -1 && filterBy == 'Série'" (click)="changeOrder('volume')">Volume <span *ngIf="orderField=='volume'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
         <th (click)="changeOrder('auteurs')">Auteur(s) <span *ngIf="orderField=='auteurs'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
         <th *ngIf="features.indexOf('volume_possedes') !== -1" (click)="changeOrder('volume_possedes')">Volumes <span *ngIf="orderField=='volume_possedes'" class="glyphicons" [ngClass]="{'glyphicons-chevron-up': orderDirection=='DESC', 'glyphicons-chevron-down': orderDirection!='DESC'}"></span></th>
     </tr>
     <tr *ngFor="let item of items.data">
         <td class="list_couverture"><img [src]="item.getCouverture()" /></td>
-        <td><span data-label="Titre"><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a></span><span *ngIf="features.indexOf('format') !== -1">
+        <td><span data-label="Titre"><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a></span>
+            <span *ngIf="features.indexOf('format') !== -1">
                 <a *ngFor="let format of item.format" [routerLink]="['/'+appUrl+'/format/'+format]"><img [src]="getIcon(format)" class="format_icon" /></a>
-            </span></td>
+            </span>
+            <span *ngIf="features.indexOf('vue') !== -1" class="glyphicons" [ngClass]="{'glyphicons-eye-open': item.vue, 'glyphicons-eye-close': !item.vue}"></span>
+        </td>    
         <td><span data-label="Genre"><a [routerLink]="['/'+appUrl+'/genre/'+item.genre.id]">{{ item.genre.nom }}</a></span></td>
-        <td *ngIf="features.indexOf('serie') !== -1"><span data-label="Série"><a *ngIf="item.serie" [routerLink]="['/'+appUrl+'/serie/'+item.serie.id]">{{ item.serie.nom }}</a></span></td>
-        <td *ngIf="features.indexOf('volume') !== -1"><span data-label="Volume" >{{ item.volume }}</span></td>
+        <td *ngIf="features.indexOf('serie') !== -1"><span data-label="Série"><a [routerLink]="['/'+appUrl+'/serie/'+ item.serie?.id]" [innerHTML]="item.serie?.nom | nullable"></a></span></td>
+        <td *ngIf="features.indexOf('volume') !== -1 && filterBy == 'série'"><span data-label="Volume" [innerHTML]="item.volume | nullable"></span></td>
         <td class="app_list"><span data-label="Auteur(s)" class="auteurs_list"><span *ngFor="let auteur of item.auteurs"><a [routerLink]="['/'+appUrl+'/auteur/'+auteur.id]">{{ auteur.nom }}</a></span></span></td>
-        <td *ngIf="features.indexOf('volume_possedes') !== -1"><span data-label="Volumes" >{{ item.volumes.length }} / {{ item.volume_max }}</span></td>
+        <td *ngIf="features.indexOf('volume_possedes') !== -1">
+            <span data-label="Volumes" >{{ item.volumes.length }} / {{ item.volume_max }}</span>
+            <span *ngIf="features.indexOf('serie_termine') !== -1 && item.serie_termine" class="glyphicons glyphicons-ok"></span>
+            <span *ngIf="features.indexOf('serie_abandonne') !== -1 && item.serie_abandonne" class="glyphicons glyphicons-remove"></span>
+        </td>
     </tr>
 </table>
 

@@ -111,7 +111,12 @@ export class CommonsService<T extends Commons> {
 
     // GET /roman/serie/:serie
     getItemsBySerie(serie: number, page: number = 0): Promise<CommonsResponse<T>> {
-        return this.getItemsByFilter(serie, 'serie', page);
+        let serieNumber = +serie;
+        if(serieNumber) {
+            return this.getItemsByFilter(serie, 'serie', page);
+        } else {
+            return this.getItemsByFilter(null, 'serie', page);
+        }
     }
 
     // GET /roman/serie/:serie
@@ -218,7 +223,13 @@ export class CommonsService<T extends Commons> {
     }
 
     protected getItemsByFilter(id: any, filter: string, page: number = 0, order: string = null): Promise<CommonsResponse<T>> {
-        let url = `${this.itemsUrl}/${filter}/${id}`;
+        let url: string;
+        
+        if(id == null) {
+            url = `${this.itemsUrl}/${filter}`;
+        } else {
+            url = `${this.itemsUrl}/${filter}/${id}`;
+        }
   
         
         return this.getItems(this.getUrlParams(url, page, order), page);

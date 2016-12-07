@@ -10,7 +10,7 @@ export class Commons {
     static featuresList: string[];
     static featuresDetails: string[];
     static featuresForm: string[];
-    
+        
     constructor(values: Object = {}) {
         Object.assign(this, values);
     }	

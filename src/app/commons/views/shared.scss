@@ -14,10 +14,28 @@
     display: inline-block;
     height: 14px;
     width: 14px;
-    filter: invert(100%);
     background-size: 14px 14px;
     background-repeat: no-repeat;
 }
+
+@mixin filter-color($color) {
+    
+    $H:  hue(adjust-hue($color, -38deg)); //170 - 38             ->  132°
+    $S:  100 + (24.5 - saturation($color));//100 + (24.5 - 21.3)  ->  103.2%  (relative to base 100% =  3.2%)
+    $L:  100 + (lightness($color) - 60);//100 + (51.2 - 60.0)  ->   91.2%  (relative to base 100% = -8.8%)
+
+    
+    filter: brightness(50%) sepia(1) hue-rotate($H) saturate($S) brightness($L);
+}
+
+.glyphicons-blue {
+    @include filter-color(blue);
+}
+
+.glyphicons-red {
+    @include filter-color(red);
+}
+
 
 .glyphicons-smallicon {
     height: 14px;
@@ -30,43 +48,61 @@
 }
 
 .glyphicons-bin {
-    background-image: url(assets/glyphicons-17-bin.png);
+    background-image: url(assets/glyphicons/glyphicons-17-bin.png);
 }
 
 .glyphicons-pencil {
-    background-image: url(assets/glyphicons-31-pencil.png);
+    background-image: url(assets/glyphicons/glyphicons-31-pencil.png);
+}
+
+.glyphicons-eye-open {
+    background-image: url(assets/glyphicons/glyphicons-52-eye-open.png);
+}
+
+.glyphicons-eye-close {
+    background-image: url(assets/glyphicons/glyphicons-53-eye-close.png);
 }
 
 .glyphicons-minus-sign {
-    background-image: url(assets/glyphicons-192-minus-sign.png);
+    background-image: url(assets/glyphicons/glyphicons-192-minus-sign.png);
 }
 
 .glyphicons-plus-sign {
-    background-image: url(assets/glyphicons-191-plus-sign.png);
+    background-image: url(assets/glyphicons/glyphicons-191-plus-sign.png);
 }
 
 .glyphicons-ok-sign {
-    background-image: url(assets/glyphicons-194-ok-sign.png);
+    background-image: url(assets/glyphicons/glyphicons-194-ok-sign.png);
+}
+
+.glyphicons-ok {
+    background-image: url(assets/glyphicons/glyphicons-207-ok.png);
+}
+
+.glyphicons-remove {
+    background-image: url(assets/glyphicons/glyphicons-208-remove.png);
 }
 
 .glyphicons-duplicate {
-    background-image: url(assets/glyphicons-511-duplicate.png);
+    background-image: url(assets/glyphicons/glyphicons-511-duplicate.png);
 }
 
 .glyphicons-chevron-up {
-    background-image: url(assets/glyphicons-601-chevron-up.png);
-    filter: none;
+    background-image: url(assets/glyphicons/glyphicons-601-chevron-up.png);
     height: 8px;
     width: 12px;
     background-size: 12px 8px;    
 }
 
 .glyphicons-chevron-down {
-    background-image: url(assets/glyphicons-602-chevron-down.png);
-    filter: none;
+    background-image: url(assets/glyphicons/glyphicons-602-chevron-down.png);
     height: 8px;
     width: 12px;
     background-size: 12px 8px;       
+}
+
+.btn .glyphicons {
+   filter: invert(100%);
 }
 
 .btn-secondary .glyphicons {

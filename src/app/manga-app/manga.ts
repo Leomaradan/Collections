@@ -9,13 +9,16 @@ export class Manga extends Commons {
         volume_max: number;
         volume_possedes: string;
         
+        serie_termine: boolean = false;
+        serie_abandonne: boolean = false;
+        
         volumes: number[];
         
         listVolumeMax: number[]
                 
-        static featuresList: string[] = ['volume_possedes','volume_max'];
-        static featuresDetails: string[] = ['volume_possedes','volume_max'];
-        static featuresForm: string[] = ['volume_possedes','volume_max','gatherer'];        
+        static featuresList: string[] = ['volume_possedes','volume_max', 'serie_termine', 'serie_abandonne'];
+        static featuresDetails: string[] = ['volume_possedes','volume_max', 'serie_termine', 'serie_abandonne'];
+        static featuresForm: string[] = ['volume_possedes','volume_max', 'serie_termine', 'serie_abandonne', 'gatherer'];        
         
     static addVolumesLists(mangas: Manga[]) : Manga[] {
         mangas.forEach(function(manga) {

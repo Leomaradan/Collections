@@ -14,9 +14,9 @@ export class SerieTV extends Commons {
         listVolumeMax: number[];
         format: string[];
                 
-        static featuresList: string[] = ['volume_possedes','volume_max', 'format'];
-        static featuresDetails: string[] = ['volume_possedes','volume_max', 'format'];
-        static featuresForm: string[] = ['volume_possedes','volume_max', 'format'];    
+        static featuresList: string[] = ['volume_possedes','volume_max', 'format', 'vue'];
+        static featuresDetails: string[] = ['volume_possedes','volume_max', 'format', 'vue'];
+        static featuresForm: string[] = ['volume_possedes','volume_max', 'format', 'vue'];    
         
         static listFormat = [
             { value: 'dvd', display: 'DVD', icon: 'DVD_logo' },

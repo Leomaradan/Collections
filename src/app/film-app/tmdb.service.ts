@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Http, Jsonp } from '@angular/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Film } from './film';
 
-import { GathererService, Genre, Auteur } from '../commons' ;
+import { GathererService, Genre, Auteur, GathererModalObject, GathererBind } from '../commons' ;
 
-export interface TMDBData {
+/*export interface TMDBData {
     titre: string;
     couverture: string;
     genre: string;
     auteurs: string[];
     volume_max: number;
-}
+}*/
 
 @Injectable()
-export class TMDBService extends GathererService<Film> {
+export class TMDBServiceFilm extends GathererService<Film> {
+
+    
+    constructor(protected http: Http, protected jsonp: Jsonp, protected modalService: NgbModal) { 
+        super();
+        //this.urlSearch += 'movie';
+        //this.urlGatherBase += 'movie/';
+    }    
     
     urlSearch = 'https://api.themoviedb.org/3/search/movie';
     urlGather = '';
@@ -25,44 +33,59 @@ export class TMDBService extends GathererService<Film> {
     
     timestamp: null = null;
     
-    paramsGather = {'append_to_response': 'casts'};
+    paramsGather = {'append_to_response': 'credits'};
     
     api_name = 'api_key';
-    api_key = '5ed762df1aa4aa9437cec6279233fc65';
+    api_key = '5ed762df1aa4aa9437cec6279233fc65';       
     
-    constructor(protected http: Http, protected jsonp: Jsonp) { 
-        super();
-    }    
-    
-    gatherData(current: Film, url: string): Promise<Film> {
-        this.urlGather = this.urlGatherBase + url;
-        return super.gatherData(current, url);
-    }
-    
-    parseGatheredData(current: Film, data: any): Film {
+    parseGatheredData(current: Film, data: any): GathererModalObject<Film> {
         
+        let item: GathererBind[] = [];
+        //console.log(data);
+        item.push(this.makeBind('Titre', 'titre', current.titre, data.title));      
         current.titre = data.title;
-        current.couverture = 'https://image.tmdb.org/t/p/w640/' + data.poster_path;
         
+        item.push(this.makeBind('Couverture', 'couverture', current.couverture, 'https://image.tmdb.org/t/p/w640' + data.poster_path));     
+        current.couverture = 'https://image.tmdb.org/t/p/w640' + data.poster_path;
+        
+        item.push(this.makeBind('Genre', 'genre', current.genre.nom, data.genres[0].name));  
         current.genre = new Genre({nom: data.genres[0].name});
 
+        
+        let auteurs_list: string[] = current.auteurs.map(a => a.nom);
         current.auteurs = [];
 
-        let director = data.casts.crew.filter(h => h.job === 'Director');
+        let director = data.credits.crew.filter(h => h.job === 'Director');
 
         for (let i in director) {
             current.auteurs.push(new Auteur({nom: director[i].name}));
         }
+        
+        let auteurs_new_list: string[] = current.auteurs.map(a => a.nom);
+        item.push(this.makeBind('Auteur(s)', 'auteurs', auteurs_list, auteurs_new_list)); 
 
         //current.volume_max = data.volume_max;
         
-        return current;
+        return { data: current, bind: item };
     }
     
+    
+   gatherData(current: Film, url: string): Promise<Film> {
+        this.urlGather = this.urlGatherBase + url;
+        return super.gatherData(current, url);
+    }
+    
+
+    
     parseSearch(data: any): any[] {
-        let results = data.results.slice(0,10);
+        let results = data.results.slice(0,20);
         
         for(let i in results) {
+            
+            if(results[i].title == undefined && results[i].name !== undefined) {
+                results[i].title = results[i].name;
+            }
+            
             if(results[i].poster_path !== null) {
                 results[i].thumbnail = 'https://image.tmdb.org/t/p/w640/' + results[i].poster_path;
             }
@@ -74,5 +97,5 @@ export class TMDBService extends GathererService<Film> {
         
     parseSearchItem(item: {title: string}): string {
         return item.title;
-    }      
+    }        
 }

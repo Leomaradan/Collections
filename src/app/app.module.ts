@@ -18,7 +18,7 @@ import { SerieTVModule } from './serietv-app';
 import { ListsModule } from './commons/lists.module';
 
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
     {
@@ -30,7 +30,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent    
+    HomeComponent  
   ],
   imports: [
     BrowserModule,
@@ -46,7 +46,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { useHash: true }),
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [NgbActiveModal],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

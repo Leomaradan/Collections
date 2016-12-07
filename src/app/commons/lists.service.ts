@@ -4,7 +4,7 @@ import { Headers, Http, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 //import { Roman } from './roman';
-import { Commons, Serie, Genre, Auteur, CommonsResponse, Type } from '.';
+import { Commons, Serie, Genre, Auteur, CommonsResponse, ItemType } from '.';
 
 
 export interface Lists {
@@ -125,7 +125,7 @@ export class ListsService<T extends Lists> {
         return url;
     }
 
-    getTypeList(): Promise<Type[]> {
+    getTypeList(): Promise<ItemType[]> {
         return this.http.get('api/type')
             .toPromise()
             .then(response => response.json().data)
@@ -195,7 +195,7 @@ export class ListsService<T extends Lists> {
         let item = values;
         
         if(item.type_id !== undefined) {
-            item.type = new Type({id: item.type_id, description: item.type_description});
+            item.type = new ItemType({id: item.type_id, description: item.type_description});
         }
 
         //console.log(roman);

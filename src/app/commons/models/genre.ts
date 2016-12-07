@@ -1,10 +1,10 @@
-import { Type } from './type';
+import { ItemType } from './type';
 
 export class Genre {
     id: number;
     nom: string;
     utilisation: number; 
-    type: Type; 
+    type: ItemType; 
     
     static features: string[] = ['type'];
     

@@ -17,8 +17,10 @@ trait ValidationTrait {
 		foreach ($validation as $field => $rulesString) {
 
 			$message[$field] = [];
-			$isarray = false;
+			$isarray = $isinteger = false;
 			$isarray = preg_match("/\|array/", $rulesString);
+			$isinteger = preg_match("/\|integer/", $rulesString);
+
 			$rules = explode('|', $rulesString);
 
 			foreach ($rules as &$rule) {
@@ -84,9 +86,15 @@ trait ValidationTrait {
 								$valid = false;
 							}
 							break;
+						case 'boolean':
+							if(!is_null($test) && !is_bool($test)) {
+								$message[$field][$instruction] = "$field must be a boolean";
+								$valid = false;
+							}
+							break;
 						case 'min':
 							if(!is_null($test)) {
-								if(is_numeric($test)) {
+								if($isinteger) {
 									if($test < $params[0]) {
 										$message[$field][$instruction] = "$field must be greater than {$params[0]}";
 										$valid = false;								
@@ -101,7 +109,7 @@ trait ValidationTrait {
 							break;
 						case 'max':
 							if(!is_null($test)) { 
-								if(is_numeric($test)) {
+								if($isinteger) {
 									if($test > $params[0]) {
 										$message[$field][$instruction] = "$field must be lesser than {$params[0]}";
 										$valid = false;								

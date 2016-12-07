@@ -4,6 +4,7 @@ import { CompleterService } from 'ng2-completer';
 
 import { SerieTV } from './serietv';
 import { SerieTVService } from './serietv.service';
+import { TMDBServiceTV } from './tmdb.service';
 
 import { CommonsFormComponent } from '../commons';
 
@@ -11,7 +12,7 @@ import { CommonsFormComponent } from '../commons';
     selector: 'serietv-form',
     templateUrl: '../commons/views/form.component.html',
     styleUrls: ['../commons/views/form.component.scss'],
-    providers: [SerieTVService]
+    providers: [SerieTVService, TMDBServiceTV]
 })
 export class SerieTVFormComponent extends CommonsFormComponent<SerieTV> implements OnInit {
 
@@ -26,7 +27,8 @@ export class SerieTVFormComponent extends CommonsFormComponent<SerieTV> implemen
     constructor(public commonsService: SerieTVService, 
                 protected route: ActivatedRoute, 
                 protected router: Router,
-                protected completerService: CompleterService) {
+                protected completerService: CompleterService,
+                public gathererService: TMDBServiceTV) {
         super();
     }
     

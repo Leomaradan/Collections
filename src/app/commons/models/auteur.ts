@@ -1,5 +1,3 @@
-import { Type } from './type';
-
 export class Auteur {
     id: number;
     nom: string;

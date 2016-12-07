@@ -7,10 +7,10 @@ class FilmDAO extends CommonsDAO {
 	protected $view = "collections_view_film";
 	protected $types = ['film','video'];
 	protected $type = "film";
-	protected $searchItems = ['titre','serie','genre','auteurs','format'];
-	protected $visible = ['titre','serie','genre','auteurs','format','couverture'];
+	protected $searchItems = ['titre','serie','genre','auteurs','format', 'vue'];
+	protected $visible = ['titre','serie','genre','auteurs','format', 'vue', 'couverture'];
 
-	protected $supfield = "format";
+	protected $supfield = ['format', 'vue'];
 
 	protected $fillable = ['titre','serie_id','genre_id','couverture','metadata'];
 	protected $validation = [
@@ -19,6 +19,7 @@ class FilmDAO extends CommonsDAO {
 		'genre_id' => 'require_only:genre_new|integer|reference:collections_genre,id|validator:getGenre',
 		'couverture' => 'max:255',
 		'format' => 'required|array|validator:getFormat,nom',
+		'vue' => 	'boolean:false',
 		'auteurs_id' => 'require_without:auteurs_new|array:integer|reference:collections_auteur,id'
 	];
 
@@ -33,9 +34,20 @@ class FilmDAO extends CommonsDAO {
 		return [];			
 	}	
 
+	protected function getVueAttribute($value, $array) {
+		$meta = json_decode($array['metadata']);
+
+		if(isset($meta->vue)) {
+			return $meta->vue;
+		}
+
+		return false;			
+	}	
+
 	public function setMetadataAttribute($value,$array) {
 		$meta = json_decode($value);
 		$meta->format = $array['format'];
+		$meta->vue = !!$array['vue'];
 		return json_encode($meta);
 	}
 

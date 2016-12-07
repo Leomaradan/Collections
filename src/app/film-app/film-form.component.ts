@@ -4,7 +4,7 @@ import { CompleterService } from 'ng2-completer';
 
 import { Film } from './film';
 import { FilmService } from './film.service';
-import { TMDBService } from './tmdb.service';
+import { TMDBServiceFilm } from './tmdb.service';
 
 import { CommonsFormComponent } from '../commons';
 
@@ -12,7 +12,7 @@ import { CommonsFormComponent } from '../commons';
     selector: 'film-form',
     templateUrl: '../commons/views/form.component.html',
     styleUrls: ['../commons/views/form.component.scss'],
-    providers: [FilmService, TMDBService]
+    providers: [FilmService, TMDBServiceFilm]
 })
 export class FilmFormComponent extends CommonsFormComponent<Film> implements OnInit {
 
@@ -29,7 +29,7 @@ export class FilmFormComponent extends CommonsFormComponent<Film> implements OnI
                 protected route: ActivatedRoute, 
                 protected router: Router,
                 protected completerService: CompleterService,
-                public gathererService: TMDBService) {
+                public gathererService: TMDBServiceFilm) {
         super();
     }
     

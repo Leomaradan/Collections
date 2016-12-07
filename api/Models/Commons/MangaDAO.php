@@ -10,9 +10,9 @@ class MangaDAO extends CommonsDAO {
 	protected $types = ['manga','livre'];
 	protected $type = "manga";
 	protected $searchItems = ['titre','genre','auteurs'];
-	protected $visible = ['titre','genre','auteurs','volume_possedes','volume_max','couverture'];
+	protected $visible = ['titre','genre','auteurs','volume_possedes','volume_max','serie_termine', 'serie_abandonne','couverture'];
 
-	protected $supfield = ["volume_possedes", "volume_max"];
+	protected $supfield = ['volume_possedes', 'volume_max', 'serie_termine', 'serie_abandonne'];
 
 	protected $fillable = ['titre','genre_id','metadata','couverture'];
 	protected $validation = [
@@ -21,6 +21,8 @@ class MangaDAO extends CommonsDAO {
 		'couverture' => 'max:255',
 		'volume_possedes' => 'required|array:integer',
 		'volume_max' => 'required|integer',
+		'serie_termine' => 'boolean:false',
+		'serie_abandonne' => 'boolean:false',
 		'auteurs_id' => 'require_without:auteurs_new|array:integer|reference:collections_auteur,id'
 	];	
 
@@ -30,6 +32,9 @@ class MangaDAO extends CommonsDAO {
 
 		$meta->volumePossedes = Compact::compact($array['volume_possedes']);
 		$meta->volumeMax = $array['volume_max'];
+
+		$meta->termine = !!$array['serie_termine'];
+		$meta->abandonne = !!$array['serie_abandonne'];
 		return json_encode($meta);
 	}
 
@@ -55,6 +60,29 @@ class MangaDAO extends CommonsDAO {
 
 		return 1;
 	}
+
+	public function getSerieTermineAttribute($value,$array) {
+
+		$meta = json_decode($array['metadata']);
+
+		if(isset($meta->termine)) {
+			return $meta->termine;
+		}
+
+		return false;
+	}	
+
+	public function getSerieAbandonneAttribute($value,$array) {
+
+		$meta = json_decode($array['metadata']);
+
+		if(isset($meta->abandonne)) {
+			return $meta->abandonne;
+		}
+
+		return false;
+	}	
+
 
 	/*public function compactVolumes($volumes) {
 		if(count($volumes) == 0) {

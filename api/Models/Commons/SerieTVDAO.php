@@ -10,9 +10,9 @@ class SerieTVDAO extends CommonsDAO {
 	protected $types = ['serietv','video'];
 	protected $type = "serietv";
 	protected $searchItems = ['titre','genre','auteurs'];
-	protected $visible = ['titre','genre','auteurs','volume_possedes','volume_max','format','couverture'];
+	protected $visible = ['titre','genre','auteurs','volume_possedes','volume_max','format', 'vue','couverture'];
 
-	protected $supfield = ["volume_possedes", "volume_max", "format"];
+	protected $supfield = ["volume_possedes", "volume_max", "format", 'vue'];
 
 	protected $fillable = ['titre','genre_id','metadata','couverture'];
 	protected $validation = [
@@ -22,6 +22,7 @@ class SerieTVDAO extends CommonsDAO {
 		'volume_possedes' => 'required|array:integer',
 		'volume_max' => 'required|integer',
 		'format' => 'required|array|validator:getFormat,nom',
+		'vue' => 	'boolean:false',
 		'auteurs_id' => 'require_without:auteurs_new|array:integer|reference:collections_auteur,id'
 	];	
 
@@ -31,6 +32,7 @@ class SerieTVDAO extends CommonsDAO {
 		$meta->volumePossedes = Compact::compact($array['volume_possedes']);
 		$meta->volumeMax = $array['volume_max'];
 		$meta->format = $array['format'];
+		$meta->vue = !!$array['vue'];
 		return json_encode($meta);
 	}
 
@@ -67,6 +69,16 @@ class SerieTVDAO extends CommonsDAO {
 		return [];			
 	}	
 
+
+	protected function getVueAttribute($value, $array) {
+		$meta = json_decode($array['metadata']);
+
+		if(isset($meta->vue)) {
+			return $meta->vue;
+		}
+
+		return false;			
+	}
 
 	public function getByFormat($format, $pagination) {
 
