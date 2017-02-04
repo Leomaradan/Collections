@@ -54,7 +54,7 @@ export class MangaNewsService extends GathererService<Manga> {
         item.push(this.makeBind('Couverture', 'couverture', current.couverture, data.couverture));
         current.couverture = data.couverture;
         
-        item.push(this.makeBind('Genre', 'genre', current.genre.nom, data.genre));
+        item.push(this.makeBind('Genre', 'genre', (current.genre !== null) ? current.genre.nom : '', data.genre));
         current.genre = new Genre({nom: data.genre});
 
         

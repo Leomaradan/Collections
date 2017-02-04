@@ -82,51 +82,30 @@ class MangaDAO extends CommonsDAO {
 
 		return false;
 	}	
+        
+        public function getByShoppingList($pagination) {
 
+            $result = [];
+            $result['data'] = [];
 
-	/*public function compactVolumes($volumes) {
-		if(count($volumes) == 0) {
-			return '';
-		}
-		sort($volumes);
+            $where = "metadata LIKE ?";
+            $pattern = '%abandonne":false%';
+            $preresult = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), [$pattern]);
+            
+            
+            foreach($preresult as $k => $line) {
+                $list_volume = Compact::depack($line['volume_possedes']);
+ 
+                if(count($list_volume) != $line['volume_max']) {
+                    $result['data'][] = $line;
+                }
 
-		$current = current($volumes);
-		$min = current($volumes);
+            }
 
-		if($min < 1) {
-			$min = 1;
-		}
+            $this->addPagination($pagination, $result, $where, [$pattern]);  
+            
+            return $result;
 
-		$max = max($volumes);
-
-		$string = $current;
-
-		$mode = 'unique';
-
-		for($i = $min + 1; $i <= $max; $i++) {
-
-			if($mode == 'unique') {
-				if(in_array($i,$volumes)) {
-					$mode = 'follow';
-				} else {
-					$mode = 'break';
-				}
-			} elseif($mode == 'follow' && !in_array($i,$volumes)) {
-				$string .= ('-' . ($i - 1));
-				$mode = 'break';
-			} elseif($mode == 'break') {
-				if(in_array($i,$volumes)) {
-					$mode = 'unique';
-					$string .= (',' . $i);
-				}				
-			}
-
-			if($i == $max && $mode == 'follow') {
-				$string .= ('-' . $i);
-			}
-		}
-
-		return $string;
-	}*/
+        }        
 
 }

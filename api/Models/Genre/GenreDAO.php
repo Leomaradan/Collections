@@ -22,7 +22,7 @@ class GenreDAO extends CollectionsDAO {
     public function create($data, $extraData = null) {
 
         // Pre-Action
-        $sql = "SELECT SQL_CACHE * FROM {$this->table} WHERE type_id = :type AND nom LIKE :nom ORDER BY nom";
+        $sql = "SELECT SQL_CACHE * FROM {$this->table} WHERE type_id = :type AND nom_key LIKE make_key(:nom) ORDER BY nom";
         $result = $this->requestSingle($sql, [':type' => $data['type_id'], ':nom' => $data['nom']]);
         if ($result !== false && count($result) > 0) {
             return ['id' => $result['id']];

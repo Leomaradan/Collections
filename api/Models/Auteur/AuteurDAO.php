@@ -6,7 +6,7 @@ use App\Models\CollectionsDAO;
 
 class AuteurDAO extends CollectionsDAO {
 
-    protected $view = "collections_view_auteur";
+    //protected $view = "collections_view_auteur";
     protected $table = "collections_auteur";
     protected $pivot = "collections_auteur_commons";
     protected $searchItems = ['nom'];
@@ -21,7 +21,7 @@ class AuteurDAO extends CollectionsDAO {
     
     public function create($data, $extraData = null) {
         // Pre-Action
-        $sql = "SELECT SQL_CACHE * FROM {$this->table} WHERE nom LIKE ? LIMIT 1";
+        $sql = "SELECT SQL_CACHE * FROM {$this->table} WHERE nom_key LIKE make_key(?) LIMIT 1";
         $result = $this->requestSingle($sql, [$data['nom']]);
 
         if ($result !== false && count($result) > 0) {

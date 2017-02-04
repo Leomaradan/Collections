@@ -7,6 +7,7 @@ class RomanDAO extends CommonsDAO {
 	protected $view = "collections_view_roman";
 	protected $types = ['roman','livre'];
 	protected $type = "roman";
+        protected $searchItems = ['titre', 'serie', 'genre', 'auteurs'];        
 	protected $fillable = ['titre','serie_id','genre_id','couverture','volume'];	
 	protected $validation = [
 		'titre' => 'required|min:3|max:100',

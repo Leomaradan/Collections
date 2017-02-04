@@ -9,7 +9,7 @@ use Apix\Cache;
 /**
 * 
 */
-class MangaNewsController {
+class MangaNewsController extends BridgeController {
 
 	private $genreEquivalence = ["Shonen" => "Shōnen"];
 
@@ -23,8 +23,10 @@ class MangaNewsController {
 		$url = "http://www.manga-news.com/services.php?f=autoCompleteElasticSearch&q=$q&limit=10&timestamp=$timestamp";
 
 
-		$data = file_get_contents($url);
-
+		//$data = file_get_contents($url);
+                
+                $data = $this->getUrl($url, 'http://www.manga-news.com');
+                
 		$lines = explode(PHP_EOL, $data);
 		$return = [];
 
@@ -83,7 +85,8 @@ class MangaNewsController {
 
 			$url = "http://www.manga-news.com/index.php/$resource";
 
-			$html = file_get_html($url);	
+			//$html = file_get_html($url);	
+                        $html = $this->getHtmlDom($url, 'http://www.manga-news.com');
 
 			$return['titre'] = $html->find('h1.entryTitle')[0]->plaintext;
 			$return['couverture'] = $html->find('a[rel="imagebox-covert"]')[0]->href;
