@@ -19,6 +19,8 @@ export class FilmAppComponent extends CommonsAppComponent<Film> implements OnIni
     appUrl: string = "film"
 
     features = Film.featuresList;
+    
+    filters = null;
 
     constructor(public commonsService: FilmService, protected route: ActivatedRoute, protected router: Router) {
         super();

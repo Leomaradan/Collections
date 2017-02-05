@@ -20,6 +20,8 @@ export class BdAppComponent extends CommonsAppComponent<Bd> implements OnInit {
     appUrl: string = "bd"
 
     features = Bd.featuresList;  
+    
+    filters = null;
 
   constructor(public commonsService: BdService, protected route: ActivatedRoute, protected router: Router) {
     super();

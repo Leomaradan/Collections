@@ -35,6 +35,7 @@ class MangaDAO extends CommonsDAO {
 
 		$meta->termine = !!$array['serie_termine'];
 		$meta->abandonne = !!$array['serie_abandonne'];
+                $meta->complete = (max($array['volume_possedes']) == $array['volume_max']);
 		return json_encode($meta);
 	}
 
@@ -86,23 +87,17 @@ class MangaDAO extends CommonsDAO {
         public function getByShoppingList($pagination) {
 
             $result = [];
-            $result['data'] = [];
 
-            $where = "metadata LIKE ?";
-            $pattern = '%abandonne":false%';
-            $preresult = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), [$pattern]);
+            $where = "metadata LIKE :nonabandonne AND ((metadata LIKE :termine AND metadata NOT LIKE :complete) OR metadata NOT LIKE :termine)";
+            $nonabandonne = '%abandonne":false%';
+            $termine = '%termine":true%';
+            $complete = '%complete":true%';
             
+            $params = ['nonabandonne' => $nonabandonne, 'termine' => $termine, 'complete' => $complete];
             
-            foreach($preresult as $k => $line) {
-                $list_volume = Compact::depack($line['volume_possedes']);
- 
-                if(count($list_volume) != $line['volume_max']) {
-                    $result['data'][] = $line;
-                }
+            $result['data'] = $this->requestMultiple($this->getQuery(['where' => $where, 'pagination' => $pagination]), $params);
 
-            }
-
-            $this->addPagination($pagination, $result, $where, [$pattern]);  
+            $this->addPagination($pagination, $result, $where, $params);  
             
             return $result;
 

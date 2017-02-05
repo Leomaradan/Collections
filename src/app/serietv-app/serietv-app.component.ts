@@ -20,6 +20,8 @@ export class SerieTVAppComponent extends CommonsAppComponent<SerieTV> implements
     appUrl: string = "serietv"
 
     features = SerieTV.featuresList;
+    
+    filters = null;
 
     constructor(public commonsService: SerieTVService, protected route: ActivatedRoute, protected router: Router) {
         super();

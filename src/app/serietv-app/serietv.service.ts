@@ -31,7 +31,7 @@ export class SerieTVService extends CommonsService<SerieTV> {
         return super.recallUrl(page, order).then(seriestv => {SerieTV.addVolumesLists(seriestv.data); return seriestv;});
     }
     
-    protected getItemsByFilter(id: any, filter: string, page: number = 0, order: string = null): Promise<CommonsResponse<SerieTV>> {
+    getItemsByFilter(id: any, filter: string, page: number = 0, order: string = null): Promise<CommonsResponse<SerieTV>> {
         return super.getItemsByFilter(id, filter, page, order).then(seriestv => {SerieTV.addVolumesLists(seriestv.data); return seriestv;});
     }
 }

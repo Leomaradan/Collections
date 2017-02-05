@@ -6,10 +6,12 @@ export abstract class CommonsAppComponent<T extends Commons> {
 
   items: {data: T[], pagination: any} = {data: [], pagination: {}};
   filterBy: string;
+  addFilter: boolean = false;
   
   loading: number = 0;
   
   abstract features: string[];
+  abstract filters: CommonsFilter[] | null;
   
   abstract appTitre: string;
   abstract appUrl: string  
@@ -81,37 +83,51 @@ export abstract class CommonsAppComponent<T extends Commons> {
       return Array.apply(null, {length: this.items.pagination.nb_pages - 1}).map(Number.call, Number);
   }*/
   
-  init(features: string[]) {
+  init(features: string[], filters?: CommonsFilter[]) {
     this.route.params.forEach((params: Params) => {
         let genre = +params['genre'];
         let serie = params['serie'];
         let auteur = +params['auteur'];
         let format = params['format'];
+        let filter = params['filter'];
         let recherche = params['recherche'];
         let page = (+params['page']) ? +params['page'] : 1;
 
         this.loading++;
+        
+        let currentFilter: CommonsFilter;
 
         let promise: Promise<CommonsResponse<T>>;
 
         this.features = features.slice();
-
-        if(genre) {
+        
+        if(filters) {
+            currentFilter = filters.find(f => f.url == filter);
+        }
+        this.addFilter = false;
+        if(currentFilter) {
+            promise = this.commonsService.getItemsByFilter(null, currentFilter.url);
+            this.filterBy = currentFilter.name;
+        } else if(genre) {
             promise = this.commonsService.getItemsByGenre(genre, page);
             this.filterBy = "genre";
+            this.addFilter = true;
             this.cloneObject = {genre: genre};
         } else if (serie) {
             promise = this.commonsService.getItemsBySerie(serie, page);
             this.filterBy = "série";
+            this.addFilter = true;
             this.features.push('volume');
             this.cloneObject = {serie: serie};
         } else if (auteur) {
             promise = this.commonsService.getItemsByAuteur(auteur, page);
             this.filterBy = "auteur";
+            this.addFilter = true;
             this.cloneObject = {auteur: auteur};
         } else if (format) {
             promise = (<any>this.commonsService).getItemsByFormat(format, page);
             this.filterBy = "format";
+            this.addFilter = true;
             this.cloneObject = {format: format};
          } else if (recherche) {
             promise = this.commonsService.searchItems(recherche, page);
@@ -157,5 +173,10 @@ export abstract class CommonsAppComponent<T extends Commons> {
       }
   }
 
+}
+
+export interface CommonsFilter {
+    url: string;
+    name: string;
 }
 

@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Manga } from './manga';
 import { MangaService } from './manga.service';
 
-import { CommonsAppComponent } from '../commons/';
+import { CommonsAppComponent, CommonsFilter } from '../commons/';
 
 @Component({
   selector: 'manga-app',
@@ -20,6 +20,8 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
     appUrl: string = "manga"
 
     features = Manga.featuresList;  
+    
+    filters: CommonsFilter[] = [{url: 'shopping', name: 'Liste d\'achat'}];
 
   constructor(public commonsService: MangaService, protected route: ActivatedRoute, protected router: Router) {
     super();
@@ -27,7 +29,7 @@ export class MangaAppComponent extends CommonsAppComponent<Manga> implements OnI
     
   ngOnInit() {
 
-    this.init(Manga.featuresList);
+    this.init(Manga.featuresList, this.filters);
 
     /*this.route.params.forEach((params: Params) => {
       let genre = +params['genre'];

@@ -42,9 +42,10 @@
     width: 14px;
     background-size: 14px 14px;
 }
-
-.glyphicons + span {
-    margin: .5rem;
+.action_menu {
+    .glyphicons + span {
+        margin: .5rem;
+    }
 }
 
 .glyphicons-bin {

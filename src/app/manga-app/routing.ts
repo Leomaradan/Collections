@@ -31,7 +31,11 @@ import { MangaFormComponent } from './manga-form.component';
         {
           path: 'manga/auteur/:auteur',
           component: MangaAppComponent,
-        }          
+        },    
+        {
+            path: 'manga/filter/:filter',
+            component: MangaAppComponent
+        }             
     ])
   ],
   exports: [

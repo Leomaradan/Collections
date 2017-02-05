@@ -19,7 +19,7 @@ export class CommonsService<T extends Commons> {
     private itemsUrl = 'api/roman';
     private headers = new Headers({ 'Content-Type': 'application/json' });
     
-    public pagination: number = 5;
+    public pagination: number = 10;
     public paginationResponse: any;
     
     public requestUrl: string;
@@ -222,7 +222,7 @@ export class CommonsService<T extends Commons> {
             .catch(this.handleError);
     }
 
-    protected getItemsByFilter(id: any, filter: string, page: number = 0, order: string = null): Promise<CommonsResponse<T>> {
+    getItemsByFilter(id: any, filter: string, page: number = 0, order: string = null): Promise<CommonsResponse<T>> {
         let url: string;
         
         if(id == null) {

@@ -18,6 +18,9 @@
 <ngb-alert *ngIf="!commonsService.isOnline" type="info">Application is offline</ngb-alert>
 
 <h1>{{appTitre}}</h1>
+<ul *ngIf="filters !== null">
+    <li *ngFor="let filter of filters"><a [routerLink]="['/'+appUrl+'/filter/'+ filter.url]">{{ filter.name }}</a></li>
+</ul>
 <input-debounce delay="500" placeholder="Recherche..." (value)="searchChanged($event)"></input-debounce>
 <table class="table">
     <tr>
@@ -30,7 +33,7 @@
     </tr>
     <tr *ngFor="let item of items.data">
         <td class="list_couverture"><img [src]="item.getCouverture()" /></td>
-        <td><span data-label="Titre"><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a></span>
+        <td class="titre"><span><a [routerLink]="['/'+appUrl+'/'+item.id]">{{ item.titre }}</a></span>
             <span *ngIf="features.indexOf('format') !== -1">
                 <a *ngFor="let format of item.format" [routerLink]="['/'+appUrl+'/format/'+format]"><img [src]="getIcon(format)" class="format_icon" /></a>
             </span>
@@ -60,6 +63,6 @@
 <div class="action_menu" *ngIf="commonsService.isOnline">
     <div class="container">
         <a class="btn btn-large btn-primary" [routerLink]="['/'+appUrl+'/new/create']"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter</span></a>
-        <button *ngIf="filterBy" class="btn btn-large btn-success" (click)="cloneItem()"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter ({{ (item) ? item.genre.nom : filterBy }})</span></button>
+        <button *ngIf="addFilter" class="btn btn-large btn-success" (click)="cloneItem()"><span class="glyphicons glyphicons-plus-sign"></span><span>Ajouter ({{ (item) ? item.genre.nom : filterBy }})</span></button>
     </div>    
 </div>
