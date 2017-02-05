@@ -53,7 +53,8 @@ $types = [
     'film' => 'Commons\FilmController', 
     'manga' => 'Commons\MangaController', 
     'roman' => 'Commons\RomanController',
-    'serietv' => 'Commons\SerieTVController'
+    'serietv' => 'Commons\SerieTVController',
+    'jv' => 'Commons\JeuxVideoController',
 ];
 
 $types_cruds = array_merge($types, [
@@ -87,6 +88,8 @@ foreach ($types as $key => $value) {
 }
 
 $app->get('/api/film/format/{format}', 'App\Controllers\Commons\FilmController:filterByFormat');
+$app->get('/api/manga/shopping', 'App\Controllers\Commons\MangaController:filterByShoppingList');
+$app->get('/api/jv/console/{console}', 'App\Controllers\Commons\JeuxVideoController:filterByConsole');
 
 $app->get('/api/bridge/manganews/search', 'App\Controllers\Bridge\MangaNewsController:search');
 $app->get('/api/bridge/manganews/gather', 'App\Controllers\Bridge\MangaNewsController:gather');
